@@ -1,73 +1,107 @@
+<%- include("./partials/header") %>
+  <div class="main-div w-[70vw] h-[75vh] m-auto my-30 rounded-2xl overflow-hidden flex bg-[#F5F5F5] shadow-2xl">
+    <div class="photo-containt bg-[#393E46] h-full w-[50%] text-white flex items-center justify-center">
+      <img src="../images/front-image.jpg" alt="">
+    </div>
 
-    <%-include('./partials/header.ejs')%>
-<div class="main-div w-[70vw] h-[75vh] m-auto my-30 rounded-2xl overflow-hidden flex bg-[#F5F5F5]">
-  <div class="photo-containt bg-[#393E46] h-full w-[50%] text-white flex items-center justify-center">
-    <img src="../images/front-image.jpg" alt="">
-  </div>
-  <div class="form-content w-[50%] h-full flex flex-col justify-center bg-white px-10 ">
-    <h1 class="welcome-txt text-[#222831] text-[35px] text-center mb-8">Welcome Back!</h1>
-    <div class="all-signup-form">
-        <input class="w-full border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD] mb-4" type="email" placeholder="Email" />
+    <!-- //Login -->
+    <div id="login-container" class=" w-[50%] h-full flex flex-col justify-center bg-white px-10 ">
+      <h1 class="welcome-txt text-[#222831] text-[35px] text-center mb-8">Welcome Back!</h1>
+      <div class="all-signup-form">
+        <input
+          class="w-full border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD] mb-4"
+          type="email" placeholder="Email" />
         <div class="relative">
-            <input class="w-full border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD]" type="password" placeholder="Password" />
-            <i class="fa-solid fa-eye absolute top-3 right-3 cursor-pointer text-[#BDBDBD] hover:text-[#222831]"></i>
-            <!-- <i class="fa-solid fa-eye-slash"></i> -->
+          <input id="password"
+            class="w-full border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD]"
+            type="password" placeholder="Password" />
+          <div id="eye">
+            <i id="open"
+              class="fa-solid fa-eye absolute top-3 right-3 cursor-pointer text-[#BDBDBD] hover:text-[#222831]"
+              style="display: none;"></i>
+            <i id="close"
+              class="fa-solid fa-eye-slash  absolute top-3 right-3 cursor-pointer text-[#BDBDBD] hover:text-[#222831]"
+              style="display:inline-block;"></i>
+          </div>
+
         </div>
-      <span class="ml-80 text-gray-500 text-[13px] cursor-pointer underline hover:text-[#222831] inline">Forget password?</span>
-      <button class="w-full bg-[#393E46] text-white py-2 rounded-lg  mt-4 cursor-pointer hover:bg-[#222831]">Log In</button>
+        <span class="ml-80 text-gray-500 text-[13px] cursor-pointer underline hover:text-[#222831] inline">Forget
+          password?</span>
+        <button class="w-full bg-[#393E46] text-white py-2 rounded-lg  mt-4 cursor-pointer hover:bg-[#222831]">Log
+          In</button>
+        <div class="flex items-center my-6">
+          <hr class="flex-grow border-[#E0E0E0]" />
+          <span class="px-2 text-[#BDBDBD]">or</span>
+          <hr class="flex-grow border-[#E0E0E0]" />
+        </div>
+        <p class="text-center text-[#BDBDBD] mb-7 text-[13px]">
+          New user? <a href="#" id="signUp" class="text-rgb underline hover:text-[#393E46]">Sign Up</a>
+        </p>
+        <div class="socials space-y-2">
+          <button
+            class="google border border-[#E0E0E0] rounded-[5px] w-full h-[35px] flex items-center justify-center cursor-pointer bg-white text-[#222831] hover:bg-[#F5F5F5]">
+            <img class="h-[22px] mr-2" src="../images/goolge.logo.png" alt="Google Logo">Sign in with Google
+          </button>
+          <button
+            class="facebook border border-[#E0E0E0] rounded-[5px] w-full h-[35px] flex items-center justify-center cursor-pointer bg-white text-[#222831] hover:bg-[#F5F5F5]">
+            <img class="h-[26px] mr-2" src="../images/facebook-logo.png" alt="Facebook Logo">Sign in with Facebook
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- // Sign Up -->
+    <div id="signup-container" class=" w-[50%] h-full bg-white text-[#222831] hidden">
+      <h1 class="welcome-txt text-[#222831] text-[35px] text-center mt-20 mb-5">Welcome back!</h1>
+      <form class="space-y-4 ml-9 mr-9">
+        <div class="flex gap-4">
+          <input
+            class="w-1/2 border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD]"
+            type="text" placeholder="First Name" />
+          <input
+            class="w-1/2 border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD]"
+            type="text" placeholder="Last Name" />
+        </div>
+        <input
+          class="w-full border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD]"
+          type="email" placeholder="Email" />
+        <div class="relative">
+          <input id="passwordr"
+            class="w-full border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD]"
+            type="password" placeholder="Password" />
+          <div>
+            <i id="openr"
+              class="fa-solid fa-eye absolute top-3 right-3 cursor-pointer text-[#BDBDBD] hover:text-[#222831]"
+              style="display: none;"></i>
+            <i id="closer"
+              class="fa-solid fa-eye-slash  absolute top-3 right-3 cursor-pointer text-[#BDBDBD] hover:text-[#222831]"
+              style="display:inline-block;"></i>
+          </div>
+        </div>
+        <button class="w-full bg-[#222831] text-white py-2 rounded-lg cursor-pointer hover:bg-[#393E46]">Create
+          account</button>
+      </form>
+
       <div class="flex items-center my-6">
-        <hr class="flex-grow border-[#E0E0E0]" />
+        <hr class="flex-grow border-[#E0E0E0] ml-9 " />
         <span class="px-2 text-[#BDBDBD]">or</span>
-        <hr class="flex-grow border-[#E0E0E0]" />
+        <hr class="flex-grow border-[#E0E0E0] mr-9" />
       </div>
-      <p class="text-center text-[#BDBDBD] mb-7 text-[13px]">
-        New user? <a href="#" class="text-rgb underline hover:text-[#393E46]">Sign Up</a>
+      <p class="text-center text-[#BDBDBD] mb-7 text-[13px] ">
+        Already have an account? <a href="#" id="signIn" class="text-rgb hover:underline hover:text-zinc-800">Sign
+          In</a>
       </p>
-      <div class="socials space-y-2">
-        <button class="google border border-[#E0E0E0] rounded-[5px] w-full h-[35px] flex items-center justify-center cursor-pointer bg-white text-[#222831] hover:bg-[#F5F5F5]">
-          <img class="h-[22px] mr-2" src="../images/goolge.logo.png" alt="Google Logo">Sign in with Google
+      <div class="socials space-y-2 ml-9 mr-9">
+        <button
+          class="google border border-[#E0E0E0] rounded-[5px] w-full h-[35px] flex items-center justify-center cursor-pointer bg-white text-[#222831] hover:bg-[#F5F5F5]">
+          <img class="h-[26px] mr-2" src="../images/goolge.logo.png" alt="">Sign in with Google
         </button>
-        <button class="facebook border border-[#E0E0E0] rounded-[5px] w-full h-[35px] flex items-center justify-center cursor-pointer bg-white text-[#222831] hover:bg-[#F5F5F5]">
-          <img class="h-[26px] mr-2" src="../images/facebook-logo.png" alt="Facebook Logo">Sign in with Facebook
+        <button
+          class="facebook border border-[#E0E0E0] rounded-[5px] w-full h-[35px] flex items-center justify-center cursor-pointer bg-white text-[#222831] hover:bg-[#F5F5F5]">
+          <img class="h-[26px] mr-2" src="../images/facebook-logo.png" alt="">Sign in with Facebook
         </button>
       </div>
-    </div> 
-  </div>
-
-
-  
-  <div class="login-container w-[50%] h-full bg-white text-[#222831] hidden">
-    <h1 class="welcome-txt text-[#222831] text-[35px] text-center mt-20 mb-5">Welcome back!</h1>
-    <form class="space-y-4 ml-9 mr-9">
-      <div class="flex gap-4">
-        <input class="w-1/2 border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD]" type="text" placeholder="First Name" />
-        <input class="w-1/2 border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD]" type="text" placeholder="Last Name" />
-      </div>
-      <input class="w-full border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD]" type="email" placeholder="Email" />
-      <div class="relative">
-        <input class="w-full border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD]" type="password" placeholder="Password" />
-        <i class="fa-solid fa-eye absolute top-3 right-3 cursor-pointer text-[#BDBDBD] hover:text-[#222831]"></i>
-      </div>
-      <button class="w-full bg-[#222831] text-white py-2 rounded-lg cursor-pointer hover:bg-[#393E46]">Create account</button>
-    </form>
-
-    <div class="flex items-center my-6">
-      <hr class="flex-grow border-[#E0E0E0] ml-9 " />
-      <span class="px-2 text-[#BDBDBD]">or</span>
-      <hr class="flex-grow border-[#E0E0E0] mr-9" />
-    </div>
-    <p class="text-center text-[#BDBDBD] mb-7 text-[13px] ">
-      Already have an account? <a href="#" class="text-rgb hover:underline hover:text-zinc-800">Sign In</a>
-    </p>
-    <div class="socials space-y-2 ml-9 mr-9">
-      <button class="google border border-[#E0E0E0] rounded-[5px] w-full h-[35px] flex items-center justify-center cursor-pointer bg-white text-[#222831] hover:bg-[#F5F5F5]">
-        <img class="h-[15px] mr-2" src="../images/goolge.logo.png" alt="">Sign in with Google
-      </button>
-      <button class="facebook border border-[#E0E0E0] rounded-[5px] w-full h-[35px] flex items-center justify-center cursor-pointer bg-white text-[#222831] hover:bg-[#F5F5F5]">
-        <img class="h-[15px] mr-2" src="../images/facebook-logo.png" alt="">Sign in with Facebook
-      </button>
     </div>
   </div>
-</div>
-<%-include('./partials/footer.ejs')%>
-
+  <%- include("./partials/footer")%>
