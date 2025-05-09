@@ -7,14 +7,14 @@
     <!-- //Login -->
     <div id="login-container" class=" w-[50%] h-full flex flex-col justify-center bg-white px-10 ">
       <h1 class="welcome-txt text-[#222831] text-[35px] text-center mb-8">Welcome Back!</h1>
-      <div class="all-signup-form">
+      <form class="all-signup-form" method="post" action="/login">
         <input
           class="w-full border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD] mb-4"
-          type="email" placeholder="Email" />
+          type="email" placeholder="Email" name="email" />
         <div class="relative">
           <input id="password"
             class="w-full border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD]"
-            type="password" placeholder="Password" />
+            type="password" placeholder="Password" name="password"  minlength="8" maxlength="16"/>
           <div id="eye">
             <i id="open"
               class="fa-solid fa-eye absolute top-3 right-3 cursor-pointer text-[#BDBDBD] hover:text-[#222831]"
@@ -27,7 +27,8 @@
         </div>
         <span class="ml-80 text-gray-500 text-[13px] cursor-pointer underline hover:text-[#222831] inline">Forget
           password?</span>
-        <button class="w-full bg-[#393E46] text-white py-2 rounded-lg  mt-4 cursor-pointer hover:bg-[#222831]">Log
+        <button type="submit"
+          class="w-full bg-[#393E46] text-white py-2 rounded-lg  mt-4 cursor-pointer hover:bg-[#222831]">Log
           In</button>
         <div class="flex items-center my-6">
           <hr class="flex-grow border-[#E0E0E0]" />
@@ -47,29 +48,29 @@
             <img class="h-[26px] mr-2" src="../images/facebook-logo.png" alt="Facebook Logo">Sign in with Facebook
           </button>
         </div>
-      </div>
+      </form>
     </div>
 
 
     <!-- // Sign Up -->
     <div id="signup-container" class=" w-[50%] h-full bg-white text-[#222831] hidden">
       <h1 class="welcome-txt text-[#222831] text-[35px] text-center mt-20 mb-5">Welcome back!</h1>
-      <form class="space-y-4 ml-9 mr-9">
+      <form class="space-y-4 ml-9 mr-9" method="post" action="/register">
         <div class="flex gap-4">
           <input
             class="w-1/2 border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD]"
-            type="text" placeholder="First Name" />
+            type="text" placeholder="First Name" name="firstName" maxlength="10" />
           <input
             class="w-1/2 border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD]"
-            type="text" placeholder="Last Name" />
+            type="text" placeholder="Last Name" name="lastName" maxlength="10" />
         </div>
         <input
           class="w-full border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD]"
-          type="email" placeholder="Email" />
+          type="email" placeholder="Email" name="email" />
         <div class="relative">
           <input id="passwordr"
             class="w-full border border-[#E0E0E0] rounded-lg px-4 py-2 bg-[#F5F5F5] text-[#222831] placeholder-[#BDBDBD]"
-            type="password" placeholder="Password" />
+            type="password" placeholder="Password" name="password" minlength="8" maxlength="16" />
           <div>
             <i id="openr"
               class="fa-solid fa-eye absolute top-3 right-3 cursor-pointer text-[#BDBDBD] hover:text-[#222831]"
@@ -79,7 +80,8 @@
               style="display:inline-block;"></i>
           </div>
         </div>
-        <button class="w-full bg-[#222831] text-white py-2 rounded-lg cursor-pointer hover:bg-[#393E46]">Create
+        <button type="submit"
+          class="w-full bg-[#222831] text-white py-2 rounded-lg cursor-pointer hover:bg-[#393E46]">Create
           account</button>
       </form>
 
