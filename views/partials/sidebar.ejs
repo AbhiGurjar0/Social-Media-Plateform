@@ -1,0 +1,32 @@
+<%- include("./header") %>
+<div class="sidebar-container w-60 h-screen bg-white flex flex-col  border-r-1 border-gray-300">
+    <div class="sidebar-header  p-5 mb-10  w-[180px]">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnMAG2YXgbem307avvkX6Ve7K6_tD4pMUXRw&s"  class="h-auto w-full " alt="">
+    </div>
+
+    <div>
+       <nav class="sidebar-nav flex flex-col space-y-2">
+            <a href="/home" class="text-gray-500 hover:text-white hover:bg-[#948979]  p-2 px-6  text-[15px] rounded">
+                <i class="fas fa-home h-5 w-5 mr-2"></i>Home
+            </a>
+            <a href="/profile" class="text-gray-500 hover:text-white hover:bg-[#948979] p-2 px-6 text-[15px] rounded ">
+                <i class="fas fa-compass h-5 w-5 mr-2"></i>Explore
+            </a>
+            <a href="/messages" class="text-gray-500 hover:text-white hover:bg-[#948979] p-2 px-6 text-[15px] rounded ">
+                <i class="fas fa-plus h-5 w-5 mr-2"></i>Create Post
+            </a>
+            <a href="/settings" class="text-gray-500 hover:text-white hover:bg-[#948979] p-2 px-6 text-[15px] rounded ">
+                <i class="fas fa-user h-5 w-5 mr-2"></i>Profile
+            </a>
+            <a href="/notifications" class="text-gray-500 hover:text-white hover:bg-[#948979] p-2 px-6 text-[15px] rounded ">
+                <i class="fas fa-bell h-5 w-5 mr-2"></i>Notifications
+                <span class="ml-auto bg-[#cacaca] text-gray-800 text-xs font-bold px-2 py-1 absolute left-50 rounded-full">0</span>
+            </a>
+            <a href="/messages" class="text-gray-500 hover:text-white hover:bg-[#948979] p-2 px-6 text-[15px] rounded">
+                <i class="fas fa-envelope h-5 w-5 mr-2"></i>Messages
+            </a>
+        </nav>
+
+    </div>
+</div>
+<%- include("./footer") %>

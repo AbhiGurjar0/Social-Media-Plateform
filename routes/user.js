@@ -6,7 +6,7 @@ router.get("/signin", (req, res) => {
 })
 
 router.get("/", async (req, res) => {
-    let user = await userModel.findOne({ email: "abhi@mail" });
+    let user = await userModel.findOne({ email: "bishwalpw123456789@gmail.com" });
     res.render("home", { user });
 })
 
