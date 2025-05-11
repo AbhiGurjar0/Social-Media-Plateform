@@ -4,6 +4,9 @@ const userModel = require("../models/user-model");
 router.get("/signin", (req, res) => {
     res.render("login");
 })
+router.get("/createPost", (req, res) => {
+    res.render("createPost");
+})
 
 router.get("/", async (req, res) => {
     let user = await userModel.findOne({ email: "bishwalpw123456789@gmail.com" });
