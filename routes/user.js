@@ -3,9 +3,9 @@ const router = express.Router();
 const userModel = require("../models/user-model");
 
 //home page
-router.get("/", async (req, res) => {
+router.get("/profile", async (req, res) => {
     let user = await userModel.findOne({ email: "bishwalpw123456789@gmail.com" });
-    res.render("home", { user });
+    res.render("profile", { user });
 })
 
 //login/signup page
@@ -20,10 +20,13 @@ router.get("/createPost", (req, res) => {
 })
 
 //edit profile page
-
-
 router.get("/profile/edit", (req, res) => {
     res.render("editProfile");
+})
+
+//home page
+router.get("/", (req, res) => {
+    res.render("home");
 })
 
 
