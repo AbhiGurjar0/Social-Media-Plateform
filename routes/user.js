@@ -30,13 +30,13 @@ router.get("/postDetails/:postId",isLoggedIn, async (req, res) => {
 router.post("/createPost", upload.single('media'), isLoggedIn, async (req, res) => {
     try {
         const file = req.file;
-        let { description, tags, location, visibility, advancedSetting } = req.body;
+        let { caption, tags, location, visibility, advancedSetting } = req.body;
         // console.log(req.file);
 
         let post = await postModel.create({
             image: file?.mimetype.startsWith("image/") ? file.buffer : undefined,
             video: file?.mimetype.startsWith("video/") ? file.buffer : undefined,
-            description,
+            caption,
             tags,
             visibility,
             location,
