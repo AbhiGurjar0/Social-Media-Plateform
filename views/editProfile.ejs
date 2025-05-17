@@ -1,6 +1,96 @@
 <%- include("./partials/header") %>
-<h1>hi</h1>
-<p>naveen chutiya</p>
 
-<script src="../javascripts/edit.js"></script>
-<%- include("./partials/footer") %>
+    <main class="w-full h-[100vh]">
+        <!-- NavBar Div-->
+        <div class="flex justify-between items-center box-border px-4 py-3 h-[8vh]">
+            <!-- Left side navbar -->
+            <div class="flex gap-6">
+                <h1> <a class="font-bold" href="">vibeInsta</a> </h1>
+                <div class="flex gap-4">
+
+                    <a href="">Home</a>
+                    <a href="">Explore</a>
+                    <a href="">Notification</a>
+                    <a href="">Messages</a>
+                    <a class="text-amber-400 " href="">Profile</a>
+                </div>
+            </div>
+            <!-- Right side nav-bar -->
+            <div>
+                <button class="border border-0.5 rounded-sm px-4 py-1 bg-white ">+ Create Post</button>
+                <i class="fa-solid fa-gear mx-2 text-xl"></i>
+                <i class="fa-solid fa-user mx-2 text-2xl"></i>
+            </div>
+        </div>
+
+        <div class=" flex h-[92vh]">
+            <!-- Left side bar -->
+            <div class="w-[18vw]  border-r-[0.2px] shadow-xl h-[100%] pl-4 space-y-6">
+                <!-- top Account setting div -->
+                <div>
+                    <h1 class="font-semibold text-lg">Account Setting</h1>
+                </div>
+                <!-- bottom left side bar -->
+                <div class=" space-y-4">
+                    <div class=" hover:shadow-md transition ease-in-out duration-500 flex gap-2 items-center text-amber-400 bg-gray-50 py-2">
+                        <i class="fa-solid fa-user"></i>
+                        <p>Edit Profile</p>
+                    </div>
+                    <div class=" hover:shadow-md transition ease-in-out duration-500 flex gap-2 items-center py-2">
+                        <i class="fa-solid fa-lock"></i>
+                        <p>Privacy Settings</p>
+                    </div>
+                    <div class=" hover:shadow-md transition ease-in-out duration-500 flex gap-2 items-center py-2">
+                        <i class="fa-solid fa-bell"></i>
+                        <p>Notification Setting</p>
+                    </div>
+                    <div class=" hover:shadow-md transition ease-in-out duration-500 flex gap-2 items-center py-2">
+                        <i class="fa-solid fa-palette"></i>
+                        <p>Personal Details</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- main content right side-->
+            <div class="w-[82vw] py-2 h-[100%]  flex flex-col items-center gap-5 overflow-hidden box-border">
+                <h1 class="h-[5vh] font-bold text-2xl w-full  text-center">Edit Profile</h1>
+                <!-- profile area -->
+                <div class="w-[60vw]  hover:shadow-md transition ease-in-out duration-500 flex-col border border-gray-300 rounded-xl flex  h-[50vh]">
+                   
+                    <div class="px-5 py-3"><h1 class="font-bold text-xl">Profile Picture </h1></div>
+                <div class="flex justify-center flex-col items-center">
+                    <div class="w-[10vw] h-[10vw] overflow-hidden rounded-[50%] mb-4">
+                        <!-- image should be shown -->
+                        <img class=" object-contain object-top "
+                            src="https://images.unsplash.com/photo-1628563694622-5a76957fd09c?q=80&w=2232&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="Profile pic">
+                    </div>
+                    <div> <!-- thinking of putting button here -->
+                        <input class="hidden"type="file" placeholder="Upload Photo" id="upload">
+                        <label class="border border-gray-500 border-opacity-0 rounded-sm text-center p-1  px-3"for="upload">Upload Photo</label>
+                    </div>
+                </div>
+                    
+                </div>
+                <!-- personal info are -->
+                <div class="w-[60vw] border border-gray-300 space-y-1 px-5 py-4 rounded-sm flex-col transition ease-in-out duration-500 flex justify-start hover:shadow-md h-[40vh]">
+                    <h1 class="text-2xl font-bold">Personal Information</h1>
+                    <p>Name*</p>
+                    <input class="p-1.5 border border-gray-300 border-opacity-0 w-[50vw] rounded-md" type="text">
+                    <p>Bio*</p>
+                    <input class="p-1.5 border border-gray-300 w-[50vw] rounded-md"type="text">
+                </div>
+
+                <div class="w-full flex justify-end gap-3 pr-[12vw]">
+                    <button class="px-4 hover:shadow-md transition ease-in-out duration-500  py-2 rounded-md bg-zinc-500 text-white">Discard</button>
+                    <button class="px-4 hover:shadow-md transition ease-in-out duration-500  py-2 rounded-md  bg-green-300 text-white ">Save</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="../javascripts/edit.js"></script>
+    <%- include("./partials/footer") %>
