@@ -1,8 +1,6 @@
 @import "tailwindcss";
-  #stories-scroll {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-  }
-  #stories-scroll::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
+img,
+video {
+    max-width: 100%;
+    max-height: 70vh;
+}

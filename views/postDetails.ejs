@@ -10,15 +10,24 @@
 
 
                     <% } else{%>
-                        <img src="data:image/jpeg;base64,<%= post.image.toString('base64') %>" alt="Post Image"
+                        <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>" alt="Post Image"
                             class="w-full h-[90vh] object-cover" />
                         <%}%>
 
             </div>
             <div class="w-[50%] h-full bg-blue-400">
+                <div class="w-full h-[10vh] flex px-5 box-border items-center gap-4 ">
+                    <div class="w-[3vw] h-[3vw] rounded-full border-2 border-white"></div>
+                    <div class="flex flex-col text-base/6">
+                        <span class=" text-lg font-bold leading-3 font-serif">
+                            <%=user.firstName%>
+                        </span>
+                        <span>Song</span>
+                    </div>
+                </div>
+                <hr>
                 <h1>
-                    <!-- 88828923 -->
-                    <%=post.tags%>
+                    <%=post.caption%>
                 </h1>
             </div>
         </div>
