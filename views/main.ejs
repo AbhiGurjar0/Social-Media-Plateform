@@ -97,14 +97,14 @@
                         <% if (post.video) { %>
                             <div class="w-full h-full object-cover relative">
                                 <video paused class="w-full h-full object-cover">
-                                    <source src="data:video/mp4;base64,<%= post.video.toString('base64') %>"
+                                    <source src="data:video/mp4;base64,<%= post.video?.toString('base64') %>"
                                         type="video/mp4">
                                     Your browser does not support the video tag.
                                 </video>
                                 <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
                             </div>
                             <% } else { %>
-                                <img src="data:image/jpeg;base64,<%= post.image.toString('base64') %>" alt="Post Image"
+                                <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>" alt="Post Image"
                                     class="w-full h-full object-cover" />
                                 <% } %>
                     </div>
