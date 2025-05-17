@@ -8,5 +8,5 @@ mongoose.connect(process.env.MONGO_URI).
         console.log("MongoDB connection err");
         console.log(err.message);
 
-    })
+    }) 
 module.exports = mongoose.connection;
