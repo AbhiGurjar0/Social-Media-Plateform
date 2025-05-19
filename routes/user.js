@@ -13,22 +13,16 @@ router.get("/main", isLoggedIn, async (req, res) => {
             .populate("posts");
 
         if (!user) return res.status(404).send("User not found");
-
-        // console.log("User with populated posts:", user);
-        
-        // user.posts.forEach((post)=>{
-        //     console.log(post);
-            
-        // })
         res.render("main", { user, posts: user.posts });
     } catch (err) {
         console.error("Error fetching user or posts:", err);
         res.status(500).send("Server error");
     }
 });
-router.get("/postDetails/:postId", async (req,res)=>{
-    let post = await postModel.findOne({_id:req.params.postId});
-    res.render("postDetails",{post});
+router.get("/postDetails/:postId",isLoggedIn, async (req, res) => {
+    let post = await postModel.findOne({ _id: req.params.postId });
+    let user = await userModel.findOne({_id:req.user._id});
+    res.render("postDetails", { post ,user});
 })
 
 
@@ -77,6 +71,11 @@ router.get("/profile/edit", (req, res) => {
 //home page
 router.get("/", (req, res) => {
     res.render("home");
+})
+
+router.get("/explore", async (req, res) => {
+    let posts = await postModel.find();
+    res.render("explore", { posts });
 })
 
 //notification page
