@@ -66,6 +66,9 @@ router.post("/createPost", upload.single('media'), isLoggedIn, async (req, res) 
 router.get("/signin", (req, res) => {
     res.render("login");
 })
+router.get("/followers", (req, res) => {
+    res.render("follower");
+})
 //edit profile page
 router.get("/profile/edit", (req, res) => {
     res.render("editProfile");
@@ -76,5 +79,9 @@ router.get("/", (req, res) => {
     res.render("home");
 })
 
+//notification page
+router.get("/notifications", (req, res) => {
+    res.render("notification");
+})
 
 module.exports = router;

@@ -1,0 +1,161 @@
+<!-- Nave bar.... -->
+<div class="flex justify-between items-center box-border px-4 py-3 h-[8vh]">
+    <!--  Left side navbar -->
+
+    <div class="flex box-border items-center">
+        <div class="flex gap-6 items-center">
+            <div class="sidebar-header w-[150px]">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnMAG2YXgbem307avvkX6Ve7K6_tD4pMUXRw&s"
+                    class="h-auto w-full " alt="">
+            </div>
+            <div class="flex gap-10">
+                <a class="ml-15" href="">Home</a>
+                <a href="">Explore</a>
+                <a href="">Notification</a>
+                <a href="">Messages</a>
+                <a class="text-amber-400 " href="">Profile</a>
+            </div>
+        </div>
+    </div>
+    <!-- Right side nav-bar -->
+    <nav class="flex justify-end items-center p-4 text-[12px]">
+        <div class="flex items-center">
+            <a href="/createPost"
+                class="w-[110px] h-[35px] border-1 flex justify-center items-center rounded px-2 bg-white text-gray-700 hover:bg-b cursor-pointer">
+                <i class="fa-solid fa-plus mr-2"></i>Create Post
+            </a>
+            <i class="fa-solid fa-gear mr-2 ml-3 text-[18px] p-3 text-gray-500 cursor-pointer"></i>
+            <img class="h-7 mr-5 cursor-pointer" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="">
+        </div>
+    </nav>
+</div>
+<!-- right side and main content -->
+<div class=" flex">
+
+   <!--side bar link--> <div class="w-[20vw] h-full fixed z-50 mt-6 "> <%- include("./partials/sidebar") %></div>
+    
+    <div class="flex flex-col w-[79vw] h-[92vh]  border-opacity-0  shadow-[1px_0_1px_0_rgba(0,0,0,0.2)] ml-[20vw] box-border s ">
+        <!-- heading followers -->
+        <div class="flex gap-6 items-center ml-8 mt-9">
+            <h1 class="text-xl font-bold">Followers</h1>
+         <a href="">   <p class="font-semibold text-sm">Followers</p></a>
+           <a href=""> <p class="opacity-60 text-sm">Following</p> </a>
+        </div>
+        <!-- search -->
+        <div>
+            <input class="border border-zinc-300 border-opacity-0 p-2 rounded-md mt-6 ml-8 w-[40vw]" type="text" placeholder="Search followers...">
+        </div>
+        <!-- followers -->
+        <div class=" mt-5 ml-8 border border-zinc-300 border-opacity-0  rounded-md p-3 w-[75vw] flex justify-between items-center">
+            <div class=" flex items-center gap-4">
+                <div class="w-[40px] h-[40px] overflow-hidden rounded-full ml-4">
+                    <!-- logo -->
+                     <a href=""><img src="https://images.unsplash.com/photo-1531891570158-e71b35a485bc?q=80&w=3164&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Bob"></a>
+                </div>
+                <div class="flex flex-col items-start">
+                    <!-- username -->
+                    <p class="font-bold opacity-80 text-md">Bob Williams</p>
+                    <p class="opacity-60 text-sm">@bobw</p>
+                </div>
+            </div>
+            <div>
+                <!-- buttons -->
+                 <button class="bg-amber-600 border-black px-6 py-[5px] rounded-md text-white">Follow</button>
+            </div>
+        </div>
+
+         <div class=" mt-5 ml-8 border border-zinc-300 border-opacity-0  rounded-md p-3 w-[75vw] flex justify-between items-center">
+            <div class=" flex items-center gap-4">
+                <div class="w-[40px] h-[40px] overflow-hidden rounded-full ml-4">
+                    <!-- logo -->
+                     <a href=""><img src="https://images.unsplash.com/photo-1531891570158-e71b35a485bc?q=80&w=3164&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Bob"></a>
+                </div>
+                <div class="flex flex-col items-start">
+                    <!-- username -->
+                    <p class="font-bold opacity-80 text-md">Bob Williams</p>
+                    <p class="opacity-60 text-sm">@bobw</p>
+                </div>
+            </div>
+            <div>
+                <!-- buttons -->
+                 <button class="bg-amber-600 border-black px-6 py-[5px] rounded-md text-white">Follow</button>
+            </div>
+        </div>
+
+         <div class=" mt-5 ml-8 border border-zinc-300 border-opacity-0  rounded-md p-3 w-[75vw] flex justify-between items-center">
+            <div class=" flex items-center gap-4">
+                <div class="w-[40px] h-[40px] overflow-hidden rounded-full ml-4">
+                    <!-- logo -->
+                     <a href=""><img src="https://images.unsplash.com/photo-1531891570158-e71b35a485bc?q=80&w=3164&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Bob"></a>
+                </div>
+                <div class="flex flex-col items-start">
+                    <!-- username -->
+                    <p class="font-bold opacity-80 text-md">Bob Williams</p>
+                    <p class="opacity-60 text-sm">@bobw</p>
+                </div>
+            </div>
+            <div>
+                <!-- buttons -->
+                 <button class="bg-amber-600 border-black px-6 py-[5px] rounded-md text-white">Follow</button>
+            </div>
+        </div>
+
+
+         <div class=" mt-5 ml-8 border border-zinc-300 border-opacity-0  rounded-md p-3 w-[75vw] flex justify-between items-center">
+            <div class=" flex items-center gap-4">
+                <div class="w-[40px] h-[40px] overflow-hidden rounded-full ml-4">
+                    <!-- logo -->
+                     <a href=""><img src="https://images.unsplash.com/photo-1531891570158-e71b35a485bc?q=80&w=3164&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Bob"></a>
+                </div>
+                <div class="flex flex-col items-start">
+                    <!-- username -->
+                    <p class="font-bold opacity-80 text-md">Bob Williams</p>
+                    <p class="opacity-60 text-sm">@bobw</p>
+                </div>
+            </div>
+            <div>
+                <!-- buttons -->
+                 <button class="bg-amber-600 border-black px-6 py-[5px] rounded-md text-white">Follow</button>
+            </div>
+        </div>
+
+
+         <div class=" mt-5 ml-8 border border-zinc-300 border-opacity-0  rounded-md p-3 w-[75vw] flex justify-between items-center">
+            <div class=" flex items-center gap-4">
+                <div class="w-[40px] h-[40px] overflow-hidden rounded-full ml-4">
+                    <!-- logo -->
+                     <a href=""><img src="https://images.unsplash.com/photo-1531891570158-e71b35a485bc?q=80&w=3164&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Bob"></a>
+                </div>
+                <div class="flex flex-col items-start">
+                    <!-- username -->
+                    <p class="font-bold opacity-80 text-md">Bob Williams</p>
+                    <p class="opacity-60 text-sm">@bobw</p>
+                </div>
+            </div>
+            <div>
+                <!-- buttons -->
+                 <button class="bg-amber-600 border-black px-6 py-[5px] rounded-md text-white">Follow</button>
+            </div>
+        </div>
+
+         <div class=" mt-5 ml-8 border border-zinc-300 border-opacity-0  rounded-md p-3 w-[75vw] flex justify-between items-center">
+            <div class=" flex items-center gap-4">
+                <div class="w-[40px] h-[40px] overflow-hidden rounded-full ml-4">
+                    <!-- logo -->
+                     <a href=""><img src="https://images.unsplash.com/photo-1531891570158-e71b35a485bc?q=80&w=3164&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Bob"></a>
+                </div>
+                <div class="flex flex-col items-start">
+                    <!-- username -->
+                    <p class="font-bold opacity-80 text-md">Bob Williams</p>
+                    <p class="opacity-60 text-sm">@bobw</p>
+                </div>
+            </div>
+            <div>
+                <!-- buttons -->
+                 <button class="bg-amber-600 border-black px-6 py-[5px] rounded-md text-white">Follow</button>
+            </div>
+        </div>
+
+    </div>
+    
+</div>
