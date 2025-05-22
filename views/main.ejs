@@ -91,24 +91,23 @@
 
             <div class="posts-section flex-wrap box-border flex justify-start gap-2 h-[20px] w-full mt-4">
                 <% posts.forEach((post)=>{%>
-                    <a href="/postDetails/<%=post._id%>">
-                        <div class="post-card w-[270px] h-[300px] bg-gray-900  rounded-lg "
-                            content-type="<%= post.video ? 'reels' : 'posts' %>">
-                            <div class=" ..."></div>
-                            <% if (post.video) { %>
-                                <div class="w-full h-full object-cover relative">
-                                    <video paused class="w-full h-full object-cover">
-                                        <source src="data:video/mp4;base64,<%= post.video.toString('base64') %>"
-                                            type="video/mp4">
-                                        Your browser does not support the video tag.
-                                    </video>
-                                    <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
-                                </div>
-                                <% } else { %>
-                                    <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>"
-                                        alt="Post Image" class="w-full h-full object-cover" />
-                                    <% } %>
-                        </div>
+                   <a href="/postDetails/<%=post._id%>"> <div  class="post-card w-[270px] h-[300px] bg-gray-900  rounded-lg "
+                        content-type="<%= post.video ? 'reels' : 'posts' %>">
+                        <div class=" ..."></div>
+                        <% if (post.video) { %>
+                            <div class="w-full h-full object-cover relative">
+                                <video paused class="w-full h-full object-cover">
+                                    <source src="data:video/mp4;base64,<%= post.video?.toString('base64') %>"
+                                        type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
+                            </div>
+                            <% } else { %>
+                                <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>" alt="Post Image"
+                                    class="w-full h-full object-cover" />
+                                <% } %>
+                    </div>
                     </a>
 
                     <%});%>
