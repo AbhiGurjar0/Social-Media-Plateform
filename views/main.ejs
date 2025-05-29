@@ -1,8 +1,9 @@
 <%- include("./partials/header") %>
+<%- include("./partials/headerOptions") %>
      <div id="main-content" class="w-full min-h-screen grid grid-cols-[20vw_1fr] ">
         <div class="w-[20vw] h-full fixed z-50"> <%- include("./partials/sidebar") %></div>
         <div id="profile" class="tabs w-[80vw] min-h-screen  box-border px-5 col-start-2 mb-2">
-            <nav class="flex justify-end items-center p-4 text-[12px]">
+            <!-- <nav class="flex justify-end items-center p-4 text-[12px]">
                 <div class="flex items-center">
                     <a href="/createPost"
                         class="w-[110px] h-[35px] border-1 flex justify-center items-center rounded px-2 bg-white text-gray-700 hover:bg-b cursor-pointer">
@@ -12,7 +13,7 @@
                     <img class="h-7 mr-5 cursor-pointer" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
                         alt="">
                 </div>
-            </nav>
+            </nav> -->
             <div class="main-content flex ">
                 <div class="pic-div p-8">
                     <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt=""
@@ -29,15 +30,16 @@
                         <span>
                             <%=posts?posts.length:'0'%> <span class="text-gray-300">Posts</span>
                         </span>
-                        <span>3321 <span class="text-gray-300">Followers</span></span>
+                       <a class="cursor-pointer text-shadow-black" href="/user/followers"><span>3321 <span class="text-gray-300">Followers</span></span></a> 
                         <span>1543 <span class="text-gray-300">Following</span></span>
                     </div>
                 </div>
                 <div class="edit-profile-div flex justify-end items-center mt-9 text-[11px]">
-                    <button
+                  <a href="/editProfile"> <button
                         class="w-[95px] h-[28px] border-1 flex justify-center items-center rounded px-2 bg-white text-gray-700 hover:bg-b cursor-pointer ml-65 mb-10">
                         <i class="fa-solid fa-plus mr-2"></i>Edit Profile
                     </button>
+                    </a>
                 </div>
             </div>
 
@@ -114,126 +116,6 @@
             </div>
         </div>
     </div>
-     <div id="createPost" class="main-container overflow-hidden fixed bg-transparent
-          inset-0  backdrop-blur-sm z-50 w-full h-screen hidden">
-        <div id="post" class="m-auto  w-[35vw] mt-20 shadow-2xl bg-white overflow-hidden
-          ">
-            <div class="title-div flex justify-center items-center h-[40px] bg-black text-white rounded-t-lg">
-                <div class="w-[80%] flex justify-center items-center"><h1 class="text-2xl font-bold">Create New Post</h1></div>
-                
-                <span id="next" onclick="postOptionsShow(this)" class="text-lg text-blue-500 hover:text-white cursor-pointer hidden">Next</span>
-            </div>
-            <form action="/createPost" method="POST" enctype="multipart/form-data" class="w-[100%] h-[100%]">
-                <div class="second-mainDiv w-[100%] h-[70%] flex gap-12 ">
-                    <div id="photo-upload"
-                        class=" h-[70vh] w-[35vw] border-gray-300 flex flex-col items-center justify-center  overflow-hidden shrink-0">
-                        <div class="flex flex-col items-center">
-                            <div class="flex flex-col items-center">
-                                <i class="fa-solid fa-cloud-arrow-up text-4xl text-gray-400 mb-4"></i>
-                                <p class="text-gray-500 mb-1 text-xl">Drag and drop media here</p>
-                                <p class="text-gray-500 mb-4 text-[13px]">or click to browse files</p>
-                            </div>
-                            <label for="photo"
-                                class="cursor-pointer px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 mb-4">
-                                Choose File
-                            </label>
-
-                            <input type="file" id="photo" name="media" accept="image/*,video/*" class="w-[20vw] hidden">
-
-                        </div>
-
-                    </div>
-                    <div class="photo-detailsDiv w-[25vw] border border-gray-300 flex flex-col rounded-xl">
-
-                        <div class="post-details  ml-10 w-[100% mr-10 mt-7">
-                            <div class="mb-4">
-                                <label for="caption"
-                                    class="block text-sm font-medium text-gray-700 -ml-1">Caption</label>
-                                <textarea id="caption" name="caption" rows="3"
-                                    class="mt-1 p-4 block w-full border border-gray-300 rounded-md focus:border-blue-500 sm:text-sm"
-                                    placeholder="Write a captivating caption..."></textarea>
-                            </div>
-                            <div class="mb-4">
-                                <label for="tags" class="block text-sm font-medium text-gray-700 -ml-1">Tags</label>
-                                <input type="text" id="tags" name="tags"
-                                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md focus:border-gray-500 sm:text-sm"
-                                    placeholder="Add tags (e.g., #photography, #travel)">
-                            </div>
-                            <div class="mb-4">
-                                <label for="location"
-                                    class="block text-sm font-medium text-gray-700 -ml-1">Location</label>
-                                <input type="text" id="location" name="location"
-                                    class="mt-1 p-2 block w-full border border-gray-300 rounded-md focus:border-blue-500 sm:text-sm"
-                                    placeholder="Add location (optional)">
-                            </div>
-                            <div class="mb-4 w-36 relative">
-                                <label for="visibility"
-                                    class="block text-sm font-medium text-gray-700 -ml-1 mb-1">Visibility</label>
-                                <div class="flex items-center border border-gray-300 rounded-md p-2 ">
-                                    <select id="visibility" name="visibility"
-                                        class="appearance-none bg-transparent w-full focus:outline-none">
-                                        <option value="public">Public</option>
-                                        <option value="private">Private</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="advanced-settings mt-1 w-full px-9 text-sm font-medium">
-                            <div class="border border-gray-300 rounded-lg p-4">
-                                <div class="advance-btnDiv flex justify-between items-center cursor-pointer"
-                                    onclick="toggleAdvancedSettings()">
-                                    <h2 class="advance-btn text-[15px] font-medium text-gray-700">Advanced Settings
-                                    </h2>
-                                    <i id="advanced-settings-icon" class="fa-solid fa-chevron-down text-gray-500"></i>
-                                </div>
-                                <div id="advanced-settings-content" class="mt-4 hidden transition-all duration-300">
-                                    <div class="mb-4">
-                                        <label class="flex items-center">
-                                            <input type="checkbox" class="mr-2">
-                                            <span class="text-gray-700">Hide like and view counts on this
-                                                post</span>
-                                        </label>
-                                        <p class="text-sm text-gray-500">Only you will see the total number of likes
-                                            and
-                                            views on this post. You can change this later by going to the menu at
-                                            the
-                                            top of
-                                            the post.</p>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="flex items-center">
-                                            <input type="checkbox" class="mr-2">
-                                            <span class="text-gray-700">Turn off commenting</span>
-                                        </label>
-                                        <p class="text-sm text-gray-500">You can change this later by going to the
-                                            menu
-                                            at
-                                            the top of your post.</p>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="flex items-center">
-                                            <input type="checkbox" class="mr-2">
-                                            <span class="text-gray-700">Automatically share to Threads</span>
-                                        </label>
-                                        <p class="text-sm text-gray-500">Always share your posts to Threads. You can
-                                            change
-                                            your audience on Threads settings.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex justify-end mt-6 mb-4 px-10 border-none">
-                            <div  onclick="cancelPost()"
-                                class="px-6 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 mr-2 cursor-pointer">Cancel</div>
-                            <button type="submit"
-                                class="px-5 py-2 bg-stone-400 text-white rounded hover:bg-stone-500 cursor-pointer">Post</button>
-                        </div>
-                    </div>
-                </div> 
-            </form>
-            </div>
-        </div>
+     
     <script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
     <%- include("./partials/footer") %>

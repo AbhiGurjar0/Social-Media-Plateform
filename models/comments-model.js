@@ -5,9 +5,9 @@ const commentsSchema = new mongoose.Schema(
         postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
         content: String,
         Likes: [
-            {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+            {type: mongoose.Schema.Types.ObjectId, ref: 'Like'}
         ],
     }
 );
 
-module.exports = mongoose.model("Comments", commentsSchema);
+module.exports = mongoose.model("Comment", commentsSchema);

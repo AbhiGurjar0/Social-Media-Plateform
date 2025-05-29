@@ -30,10 +30,20 @@ const userSchema = new mongoose.Schema(
         posts: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Post'
+                ref: 'Post',
+                required: true,
             }
-        ]
-        ,
+        ],
+        like: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Like',
+
+        }],
+        comments: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comment',
+
+        }],
     }
 );
 

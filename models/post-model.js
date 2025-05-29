@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const postSchema = new mongoose.Schema(
     {
-        userId:{type:mongoose.Schema.Types.ObjectId, ref:'User'},
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' ,required:true,},
         image: Buffer,
         video: Buffer,
         advancedSetting: String,
@@ -13,7 +13,18 @@ const postSchema = new mongoose.Schema(
             default: 'private',
 
         },
-       
+        like: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Like',
+            default: 0,
+
+        }],
+        comments: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comment',
+        }],
+
+
     }
 );
 
