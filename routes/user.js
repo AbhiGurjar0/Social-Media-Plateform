@@ -68,7 +68,6 @@ router.post("/post/like/:postId", isLoggedIn, async (req, res) => {
             .populate("like");
 
         let isLiked = post.like.some((like) => like.userId.equals(req.user._id));
-
         if (!isLiked) {
             let liked = await likeModel.create({
                 userId: req.user._id,
@@ -82,14 +81,14 @@ router.post("/post/like/:postId", isLoggedIn, async (req, res) => {
 
             return res.json("liked");
         } else {
-            await likeModel.findOneAndDelete({
+            let liked = await likeModel.findOneAndDelete({
                 userId: req.user._id,
                 postId: post._id
             });
 
             await postModel.updateOne(
                 { _id: req.params.postId },
-                { $pull: { like: { userId: req.user._id } } }
+                { $pull: { like: liked._id } }
             );
 
             return res.json("unliked");
@@ -101,66 +100,96 @@ router.post("/post/like/:postId", isLoggedIn, async (req, res) => {
 });
 
 //open Like
-// router.post("/post/like/users/:postId", async (req, res) => {
-//     try {
-//         const likes = await likeModel
-//             .find({ postId: req.params.postId })
-//             .populate("userId", "firstName profilePic");
+router.post("/post/like/users/:postId", async (req, res) => {
+    try {
+        const likes = await likeModel
+            .find({ postId: req.params.postId })
+            .populate("userId", "firstName profilePic");
 
-//         const userDetails = likes.map(like => ({
-//             userName: like.userId.firstName,
-//             userProfile: like.userId.profilePic || "default.jpg"
-//         }));
+        const userDetails = likes.map(like => ({
+            userName: like.userId.firstName,
+            userProfile: like.userId.profilePic || "default.jpg"
+        }));
 
-//         res.send({ userDetails });
-//     } catch (err) {
-//         res.status(500).send({ error: "Server error", details: err.message });
-//     }
-// });
+        res.send({ userDetails });
+    } catch (err) {
+        res.status(500).send({ error: "Server error", details: err.message });
+    }
+});
 
 
-// router.post("/post/postDetails/:postId", async (req, res) => {
-//     let post = await postModel.findById(req.params.postId)
-//         .populate({
-//             path: "comments",
-//             populate: {
-//                 path: "userId",
-//                 select: "firstName profilePic"
-//             }
-//         })
-//         .populate({
-//             path: "userId",
-//             select: "firstName profilePic"
-//         });
-//     const likes = await likeModel
-//         .find({ postId: req.params.postId });
+router.post("/post/postDetails/:postId", async (req, res) => {
+    let post = await postModel.findById(req.params.postId)
+        .populate({
+            path: "comments",
+            populate: {
+                path: "userId",
+                select: "firstName profilePic"
+            }
+        })
+        .populate({
+            path: "userId",
+            select: "firstName profilePic"
+        });
+    const likes = await likeModel
+        .find({ postId: req.params.postId });
 
-//     const commentDetails = post.comments.map((comment) => ({
-//         userName: comment.userId.firstName,
-//         userProfile: comment.userId.profilePic,
-//         content: comment.content
-//     }));
+    const commentDetails = post.comments.map((comment) => ({
+        userName: comment.userId.firstName,
+        userProfile: comment.userId.profilePic,
+        content: comment.content
+    }));
 
-//     res.json({
-//         video: post.video ? post.video.toString('base64') : '',
-//         image: post.image ? post.image.toString('base64') : '',
-//         comments: commentDetails,
-//         likeCount: likes.length,
-//         createdBy: post.userId
-//             ? {
-//                 userId: post.userId._id,
-//                 userName: post.userId.firstName,
-//                 userProfile: post.userId.profilePic
-//             }
-//             : {
-//                 userId: null,
-//                 userName: "Unknown",
-//                 userProfile: null
-//             }
+    res.json({
+        video: post.video ? post.video.toString('base64') : '',
+        image: post.image ? post.image.toString('base64') : '',
+        comments: commentDetails,
+        likeCount: likes.length,
+        createdBy: post.userId
+            ? {
+                userId: post.userId._id,
+                userName: post.userId.firstName,
+                userProfile: post.userId.profilePic
+            }
+            : {
+                userId: null,
+                userName: "Unknown",
+                userProfile: null
+            }
 
-//     });
+    });
 
-// })
+})
+
+//Add comment 
+
+router.post("/post/addComment", isLoggedIn, async (req, res) => {
+
+    let { postId, comment } = req.body;
+    let createdComment = await commentModel.create({
+        userId: req.user._id,
+        postId,
+        content: comment,
+    });
+    let user = await userModel.findOne({ _id: req.user._id });
+    await postModel.updateOne(
+        { _id: postId },
+        { $push: { comments: createdComment._id } },
+    );
+    await userModel.updateOne(
+        { _id: req.user._id },
+        { $push: { comments: createdComment._id } },
+    );
+    res.json({
+        userName: user.firstName,
+        profilePic: user.profilePic ? user.ProfilePic : "default.jpg",
+
+    });
+
+
+})
+
+
 //login/signup page
 router.get("/signin", (req, res) => {
     res.render("login");

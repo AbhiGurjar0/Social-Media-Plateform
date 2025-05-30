@@ -146,12 +146,19 @@ function cancelPost() {
 
 }
 
-
-
-
 // Like
 
 async function like(element, postId) {
+
+    if (!postId) {
+        const postElement = document.getElementById('post');
+        postId = postElement?.dataset?.postId;
+
+        if (!postId) {
+            console.error('Post ID is missing');
+            return;
+        }
+    }
     fetch(`/post/like/${postId}`, {
         method: "POST",
         headers: {
@@ -214,8 +221,10 @@ async function openPost(element, postId) {
     let postContent = document.getElementById("mediaContent");
     let postComment = document.getElementById("commentSection");
     let likeCount = document.getElementById("likeCount");
+    const commentInput = document.getElementById('commentContent');
+    commentInput.value = "";
     document.body.classList.add("overflow-hidden");// like count when post is opened
-
+    post.dataset.postId = postId;
     const response = await fetch(`/post/postDetails/${postId}`, {
         method: "POST",
         headers: {
@@ -230,8 +239,8 @@ async function openPost(element, postId) {
     if (data.video) {
         postContent.innerHTML = `
         <div class="w-full h-full object-cover relative">
-            <video paused class="w-full h-full object-cover">
-                <source src="data:video/mp4;base64,${data.video} %>"
+            <video autoplay class="w-full h-full object-cover">
+                <source src="data:video/mp4;base64,${data.video}"
                     type="video/mp4">
                     Your browser does not support the video tag.
             </video>
@@ -261,16 +270,29 @@ async function openPost(element, postId) {
 
     // All comments
     postComment.innerHTML = "";
+    console.log(data.comments.length);
     data.comments.forEach(comment => {
-        postComment.innerHTM += `
-    <div class="flex items-start space-x-4">
-      <img src="${comment.userProfile}" alt="${comment.userName}'s profile picture"
-           class="w-10 h-10 rounded-full object-cover border border-white" />
-      <div>
-        <p class="font-semibold">${comment.userName}</p>
-        <p class="text-sm text-gray-300">${comment.content}</p>
-      </div>
+        postComment.innerHTML += `
+   <div class="flex items-start space-x-3 space-y-2">
+  <img src="${comment.userProfile}" alt="${comment.userName}'s profile picture"
+       class="w-8 h-8 rounded-full object-cover overflow-hidden" />
+
+  <div class="flex-1 text-sm text-white">
+    <div>
+      <span class="font-semibold mr-1">${comment.userName}</span>
+      <span class="text-gray-300">${comment.content}</span>
     </div>
+    <div class="flex text-xs text-gray-400 space-x-4 mt-1">
+      <span></span>
+      <span class="cursor-pointer">Reply</span>
+    </div>
+  </div>
+
+  <button class="text-xs text-gray-400 hover:text-pink-500">
+    <i class="fa-regular fa-heart"></i>
+  </button>
+</div>
+
   `;
     });
     //likes on post 
@@ -299,4 +321,52 @@ function handleOutsideClick(e) {
     if (!fullPage.classList.contains("hidden") && !post.contains(e.target)) {
         closePost();
     }
+}
+
+
+// Add comment
+
+async function addComment(element) {
+    const commentInput = document.getElementById('commentContent');
+    let postComment = document.getElementById("commentSection");
+    const commentText = commentInput.value.trim();
+    commentInput.value = "";
+    if (!commentText) return;
+    const postContainer = document.getElementById('post');
+    const postId = postContainer.dataset.postId;
+    let response = await fetch("/post/addComment", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            postId,
+            comment: commentText,
+        }),
+    })
+    const data = await response.json();
+
+    postComment.innerHTML += `
+   <div class="flex items-start space-x-3 space-y-2">
+  <img src="${data.profilePic}" alt="${data.userName}'s profile picture"
+       class="w-8 h-8 rounded-full object-cover overflow-hidden" />
+
+  <div class="flex-1 text-sm text-white">
+    <div>
+      <span class="font-semibold mr-1">${data.userName}</span>
+      <span class="text-gray-300">${commentText}</span>
+    </div>
+    <div class="flex text-xs text-gray-400 space-x-4 mt-1">
+      <span></span>
+      <span class="cursor-pointer">Reply</span>
+    </div>
+  </div>
+
+  <button class="text-xs text-gray-400 hover:text-pink-500">
+    <i class="fa-regular fa-heart"></i>
+  </button>
+</div>
+
+  `
+
 }

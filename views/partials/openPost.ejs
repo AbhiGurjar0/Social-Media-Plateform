@@ -1,0 +1,62 @@
+<div id="openPost" class="main-container overflow-hidden fixed bg-transparent
+          inset-0  backdrop-blur-sm z-50 w-full h-screen hidden">
+    <div id="post" data-post-id=""
+        class="w-[75vw] h-[90vh] bg-red-500 col-start-2 flex absolute top-10 left-40 z-999 shadow-md rounded-md overflow-hidden">
+        <div id="mediaContent" class="w-[50%] h-full bg-amber-400">
+
+
+        </div>
+        <div class="w-[50%] h-full bg-amber-200">
+            <div class="bg-white w-full shadow-lg border border-gray-200 overflow-hidden h-[100%] flex flex-col gap-4">
+                <!-- Header -->
+                <div class="w-full h-[10%] flex items-center justify-between px-4 pt-4">
+                    <div id="postUserProfile" class="flex items-center gap-3">
+
+                    </div>
+                    <button class="text-gray-500 hover:text-gray-700">
+                        <i class="fa-solid fa-ellipsis"></i>
+                    </button>
+                </div>
+                <!-- comment ssection -->
+                <div class="bg-[#232323] rounded-lg mx-4 h-[70%]">
+                    <main id="commentSection"
+                        class="text-white h-[100%] bg-black py-6 px-4 rounded-lg space-y-6 overflow-y-scroll">
+                        <!-- Example Comment -->
+
+                    </main>
+                </div>
+                <!-- Actions -->
+                <div class="actions w-full ">
+                    <div class="flex items-center justify-between px-4 pt-3 h-[10%]">
+                        <div class="flex items-center gap-4">
+                            <button onclick="like(this)" class="hover:text-gray-500"><i
+                                    class="fa-regular fa-heart text-2xl"></i></button>
+                            <button class="hover:text-gray-500"><i class="fa-regular fa-comment text-2xl"></i></button>
+                            <button class="hover:text-gray-500"><i
+                                    class="fa-regular fa-paper-plane text-2xl"></i></button>
+                        </div>
+                        <button class="hover:text-gray-500"><i class="fa-regular fa-bookmark text-2xl"></i></button>
+                    </div>
+                    <!-- Likes -->
+                    <div class="px-2 pt-3">
+                        <span id="likeCount" class="font-semibold text-sm px-1"> 0 </span>likes
+                    </div>
+                    <!-- Caption -->
+                    <div class="px-4 pt-1 pb-2">
+                        <div class="flex items-center mt-2">
+                            <input id="commentContent" type="text" placeholder="Add a comment..."
+                                class="flex-1 border-none outline-none text-sm bg-transparent" />
+                            <p onclick="addComment(this)" class="text-blue-500 text-xs font-semibold cursor-pointer">
+                                Post</p>
+                            <!--By Default hide this button, unhide it when user click om the input field// -->
+                            <p class="text-blue-500 text-xs font-semibold ml-2"><i
+                                    class="fa-regular fa-face-smile text-black hover:text-gray-600"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
