@@ -36,6 +36,7 @@ router.post("/createPost", upload.single('media'), isLoggedIn, async (req, res) 
         // console.log(req.file);
 
         let post = await postModel.create({
+            userId:req.user._id,
             image: file?.mimetype.startsWith("image/") ? file.buffer : undefined,
             video: file?.mimetype.startsWith("video/") ? file.buffer : undefined,
             caption,
@@ -189,6 +190,22 @@ router.post("/post/addComment", isLoggedIn, async (req, res) => {
 
 })
 
+//see others profile
+
+router.get("/user/:userId", async (req, res) => {
+    try {
+        const user = await userModel
+            .findOne({ _id: req.params.userId })
+            .populate("posts");
+
+        if (!user) return res.status(404).send("User not found");
+        res.render("main", { user, posts: user.posts });
+    } catch (err) {
+        console.error("Error fetching user or posts:", err);
+        res.status(500).send("Server error");
+    }
+})
+
 
 //login/signup page
 router.get("/signin", (req, res) => {
@@ -213,9 +230,17 @@ router.get("/editProfile", (req, res) => {
 
 //home page
 router.get("/", async (req, res) => {
-    let posts = await postModel.find();
-    res.render("home", { posts });
-})
+    try {
+        let posts = await postModel.find({}).populate("userId");
+        posts = posts.filter(post => post.userId); // remove posts with missing user
+        res.render("home", { posts });
+    } catch (err) {
+        console.error("Error:", err);
+        if (!res.headersSent) {
+            res.status(500).send("Something went wrong");
+        }
+    }
+});
 
 router.get("/explore", async (req, res) => {
     let posts = await postModel.find();

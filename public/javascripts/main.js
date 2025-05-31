@@ -133,18 +133,18 @@
 //     canvas.style.display = 'block';
 // });
 // });
-window.postOptionsShow = function (next) {
-    let post = document.getElementById("post");
-    post.classList.remove("w-[35vw]");
-    post.classList.add("w-[60vw]");
-    next.classList.add("hidden")
-}
-function cancelPost() {
-    let post = document.getElementById('createPost')
-    post.classList.add("hidden");
-    mainContent.classList.remove('blur-sm', 'pointer-events-none', 'select-none');
+// window.postOptionsShow = function (next) {
+//     let post = document.getElementById("post");
+//     post.classList.remove("w-[35vw]");
+//     post.classList.add("w-[60vw]");
+//     next.classList.add("hidden")
+// }
+// function cancelPost() {
+//     let post = document.getElementById('createPost')
+//     post.classList.add("hidden");
+//     mainContent.classList.remove('blur-sm', 'pointer-events-none', 'select-none');
 
-}
+// }
 
 // Like
 
@@ -327,6 +327,7 @@ function handleOutsideClick(e) {
 // Add comment
 
 async function addComment(element) {
+
     const commentInput = document.getElementById('commentContent');
     let postComment = document.getElementById("commentSection");
     const commentText = commentInput.value.trim();
@@ -370,3 +371,43 @@ async function addComment(element) {
   `
 
 }
+
+
+//Add comment from home 
+
+async function addCommentFromHome(button, postId) {
+    // Get input field related to this specific button
+    const commentInput = button.parentElement.querySelector('.commentContent');
+    const commentText = commentInput.value.trim();
+    if (!commentText) return;
+
+    // Clear the input early
+    commentInput.value = "";
+
+    try {
+        const response = await fetch("/post/addComment", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                postId,
+                comment: commentText,
+            }),
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            console.log("Comment added:", data.comment);
+            // Optionally update UI here
+        } else {
+            console.error("Comment failed:", data.message);
+        }
+    } catch (err) {
+        console.error("Error while commenting:", err);
+    }
+}
+
+
+// see others profile
+

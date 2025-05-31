@@ -109,10 +109,12 @@
         <!-- Header -->
         <div class="flex items-center justify-between px-4 pt-4">
           <div class="flex items-center gap-3">
-            <img src="../images/dp.jpg" class="w-10 h-10 rounded-full object-cover border-2 border-pink-500" />
+            <a href="/user/<%=post.userId._id%>"> <img src="../images/dp.jpg"
+                class="w-10 h-10 rounded-full object-cover border-2 border-pink-500" />
+            </a>
             <div>
               <div class="flex items-center gap-1">
-                <span class="font-semibold text-sm">ericjanickifitness</span>
+                <a href="/user/<%=post.userId%>"><span class="font-semibold text-sm">ericjanickifitness</span></a>
                 <img src="../images/Instagrame-Blue-tick.png" class="w-4 h-4" alt="">
               </div>
               <span class="text-xs text-gray-500">WNRS Circle Training Facility • 18h</span>
@@ -164,13 +166,16 @@
           <span class="text-sm">A Beautiful View<span class="text-gray-500"> ...more</span></span>
           <div onclick="openPost(this,'<%=post._id%>')" class="text-gray-500 text-xs mt-1 cursor-pointer">View all 60
             comments</div>
-          <div class="flex items-center mt-2">
-            <input type="text" placeholder="Add a comment..."
-              class="flex-1 border-none outline-none text-sm bg-transparent" />
-            <button class="text-blue-500 text-xs font-semibold">Post</button>
-            <!--By Default hide this button, unhide it when user click om the input field// -->
-            <button class="text-blue-500 text-xs font-semibold ml-2"><i
-                class="fa-regular fa-face-smile text-black hover:text-gray-600"></i></button>
+          <div class="px-4 pt-1 pb-2">
+            <div class="flex items-center mt-2">
+              <input type="text" placeholder="Add a comment..."
+                class="commentContent flex-1 border-none outline-none text-sm bg-transparent" />
+              <p onclick="addCommentFromHome(this, '<%=post._id%>')"
+                class="text-blue-500 text-xs font-semibold cursor-pointer">Post</p>
+              <!--By Default hide this button, unhide it when user click om the input field// -->
+              <p class="text-blue-500 text-xs font-semibold ml-2"><i
+                  class="fa-regular fa-face-smile text-black hover:text-gray-600"></i></button>
+            </div>
           </div>
         </div>
       </div>
