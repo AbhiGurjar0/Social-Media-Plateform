@@ -126,13 +126,35 @@
 //         previewContainer.innerHTML = ''; // Clear previous
 //         // cropBtn.style.display = 'none';
 
+    //     const url = URL.createObjectURL(file);
 //         const url = URL.createObjectURL(file);
 
+    //     if (fileType.startsWith('image/')) {
+    //         const img = document.createElement('img');
+    //         img.src = url;
+    //         previewContainer.appendChild(img);
 //         if (fileType.startsWith('image/')) {
 //             const img = document.createElement('img');
 //             img.src = url;
 //             previewContainer.appendChild(img);
 
+            // img.onload = () => {
+            //     if (cropper) {
+            //         cropper.destroy(); // Clean up previous cropper instance
+            //     }
+            //     cropper = new Cropper(img, {
+            //         aspectRatio: 1,
+            //         viewMode: 1
+            //     });
+            //     cropBtn.style.display = 'inline';
+            // };
+    //     } else if (fileType.startsWith('video/')) {
+    //         const video = document.createElement('video');
+    //         video.controls = true;
+    //         video.src = url;
+    //         previewContainer.appendChild(video);
+    //     }
+    //     document.getElementById("next").classList.remove("hidden");
 //             // img.onload = () => {
 //             //     if (cropper) {
 //             //         cropper.destroy(); // Clean up previous cropper instance
@@ -152,11 +174,31 @@
 //         document.getElementById("next").classList.remove("hidden");
 
 
+    // });
 //     });
 
 // cropBtn.addEventListener('click', function () {
 //     if (!cropper) return;
 
+    //     const croppedCanvas = cropper.getCroppedCanvas();
+    //     canvas.width = croppedCanvas.width;
+    //     canvas.height = croppedCanvas.height;
+    //     const ctx = canvas.getContext('2d');
+    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //     ctx.drawImage(croppedCanvas, 0, 0);
+    //     canvas.style.display = 'block';
+    // });
+// });
+// window.postOptionsShow = function (next) {
+//     let post = document.getElementById("post");
+//     post.classList.remove("w-[35vw]");
+//     post.classList.add("w-[60vw]");
+//     next.classList.add("hidden")
+// }
+// function cancelPost() {
+//     let post = document.getElementById('createPost')
+//     post.classList.add("hidden");
+//     mainContent.classList.remove('blur-sm', 'pointer-events-none', 'select-none');
 //     const croppedCanvas = cropper.getCroppedCanvas();
 //     canvas.width = croppedCanvas.width;
 //     canvas.height = croppedCanvas.height;
@@ -176,6 +218,65 @@
 //     let post = document.getElementById('createPost')
 //     post.classList.add("hidden");
 //     mainContent.classList.remove('blur-sm', 'pointer-events-none', 'select-none');
+
+// }
+
+
+
+
+// For heart animation on double click
+var con = document.querySelector(".container");
+
+var post_img = document.querySelector("#post-image");
+
+con.addEventListener("dblclick", function (e) {    
+    var heart = document.querySelector("#heart-icon");
+    heart.classList.remove('scale-50', 'opacity-0');
+    heart.classList.add('scale-110', 'opacity-80');
+    setTimeout(function () {
+        heart.classList.remove('scale-110', 'opacity-80');
+        heart.classList.add('scale-110', 'opacity-0');
+    },900);
+    secHeart.classList.add('text-red-500');
+    secHeart.classList.remove('fa-regular');
+    secHeart.classList.add('fa-solid');
+});
+
+var con2 = document.querySelector('.all-icons')
+var secHeart = document.querySelector("#heart-icon-second");
+
+let count = 0;
+con2.addEventListener("click", function (e) {
+    
+    if(count === 0) {
+        secHeart.classList.add('text-red-500');
+    secHeart.classList.remove('fa-regular');
+    secHeart.classList.add('fa-solid');
+    count = 1;
+    }else {
+        secHeart.classList.remove('text-red-500');
+        secHeart.classList.add('fa-regular');
+        secHeart.classList.remove('fa-solid');
+        count = 0;
+    }
+
+    
+});
+
+
+// For showing the post options on click
+var cmtInput = document.querySelector('.comment-input');
+var postIcon = document.querySelector(".post-icon");
+cmtInput.addEventListener("input", function (e) {
+    if(cmtInput.value.trim() === ""){
+        postIcon.classList.add("opacity-0");
+        postIcon.classList.remove("opacity-100");
+    }else{
+        postIcon.classList.remove("opacity-0");
+        postIcon.classList.add("opacity-100");
+    }
+});
+
 
 // }
 
@@ -256,7 +357,7 @@ async function openPost(element, postId) {
     let likeCount = document.getElementById("likeCount");
     const commentInput = document.getElementById('commentContent');
     commentInput.value = "";
-    document.body.classList.add("overflow-hidden");// like count when post is opened
+    document.body.classList.add("overflow-hidden");
     post.dataset.postId = postId;
     const response = await fetch(`/post/postDetails/${postId}`, {
         method: "POST",
@@ -291,15 +392,13 @@ async function openPost(element, postId) {
     let postUserProfile = document.getElementById("postUserProfile");
     postUserProfile.innerHTML = "";
     postUserProfile.innerHTML = `
-    <img src="${data.createdBy.userProfile}" class="w-10 h-10 rounded-full object-cover border-2 border-pink-500" />
-              <div>
-                <div class="flex items-center gap-1">
-                  <span class="font-semibold text-sm">
-                    ${data.createdBy.userName}
-                  </span>
-                </div>
-                <span class="text-xs text-gray-500">follow</span>
-              </div>`;
+  <img src="${data.createdBy.userProfile}" class="w-10 h-10 rounded-full object-cover border-2 border-pink-500" />
+  <div class="flex items-center gap-1">
+    <span class="font-semibold text-md">${data.createdBy.userName}</span>
+    <span onclick="followUser('${data.createdBy.userId}')" class="text-md text-blue-500 pl-2 cursor-pointer">Follow</span>
+  </div>
+`;
+
 
     // All comments
     postComment.innerHTML = "";
@@ -442,5 +541,124 @@ async function addCommentFromHome(button, postId) {
 }
 
 
-// see others profile
+// manage post(delete,edit etc.)
 
+async function postOptions(element) {
+    let fullPage = document.getElementById("postManagePopUp");
+    fullPage.classList.remove("hidden");
+    let options = document.getElementById("options");
+    document.body.classList.add("overflow-hidden");
+
+    setTimeout(() => {
+        document.addEventListener("click", handleClick);
+    }, 10)
+}
+
+function handleClick(e) {
+    let fullPage = document.getElementById("postManagePopUp");
+    let options = document.getElementById("options");
+    if (!fullPage.classList.contains("hidden") && !options.contains(e.target)) {
+        fullPage.classList.add("hidden");
+        document.body.classList.remove("overflow-hidden");
+        document.removeEventListener("click", handleClick);
+
+    }
+
+}
+
+//post delete
+async function deletePost(element) {
+    let openedPost = document.getElementById("post");
+    let postId = openedPost.dataset.postId;
+    await fetch("/post/delete", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ postId }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            window.location.href = "/main";
+
+
+        })
+        .catch(err => {
+            console.log(" Post deletion failed")
+        })
+}
+
+//close popup
+function closePopUp(element) {
+    let fullPage = document.getElementById("postManagePopUp");
+    let options = document.getElementById("options");
+    fullPage.classList.add("hidden");
+    document.body.classList.remove("overflow-hidden");
+    document.removeEventListener("click", handleClick);
+}
+
+//goto post
+
+function gotoPost(element) {
+    let openedPost = document.getElementById("post");
+    let postId = openedPost.dataset.postId;
+
+    // Redirect using URL with query param
+    window.location.href = `/postDetails?postId=${postId}`;
+}
+
+
+
+//profile picture
+
+function previewImage(event) {
+    const input = event.target;
+    const preview = document.getElementById('profilePreview');
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            preview.src = e.target.result;
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+
+    // Optional: auto-submit the form
+    input.form.submit();
+}
+//create Post  preview
+function previewSelectedImage(event) {
+    const input = event.target;
+    const preview = document.getElementById("imagePreview");
+    const uploadText = document.getElementById("uploadText");
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            preview.src = e.target.result;
+            preview.classList.remove("hidden");
+            uploadText.classList.add("hidden");
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+//follow user
+
+async function followUser(userId) {
+    let response = await fetch("/user/addFollower", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+
+        },
+        body: JSON.stringify({ userId }),
+    })
+    let data = await response.json();
+
+
+}
