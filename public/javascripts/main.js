@@ -23,11 +23,22 @@
 // function showContent(left, content) {
 //     document.getElementById(content).classList.remove('hidden');
 // }
+// function showContent(left, content) {
+//     document.getElementById(content).classList.remove('hidden');
+// }
 
 // //createPost
 // let mainContent = document.getElementById('main-content');
 // let openBtn = document.getElementById('openBtn');
+// //createPost
+// let mainContent = document.getElementById('main-content');
+// let openBtn = document.getElementById('openBtn');
 
+// function createPost(left, content) {
+//     let post = document.getElementById(content);
+//     post.classList.remove('hidden');
+//     mainContent.classList.add('blur-sm', 'pointer-events-none', 'select-none');
+// }
 // function createPost(left, content) {
 //     let post = document.getElementById(content);
 //     post.classList.remove('hidden');
@@ -39,7 +50,17 @@
 //     let upload = document.getElementById("post");
 //     let isOnPost = upload.contains(event.target);
 //     let isOnButton = openBtn.contains(event.target);
+// document.addEventListener("click", (event) => {
+//     let post = document.getElementById('createPost')
+//     let upload = document.getElementById("post");
+//     let isOnPost = upload.contains(event.target);
+//     let isOnButton = openBtn.contains(event.target);
 
+//     if (!isOnPost && !isOnButton && !upload.classList.contains("hidden")) {
+//         post.classList.add("hidden");
+//         mainContent.classList.remove('blur-sm', 'pointer-events-none', 'select-none');
+//     }
+// });
 //     if (!isOnPost && !isOnButton && !upload.classList.contains("hidden")) {
 //         post.classList.add("hidden");
 //         mainContent.classList.remove('blur-sm', 'pointer-events-none', 'select-none');
@@ -81,14 +102,26 @@
 // document.addEventListener('DOMContentLoaded', () => {
 //     const input = document.getElementById('photo');
 //     const previewContainer = document.getElementById('photo-upload');
+    // const cropBtn = document.getElementById('crop-btn');
+    // const canvas = document.getElementById('canvas');
+    // let cropper;
+// document.addEventListener('DOMContentLoaded', () => {
+//     const input = document.getElementById('photo');
+//     const previewContainer = document.getElementById('photo-upload');
 //     // const cropBtn = document.getElementById('crop-btn');
 //     // const canvas = document.getElementById('canvas');
 //     // let cropper;
 
+    // input.addEventListener('change', function () {
+    //     const file = input.files[0];
+    //     if (!file) return;
 //     input.addEventListener('change', function () {
 //         const file = input.files[0];
 //         if (!file) return;
 
+    //     const fileType = file.type;
+    //     previewContainer.innerHTML = ''; // Clear previous
+    //     // cropBtn.style.display = 'none';
 //         const fileType = file.type;
 //         previewContainer.innerHTML = ''; // Clear previous
 //         // cropBtn.style.display = 'none';

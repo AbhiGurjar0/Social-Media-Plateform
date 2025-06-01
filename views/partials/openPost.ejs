@@ -10,12 +10,16 @@
             <div class="bg-white w-full shadow-lg border border-gray-200 overflow-hidden h-[100%] flex flex-col gap-4">
                 <!-- Header -->
                 <div class="w-full h-[10%] flex items-center justify-between px-4 pt-4">
-                    <div id="postUserProfile" class="flex items-center gap-3">
+                    <div id="postUserProfile" class="flex items-center  gap-3">
 
                     </div>
-                    <button class="text-gray-500 hover:text-gray-700">
+                    <button onclick="postOptions(this)" class="text-gray-500 hover:text-gray-700">
                         <i class="fa-solid fa-ellipsis"></i>
                     </button>
+                    <div id="postManagePopUp" class="main-container overflow-hidden fixed bg-transparent
+          inset-0  backdrop-blur-sm z-50 w-full h-screen hidden">
+                        <%- include("./managePost") %>
+                    </div>
                 </div>
                 <!-- comment ssection -->
                 <div class="bg-[#232323] rounded-lg mx-4 h-[70%]">
