@@ -1,295 +1,134 @@
 <%- include("./partials/header") %>
-  <style>
-    #stories-scroll {
-      scrollbar-width: none;
-      /* Firefox */
-      -ms-overflow-style: none;
-      /* IE and Edge */
-    }
-
-    #stories-scroll::-webkit-scrollbar {
-      display: none;
-      /* Chrome, Safari, Opera */
-    }
-  </style>
-  <div class="main-content">
-    <!-- NavBar Div -->
-    <div> <%- include("./partials/homeHeader") %></div>
-    <div class="flex justify-center">
-      <div class="relative flex items-center w-full max-w-2xl">
-        <button id="stories-prev"
-          class="absolute left-0 z-10 bg-white rounded-full shadow p-2 text-gray-700 hover:bg-gray-100 disabled:opacity-50"
-          style="display:none;">
-          <i class="fa-solid fa-chevron-left"></i>
-        </button>
-        <div id="stories-scroll" class=" flex gap-6 px-8 py-4 overflow-auto w-full items-center box-border">
-          <div class="flex flex-col items-center cursor-pointer">
-            <div
-              class="w-[4vw] h-[4vw] rounded-full overflow-hidden p-0.5 bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 shadow-lg">
-              <img src="../images/post.jpg" class=" rounded-full object-cover" />
-            </div>
-            <span class="text-xs text-gray-500 mt-2">akram</span>
+<style>
+  #stories-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #stories-scroll::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+<div class="main-content">
+  <!-- NavBar Div -->
+  <div><%- include("./partials/homeHeader") %></div>
+  <div class="flex justify-center">
+    <div class="relative flex items-center w-full max-w-2xl">
+      <button id="stories-prev"
+        class="absolute left-0 z-10 bg-white rounded-full shadow p-2 text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+        style="display:none;">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+      <div id="stories-scroll" class="flex gap-6 px-8 py-4 overflow-auto w-full items-center box-border">
+        <!-- Example static stories, replace with dynamic if needed -->
+        <% for(let i=0; i<10; i++) { %>
+        <div class="flex flex-col items-center cursor-pointer">
+          <div class="w-[4vw] h-[4vw] rounded-full overflow-hidden p-0.5 bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 shadow-lg">
+            <img src="../images/post.jpg" class="rounded-full object-cover" />
           </div>
-          <div class="flex flex-col items-center cursor-pointer">
-            <div
-              class="w-[4vw] h-[4vw] rounded-full overflow-hidden p-0.5 bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 shadow-lg">
-              <img src="../images/post.jpg" class=" rounded-full object-cover" />
-            </div>
-            <span class="text-xs text-gray-500 mt-2">akram</span>
-          </div>
-          <div class="flex flex-col items-center cursor-pointer">
-            <div
-              class="w-[4vw] h-[4vw] rounded-full overflow-hidden p-0.5 bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 shadow-lg">
-              <img src="../images/post.jpg" class=" rounded-full object-cover" />
-            </div>
-            <span class="text-xs text-gray-500 mt-2">akram</span>
-          </div>
-          <div class="flex flex-col items-center cursor-pointer">
-            <div
-              class="w-[4vw] h-[4vw] rounded-full overflow-hidden p-0.5 bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 shadow-lg">
-              <img src="../images/post.jpg" class=" rounded-full object-cover" />
-            </div>
-            <span class="text-xs text-gray-500 mt-2">akram</span>
-          </div>
-          <div class="flex flex-col items-center cursor-pointer">
-            <div
-              class="w-[4vw] h-[4vw] rounded-full overflow-hidden p-0.5 bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 shadow-lg">
-              <img src="../images/post.jpg" class=" rounded-full object-cover" />
-            </div>
-            <span class="text-xs text-gray-500 mt-2">akram</span>
-          </div>
-          <div class="flex flex-col items-center cursor-pointer">
-            <div
-              class="w-[4vw] h-[4vw] rounded-full overflow-hidden p-0.5 bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 shadow-lg">
-              <img src="../images/post.jpg" class=" rounded-full object-cover" />
-            </div>
-            <span class="text-xs text-gray-500 mt-2">akram</span>
-          </div>
-          <div class="flex flex-col items-center cursor-pointer">
-            <div
-              class="w-[4vw] h-[4vw] rounded-full overflow-hidden p-0.5 bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 shadow-lg">
-              <img src="../images/post.jpg" class=" rounded-full object-cover" />
-            </div>
-            <span class="text-xs text-gray-500 mt-2">akram</span>
-          </div>
-          <div class="flex flex-col items-center cursor-pointer">
-            <div
-              class="w-[4vw] h-[4vw] rounded-full overflow-hidden p-0.5 bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 shadow-lg">
-              <img src="../images/post.jpg" class=" rounded-full object-cover" />
-            </div>
-            <span class="text-xs text-gray-500 mt-2">akram</span>
-          </div>
-          <div class="flex flex-col items-center cursor-pointer">
-            <div
-              class="w-[4vw] h-[4vw] rounded-full overflow-hidden p-0.5 bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 shadow-lg">
-              <img src="../images/post.jpg" class=" rounded-full object-cover" />
-            </div>
-            <span class="text-xs text-gray-500 mt-2">akram</span>
-          </div>
-          <div class="flex flex-col items-center cursor-pointer">
-            <div
-              class="w-[4vw] h-[4vw] rounded-full overflow-hidden p-0.5 bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 shadow-lg">
-              <img src="../images/post.jpg" class=" rounded-full object-cover" />
-            </div>
-            <span class="text-xs text-gray-500 mt-2">akram</span>
-          </div>
-
-
-          <button id="stories-next"
-            class="absolute right-0 z-10 bg-white rounded-full shadow p-2 text-gray-700 hover:bg-gray-100">
-            <i class="fa-solid fa-chevron-right"></i>
-          </button>
+          <span class="text-xs text-gray-500 mt-2">akram</span>
         </div>
+        <% } %>
       </div>
+      <button id="stories-next"
+        class="absolute right-0 z-10 bg-white rounded-full shadow p-2 text-gray-700 hover:bg-gray-100">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
     </div>
+  </div>
 
-    <!-- Posts -->
-    <% posts.forEach((post)=>{%>
-      <div class="bg-white w-full max-w-md mx-auto mt-6 rounded-lg shadow-md border border-gray-200">
-        <!-- Header -->
-        <div class="flex items-center justify-between px-4 pt-4">
-          <div class="flex items-center gap-3">
-            <a href="/user/<%=post.userId._id%>"> <img src=" data:<%=post.userId.profilePic.contentType %>;base64,<%= post.userId.profilePic.toString('base64') %>"
-                
-                class="w-10 h-10 rounded-full object-cover object-top border-2 border-pink-500" alt="profilePic" />
+  <!-- Posts -->
+  <% posts.forEach((post) => { %>
+  <div class="bg-white w-full max-w-md mx-auto mt-6 rounded-lg shadow-md border border-gray-200">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-4 pt-4">
+      <div class="flex items-center gap-3">
+        <a href="/user/<%= post.userId._id %>">
+          <img src="data:<%= post.userId.profilePic.contentType %>;base64,<%= post.userId.profilePic.toString('base64') %>"
+            class="w-10 h-10 rounded-full object-cover object-top border-2 border-pink-500" alt="profilePic" />
+        </a>
+        <div>
+          <div class="flex items-center gap-1">
+            <a href="/user/<%= post.userId._id %>">
+              <span class="font-semibold text-sm"><%= post.userId.firstName %></span>
             </a>
-            <div>
-              <div class="flex items-center gap-1">
-                <a href="/user/<%=post.userId._id%>"><span class="font-semibold text-sm">
-                    <%=post.userId.firstName%>
-                  </span></a>
-                <img src="../images/Instagrame-Blue-tick.png" class="w-4 h-4" alt="">
-              </div>
-              <span class="text-xs text-gray-500">WNRS Circle Training Facility • 18h</span>
-            </div>
+            <img src="../images/Instagrame-Blue-tick.png" class="w-4 h-4" alt="verified">
           </div>
-          <button class="text-gray-500 hover:text-gray-700">
-            <i class="fa-solid fa-ellipsis"></i>
-          </button>
-        </div>
-
-      <!-- Post Image -->
-      <div class="container mt-3 relative group">
-        <img
-          src="https://plus.unsplash.com/premium_photo-1747290111904-3be22997621e?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          class="w-full max-h-[450px] object-cover rounded-md " id="post-img" />
-    
-          <i class="fa-solid fa-heart text-red-500 text-3xl drop-shadow-lg absolute top-1/2 left-1/2 opacity-0 transition-all duration-300 scale-50" id="heart-icon"></i>
-      </div>
-  
-      <!-- Actions -->
-      <div class="flex items-center justify-between px-4 pt-3">
-        <div class="all-icons flex items-center gap-4">
-          <button class="hover:text-gray-500"><i class="fa-regular fa-heart text-2xl transition-all duration-200" id="heart-icon-second"></i></button>
-          <button class="hover:text-gray-500"><i class="fa-regular fa-comment text-2xl"></i></button>
-          <button class="hover:text-gray-500"><i class="fa-regular fa-paper-plane text-2xl"></i></button>
-        </div>
-        <button class="hover:text-gray-500"><i class="fa-regular fa-bookmark text-2xl"></i></button>
-      </div>
-      <!-- Likes -->
-      <div class="px-4 pt-1">
-        <span class="font-semibold text-sm">10,117 likes</span>
-      </div>
-      <!-- Caption -->
-      <div class="px-4 pt-1 pb-2">
-        <span class="font-semibold text-sm">ericjanickifitness</span>
-        <span class="text-sm">A Beautiful View<span class="text-gray-500"> ...more</span></span>
-        <div class="text-gray-500 text-xs mt-1 cursor-pointer">View all 60 comments</div>
-        <div class="post-details flex items-center mt-2">
-          <input type="text" placeholder="Add a comment..."
-            class="flex-1 border-none outline-none text-sm bg-transparent comment-input" />
-          <button class="post-icon text-blue-500 text-xs font-semibold opacity-0 cursor-pointer hover:text-black">Post</button>
-          <!--By Default hide this button, unhide it when user click om the input field// -->
-          <button class="text-blue-500 text-xs font-semibold ml-2"><i
-              class=" fa-regular fa-face-smile text-black hover:text-gray-600 "></i></button>
+          <span class="text-xs text-gray-500">WNRS Circle Training Facility • 18h</span>
         </div>
       </div>
+      <button class="text-gray-500 hover:text-gray-700">
+        <i class="fa-solid fa-ellipsis"></i>
+      </button>
     </div>
 
-
-    <!-- Second Posts -->
-    <div class="bg-white w-full max-w-md mx-auto mt-6 rounded-lg shadow-md border border-gray-200">
-      <!-- Header -->
-      <div class="flex items-center justify-between px-4 pt-4">
-        <div class="flex items-center gap-3">
-          <img src="../images/dp.jpg" class="w-10 h-10 rounded-full object-cover border-2 border-pink-500" />
-          <div>
-            <div class="flex items-center gap-1">
-              <span class="font-semibold text-sm">akram_0</span>
-              <img src="../images/Instagrame-Blue-tick.png" class="w-4 h-4" alt="">
-            </div>
-            <span class="text-xs text-gray-500">WNRS Circle Training Facility • 18h</span>
-        <!-- Post Image -->
-        <div class="mt-3">
-          <% if (post.video) { %>
-            <div class="w-full h-full object-cover relative">
-              <video class="w-full h-full object-cover">
-                <source src="data:video/mp4;base64,<%= post.video?.toString('base64') %>" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
-              <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
-            </div>
-            <% } else { %>
-              <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>" alt="Post Image"
-                class="w-full h-full object-cover" />
-              <% } %>
-
-
+    <!-- Post Image/Video -->
+    <div class="container mt-3 relative group">
+      <% if (post.video) { %>
+        <div class="w-full h-full object-cover relative">
+          <video class="w-full h-full object-cover" controls>
+            <source src="data:video/mp4;base64,<%= post.video.toString('base64') %>" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
         </div>
-        <!-- Actions -->
-        <div class="flex items-center justify-between px-4 pt-3">
-          <div class="flex items-center gap-4">
-            <button onclick="like(this,'<%=post._id%>')" class="hover:text-gray-500"><i
-                class="fa-regular fa-heart text-2xl"></i></button>
-            <button onclick="openPost(this,'<%=post._id%>')" class="hover:text-gray-500"><i
-                class="fa-regular fa-comment text-2xl"></i></button>
-            <button class="hover:text-gray-500"><i class="fa-regular fa-paper-plane text-2xl"></i></button>
-          </div>
-          <button class="hover:text-gray-500"><i class="fa-regular fa-bookmark text-2xl"></i></button>
-        </div>
-        <!-- Likes -->
-        <div class="px-4 pt-1">
-          <span onclick="openLike(this,'<%=post._id%>')" class="font-semibold text-sm">
-            <%=post.like.length%> likes
-          </span>
-        </div>
+      <% } else if (post.image) { %>
+        <img src="data:image/jpeg;base64,<%= post.image.toString('base64') %>" alt="Post Image"
+          class="w-full max-h-[450px] object-cover rounded-md" />
+      <% } else { %>
+        <img src="../images/post.jpg" alt="Default Post" class="w-full max-h-[450px] object-cover rounded-md" />
+      <% } %>
+      <i class="fa-solid fa-heart text-red-500 text-3xl drop-shadow-lg absolute top-1/2 left-1/2 opacity-0 transition-all duration-300 scale-50 heart-icon"></i>
+    </div>
 
-        <!-- Caption -->
-        <div class="px-4 pt-1 pb-2">
-          <span class="font-semibold text-sm">
-            <%=post.userId.firstName%>
-          </span>
-          <span class="text-sm">
-            <%=post.caption%><span class="text-gray-500"></span>
-          </span>
-          <div onclick="openPost(this,'<%=post._id%>')" class="text-gray-500 text-xs mt-1 cursor-pointer">
-            <% if(post.comments.length>0){%>
-              View all <%=post.comments.length%>
-                comments
-
-                <% }%>
-          </div>
-        </div>
-        <button class="text-gray-500 hover:text-gray-700">
-          <i class="fa-solid fa-ellipsis"></i>
+    <!-- Actions -->
+    <div class="flex items-center justify-between px-4 pt-3">
+      <div class="all-icons flex items-center gap-4">
+        <button onclick="like(this,'<%= post._id %>')" class="hover:text-gray-500">
+          <i class="fa-regular fa-heart text-2xl transition-all duration-200 heart-icon-second"></i>
+        </button>
+        <button onclick="openPost(this,'<%= post._id %>')" class="hover:text-gray-500">
+          <i class="fa-regular fa-comment text-2xl"></i>
+        </button>
+        <button class="hover:text-gray-500">
+          <i class="fa-regular fa-paper-plane text-2xl"></i>
         </button>
       </div>
+      <button class="hover:text-gray-500">
+        <i class="fa-regular fa-bookmark text-2xl"></i>
+      </button>
+    </div>
 
-      <!--  Post Image -->
-      <div class="mt-3">
-        <img src="../images/post2.jpg" class="w-full max-h-[450px] object-cover rounded-md" />
+    <!-- Likes -->
+    <div class="px-4 pt-1">
+      <span onclick="openLike(this,'<%= post._id %>')" class="font-semibold text-sm">
+        <%= post.like.length %> likes
+      </span>
+    </div>
+
+    <!-- Caption -->
+    <div class="px-4 pt-1 pb-2">
+      <span class="font-semibold text-sm"><%= post.userId.firstName %></span>
+      <span class="text-sm"><%= post.caption %><span class="text-gray-500"> ...more</span></span>
+      <div onclick="openPost(this,'<%= post._id %>')" class="text-gray-500 text-xs mt-1 cursor-pointer">
+        <% if (post.comments.length > 0) { %>
+          View all <%= post.comments.length %> comments
+        <% } %>
       </div>
-      <!-- Actions -->
-      <div class="flex items-center justify-between px-4 pt-3">
-        <div class="flex items-center gap-4">
-          <button class="hover:text-gray-500"><i class="fa-regular fa-heart text-2xl"></i></button>
-          <button class="hover:text-gray-500"><i class="fa-regular fa-comment text-2xl"></i></button>
-          <button class="hover:text-gray-500"><i class="fa-regular fa-paper-plane text-2xl"></i></button>
-        </div>
-        <button class="hover:text-gray-500"><i class="fa-regular fa-bookmark text-2xl"></i></button>
-      </div>
-      <!-- Likes -->
-      <div class="px-4 pt-1">
-        <span class="font-semibold text-sm">10,117 likes</span>
-      </div>
-      <!-- Caption -->
-      <div class="px-4 pt-1 pb-2">
-        <span class="font-semibold text-sm">akram_0</span>
-        <span class="text-sm">👀❤️<span class="text-gray-500"> ...more</span></span>
-        <div class="text-gray-500 text-xs mt-1 cursor-pointer">View all 60 comments</div>
-        <div class="flex items-center mt-2">
-          <input type="text" placeholder="Add a comment..."
-            class="flex-1 border-none outline-none text-sm bg-transparent" />
-          <button class="text-blue-500 text-xs font-semibold">Post</button>
-          <!--By Default hide this button, unhide it when user click om the input field// -->
-          <button class="text-blue-500 text-xs font-semibold ml-2"><i
-              class="fa-regular fa-face-smile text-black hover:text-gray-600"></i></button>
-        </div>
+      <div class="post-details flex items-center mt-2">
+        <input type="text" placeholder="Add a comment..."
+          class="flex-1 border-none outline-none text-sm bg-transparent comment-input" />
+        <button class="post-icon text-blue-500 text-xs font-semibold opacity-0 cursor-pointer hover:text-black">Post</button>
+        <button class="text-blue-500 text-xs font-semibold ml-2">
+          <i class="fa-regular fa-face-smile text-black hover:text-gray-600"></i>
+        </button>
       </div>
     </div>
   </div>
+  <% }) %>
 
-          <div class="px-4 pt-1 pb-2">
-            <div class="flex items-center mt-2">
-              <input type="text" placeholder="Add a comment..."
-                class="commentContent flex-1 border-none outline-none text-sm bg-transparent" />
-              <p onclick="addCommentFromHome(this, '<%=post._id%>')"
-                class="text-blue-500 text-xs font-semibold cursor-pointer">Post</p>
-              <!--By Default hide this button, unhide it when user click om the input field// -->
-              <p class="text-blue-500 text-xs font-semibold ml-2"><i
-                  class="fa-regular fa-face-smile text-black hover:text-gray-600"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <% })%>
-  </div>
   <div id="likedUser" class="absolute w-[20vw] h-[50vh] bg-black top-[20vh] left-[40vw] hidden">
-    <div>
-
-    </div>
+    <div></div>
     <div></div>
   </div>
-  <%- include("./partials/openPost")%>
-    <%- include("./partials/footer") %>
+  <%- include("./partials/openPost") %>
+  <%- include("./partials/footer") %>

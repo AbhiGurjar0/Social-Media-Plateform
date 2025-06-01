@@ -225,56 +225,61 @@
 
 
 // For heart animation on double click
-var con = document.querySelector(".container");
-
-var post_img = document.querySelector("#post-image");
-
-con.addEventListener("dblclick", function (e) {    
-    var heart = document.querySelector("#heart-icon");
-    heart.classList.remove('scale-50', 'opacity-0');
-    heart.classList.add('scale-110', 'opacity-80');
-    setTimeout(function () {
-        heart.classList.remove('scale-110', 'opacity-80');
-        heart.classList.add('scale-110', 'opacity-0');
-    },900);
-    secHeart.classList.add('text-red-500');
-    secHeart.classList.remove('fa-regular');
-    secHeart.classList.add('fa-solid');
+document.querySelectorAll('.container').forEach(function(con) {
+    con.addEventListener("dblclick", function (e) {
+        var heart = con.querySelector('.heart-icon');
+        if (heart) {
+            heart.classList.remove('scale-50', 'opacity-0');
+            heart.classList.add('scale-110', 'opacity-80');
+            setTimeout(function () {
+                heart.classList.remove('scale-110', 'opacity-80');
+                heart.classList.add('scale-110', 'opacity-0');
+            },900);
+        }
+        var secHeart = con.parentElement.querySelector('.heart-icon-second');
+        if (secHeart) {
+            secHeart.classList.add('text-red-500');
+            secHeart.classList.remove('fa-regular');
+            secHeart.classList.add('fa-solid');
+        }
+    });
 });
 
-var con2 = document.querySelector('.all-icons')
-var secHeart = document.querySelector("#heart-icon-second");
-
-let count = 0;
-con2.addEventListener("click", function (e) {
-    
-    if(count === 0) {
-        secHeart.classList.add('text-red-500');
-    secHeart.classList.remove('fa-regular');
-    secHeart.classList.add('fa-solid');
-    count = 1;
-    }else {
-        secHeart.classList.remove('text-red-500');
-        secHeart.classList.add('fa-regular');
-        secHeart.classList.remove('fa-solid');
-        count = 0;
-    }
-
-    
+document.querySelectorAll('.all-icons').forEach(function(con2) {
+    let count = 0;
+    var secHeart = con2.querySelector('.heart-icon-second');
+    con2.addEventListener("click", function (e) {
+        if (secHeart) {
+            if(count === 0) {
+                secHeart.classList.add('text-red-500');
+                secHeart.classList.remove('fa-regular');
+                secHeart.classList.add('fa-solid');
+                count = 1;
+            } else {
+                secHeart.classList.remove('text-red-500');
+                secHeart.classList.add('fa-regular');
+                secHeart.classList.remove('fa-solid');
+                count = 0;
+            }
+        }
+    });
 });
 
 
 // For showing the post options on click
-var cmtInput = document.querySelector('.comment-input');
-var postIcon = document.querySelector(".post-icon");
-cmtInput.addEventListener("input", function (e) {
-    if(cmtInput.value.trim() === ""){
-        postIcon.classList.add("opacity-0");
-        postIcon.classList.remove("opacity-100");
-    }else{
-        postIcon.classList.remove("opacity-0");
-        postIcon.classList.add("opacity-100");
-    }
+document.querySelectorAll('.comment-input').forEach(function(cmtInput) {
+    var postIcon = cmtInput.parentElement.querySelector(".post-icon");
+    cmtInput.addEventListener("input", function (e) {
+        if (postIcon) {
+            if(cmtInput.value.trim() === ""){
+                postIcon.classList.add("opacity-0");
+                postIcon.classList.remove("opacity-100");
+            }else{
+                postIcon.classList.remove("opacity-0");
+                postIcon.classList.add("opacity-100");
+            }
+        }
+    });
 });
 
 
