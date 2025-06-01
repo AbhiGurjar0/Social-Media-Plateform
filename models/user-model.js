@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema(
     {
+        profilePic: Buffer,
         firstName: {
             type: String,
             required: true,
@@ -21,7 +22,7 @@ const userSchema = new mongoose.Schema(
             minlength: 8,
         },
         contact: Number,
-        picture: String,
+
         role: {
             type: String,
             enum: ["user", "admin"],
@@ -30,10 +31,32 @@ const userSchema = new mongoose.Schema(
         posts: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Post'
+                ref: 'Post',
+                required: true,
+            }
+        ],
+        like: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Like',
+
+        }],
+        comments: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comment',
+
+        }],
+        followers: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Follower',
+            }
+        ],
+        following: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Follower',
             }
         ]
-        ,
     }
 );
 
