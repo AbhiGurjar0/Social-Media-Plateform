@@ -7,18 +7,23 @@
         <form action="/createPost" method="POST" enctype="multipart/form-data"
             class="second-mainDiv h-auto w-full flex gap-12 justify-center ">
             <div
-                class="photo-upload h-[18vw] w-[35vw] border border-gray-300 flex flex-col items-center justify-center rounded-xl">
-                <div class="flex flex-col items-center">
-                    <div class="flex flex-col items-center">
-                        <i class="fa-solid fa-cloud-arrow-up text-4xl text-gray-400 mb-4"></i>
-                        <p class="text-gray-500 mb-1 text-xl">Drag and drop media here</p>
-                        <p class="text-gray-500 mb-4 text-[13px]">or click to browse files</p>
-                    </div>
+                class="photo-upload h-[38vw] w-[35vw] border border-gray-300 flex flex-col items-center justify-center rounded-xl relative overflow-hidden">
+
+                <!-- Image Preview (Initially Hidden) -->
+                <img id="imagePreview" src="" alt="Preview"
+                    class="absolute inset-0 w-full h-full object-cover object-center hidden z-10 rounded-xl" />
+
+                <!-- Upload UI -->
+                <div class="flex flex-col items-center z-0" id="uploadText">
+                    <i class="fa-solid fa-cloud-arrow-up text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-gray-500 mb-1 text-xl">Drag and drop media here</p>
+                    <p class="text-gray-500 mb-4 text-[13px]">or click to browse files</p>
                     <label for="photo"
                         class="cursor-pointer px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 mb-4">
                         Choose File
                     </label>
-                    <input type="file" id="photo" name="photo" accept="image/*" class="hidden" onchange="">
+                    <input type="file" id="photo" name="media" accept="image/*" class="hidden"
+                        onchange="previewSelectedImage(event)">
                 </div>
             </div>
 

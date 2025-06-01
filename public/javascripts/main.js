@@ -223,7 +223,7 @@ async function openPost(element, postId) {
     let likeCount = document.getElementById("likeCount");
     const commentInput = document.getElementById('commentContent');
     commentInput.value = "";
-    document.body.classList.add("overflow-hidden");// like count when post is opened
+    document.body.classList.add("overflow-hidden");
     post.dataset.postId = postId;
     const response = await fetch(`/post/postDetails/${postId}`, {
         method: "POST",
@@ -258,15 +258,13 @@ async function openPost(element, postId) {
     let postUserProfile = document.getElementById("postUserProfile");
     postUserProfile.innerHTML = "";
     postUserProfile.innerHTML = `
-    <img src="${data.createdBy.userProfile}" class="w-10 h-10 rounded-full object-cover border-2 border-pink-500" />
-              <div>
-                <div class="flex items-center gap-1">
-                  <span class="font-semibold text-sm">
-                    ${data.createdBy.userName}
-                  </span>
-                </div>
-                <span class="text-xs text-gray-500">follow</span>
-              </div>`;
+  <img src="${data.createdBy.userProfile}" class="w-10 h-10 rounded-full object-cover border-2 border-pink-500" />
+  <div class="flex items-center gap-1">
+    <span class="font-semibold text-md">${data.createdBy.userName}</span>
+    <span onclick="followUser('${data.createdBy.userId}')" class="text-md text-blue-500 pl-2 cursor-pointer">Follow</span>
+  </div>
+`;
+
 
     // All comments
     postComment.innerHTML = "";
@@ -409,5 +407,124 @@ async function addCommentFromHome(button, postId) {
 }
 
 
-// see others profile
+// manage post(delete,edit etc.)
 
+async function postOptions(element) {
+    let fullPage = document.getElementById("postManagePopUp");
+    fullPage.classList.remove("hidden");
+    let options = document.getElementById("options");
+    document.body.classList.add("overflow-hidden");
+
+    setTimeout(() => {
+        document.addEventListener("click", handleClick);
+    }, 10)
+}
+
+function handleClick(e) {
+    let fullPage = document.getElementById("postManagePopUp");
+    let options = document.getElementById("options");
+    if (!fullPage.classList.contains("hidden") && !options.contains(e.target)) {
+        fullPage.classList.add("hidden");
+        document.body.classList.remove("overflow-hidden");
+        document.removeEventListener("click", handleClick);
+
+    }
+
+}
+
+//post delete
+async function deletePost(element) {
+    let openedPost = document.getElementById("post");
+    let postId = openedPost.dataset.postId;
+    await fetch("/post/delete", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ postId }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            window.location.href = "/main";
+
+
+        })
+        .catch(err => {
+            console.log(" Post deletion failed")
+        })
+}
+
+//close popup
+function closePopUp(element) {
+    let fullPage = document.getElementById("postManagePopUp");
+    let options = document.getElementById("options");
+    fullPage.classList.add("hidden");
+    document.body.classList.remove("overflow-hidden");
+    document.removeEventListener("click", handleClick);
+}
+
+//goto post
+
+function gotoPost(element) {
+    let openedPost = document.getElementById("post");
+    let postId = openedPost.dataset.postId;
+
+    // Redirect using URL with query param
+    window.location.href = `/postDetails?postId=${postId}`;
+}
+
+
+
+//profile picture
+
+function previewImage(event) {
+    const input = event.target;
+    const preview = document.getElementById('profilePreview');
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            preview.src = e.target.result;
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+
+    // Optional: auto-submit the form
+    input.form.submit();
+}
+//create Post  preview
+function previewSelectedImage(event) {
+    const input = event.target;
+    const preview = document.getElementById("imagePreview");
+    const uploadText = document.getElementById("uploadText");
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            preview.src = e.target.result;
+            preview.classList.remove("hidden");
+            uploadText.classList.add("hidden");
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+//follow user
+
+async function followUser(userId) {
+    let response = await fetch("/user/addFollower", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+
+        },
+        body: JSON.stringify({ userId }),
+    })
+    let data = await response.json();
+
+
+}

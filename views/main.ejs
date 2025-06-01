@@ -3,22 +3,23 @@
         <div id="main-content" class="w-full min-h-screen grid grid-cols-[20vw_1fr] ">
             <div class="w-[20vw] h-full fixed z-50"> <%- include("./partials/sidebar") %></div>
             <div id="profile" class="tabs w-[80vw] min-h-screen  box-border px-5 col-start-2 mb-2">
-                <!-- <nav class="flex justify-end items-center p-4 text-[12px]">
-                <div class="flex items-center">
-                    <a href="/createPost"
-                        class="w-[110px] h-[35px] border-1 flex justify-center items-center rounded px-2 bg-white text-gray-700 hover:bg-b cursor-pointer">
-                        <i class="fa-solid fa-plus mr-2"></i>Create Post
-                    </a>
-                    <i class="fa-solid fa-gear mr-2 ml-3 text-[18px] p-3 text-gray-500 cursor-pointer"></i>
-                    <img class="h-7 mr-5 cursor-pointer" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                        alt="">
-                </div>
-            </nav> -->
                 <div class="main-content flex ">
                     <div class="pic-div p-8">
-                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt=""
-                            class="h-30 w-30 rounded-full">
+                        <form action="/uploadPic" method="POST" enctype="multipart/form-data">
+                            <div id="photo" class="relative w-32 h-32">
+                                <label for="photoInput" class="cursor-pointer w-full h-full block">
+                                    <!-- Image preview will be here -->
+                                    <img id="profilePreview"
+                                        src="data:image/jpeg;base64,<%=user.profilePic?.toString('base64') %>"
+                                        alt="Profile"
+                                        class="h-32 w-32 rounded-full object-cover object-top border-2 border-gray-400 hover:opacity-80 transition">
+                                </label>
+                                <input type="file" id="photoInput" name="media" accept="image/*" class="hidden"
+                                    onchange="previewImage(event)">
+                            </div>
+                        </form>
                     </div>
+
                     <div class="username-div mt-9 ml-1">
                         <h1 class="text-[20px] font-bold mb-2">
                             <%=user.firstName%>
@@ -30,9 +31,12 @@
                             <span>
                                 <%=posts?posts.length:'0'%> <span class="text-gray-300">Posts</span>
                             </span>
-                            <a class="cursor-pointer text-shadow-black" href="/user/followers"><span>3321 <span
-                                        class="text-gray-300">Followers</span></span></a>
-                            <span>1543 <span class="text-gray-300">Following</span></span>
+                            <a class="cursor-pointer text-shadow-black" href="/user/followers"><span>
+                                    <%=user.followers.length%> <span class="text-gray-300">Followers</span>
+                                </span></a>
+                            <span>
+                                <%=user.followers.length%> <span class="text-gray-300">Following</span>
+                            </span>
                         </div>
                     </div>
                     <div class="edit-profile-div flex justify-end items-center mt-9 text-[11px]">
@@ -97,30 +101,31 @@
 
                 <div class="posts-section flex-wrap box-border flex justify-start gap-2 h-[20px] w-full mt-4">
                     <% posts.forEach((post)=>{%>
-                       
-                            <div onclick="openPost(this,'<%=post._id%>')" class="post-card w-[270px] h-[300px] bg-gray-900  rounded-lg "
-                                content-type="<%= post.video ? 'reels' : 'posts' %>">
-                                <div class=" ..."></div>
-                                <% if (post.video) { %>
-                                    <div class="w-full h-full object-cover relative">
-                                        <video paused class="w-full h-full object-cover">
-                                            <source src="data:video/mp4;base64,<%= post.video?.toString('base64') %>"
-                                                type="video/mp4">
-                                            Your browser does not support the video tag.
-                                        </video>
-                                        <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
-                                    </div>
-                                    <% } else { %>
-                                        <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>"
-                                            alt="Post Image" class="w-full h-full object-cover" />
-                                        <% } %>
-                            </div>
-                      
+
+                        <div onclick="openPost(this,'<%=post._id%>')"
+                            class="post-card w-[270px] h-[300px] bg-gray-900  rounded-lg "
+                            content-type="<%= post.video ? 'reels' : 'posts' %>">
+                            <div class=" ..."></div>
+                            <% if (post.video) { %>
+                                <div class="w-full h-full object-cover relative">
+                                    <video paused class="w-full h-full object-cover">
+                                        <source src="data:video/mp4;base64,<%= post.video?.toString('base64') %>"
+                                            type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                    <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
+                                </div>
+                                <% } else { %>
+                                    <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>"
+                                        alt="Post Image" class="w-full h-full object-cover" />
+                                    <% } %>
+                        </div>
+
 
                         <%});%>
                 </div>
             </div>
         </div>
         <%- include("./partials/openPost")%>
-        <script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
-        <%- include("./partials/footer") %>
+            <script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
+            <%- include("./partials/footer") %>

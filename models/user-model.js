@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema(
     {
+        profilePic: Buffer,
         firstName: {
             type: String,
             required: true,
@@ -21,7 +22,7 @@ const userSchema = new mongoose.Schema(
             minlength: 8,
         },
         contact: Number,
-        picture: String,
+
         role: {
             type: String,
             enum: ["user", "admin"],
@@ -44,6 +45,18 @@ const userSchema = new mongoose.Schema(
             ref: 'Comment',
 
         }],
+        followers: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Follower',
+            }
+        ],
+        following: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Follower',
+            }
+        ]
     }
 );
 

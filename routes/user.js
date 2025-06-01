@@ -6,6 +6,7 @@ const isLoggedIn = require("../middlewares/isLoggedIn");
 const upload = require("../config/multer-config");
 const likeModel = require("../models/like-model");
 const commentModel = require("../models/comments-model")
+const followerModel = require("../models/follow-model")
 
 //profile page
 router.get("/main", isLoggedIn, async (req, res) => {
@@ -36,7 +37,7 @@ router.post("/createPost", upload.single('media'), isLoggedIn, async (req, res) 
         // console.log(req.file);
 
         let post = await postModel.create({
-            userId:req.user._id,
+            userId: req.user._id,
             image: file?.mimetype.startsWith("image/") ? file.buffer : undefined,
             video: file?.mimetype.startsWith("video/") ? file.buffer : undefined,
             caption,
@@ -206,6 +207,61 @@ router.get("/user/:userId", async (req, res) => {
     }
 })
 
+//delete post
+
+router.post("/post/delete", isLoggedIn, async (req, res) => {
+    let { postId } = req.body;
+    let post = await postModel.findOneAndDelete({ _id: postId });
+    res.json("post Successfulyy Deleted");
+
+})
+
+//upload profile picture
+router.post("/uploadPic", upload.single("media"), isLoggedIn, async (req, res) => {
+    try {
+        await userModel.findOneAndUpdate(
+            { _id: req.user._id },
+            { profilePic: req.file.buffer }
+        );
+
+        res.redirect("/main");
+    } catch (err) {
+        console.error("Error uploading profile picture:", err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+//Followers
+
+router.post("/user/addFollower", isLoggedIn, async (req, res) => {
+    try {
+        let { userId } = req.body;
+        if (req.user._id.equals(userId)) {
+            return;
+        }
+        await followerModel.create({
+            follower: req.user._id,
+            following: userId,
+            createdAt: Date.now(),
+        });
+
+        await userModel.findByIdAndUpdate(req.user._id, {
+            $addToSet: { following: userId },
+        });
+
+        await userModel.findByIdAndUpdate(userId, {
+            $addToSet: { follower: req.user._id },
+        });
+
+        res.json({ message: "Follow successful" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+
+
 
 //login/signup page
 router.get("/signin", (req, res) => {
@@ -227,11 +283,21 @@ router.get("/editProfile", (req, res) => {
     res.render("editProfile");
 })
 
+//postDetails
+
+router.get("/postDetails", async (req, res) => {
+    let { postId } = req.query;
+    let post = await postModel.findOne({ _id: postId }).populate("userId");
+    res.render("postdetails", { post });
+});
 
 //home page
 router.get("/", async (req, res) => {
     try {
-        let posts = await postModel.find({}).populate("userId");
+        let posts = await postModel.find({})
+            .populate("userId")
+            .populate("comments");
+
         posts = posts.filter(post => post.userId); // remove posts with missing user
         res.render("home", { posts });
     } catch (err) {
