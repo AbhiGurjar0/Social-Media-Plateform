@@ -102,9 +102,9 @@
 // document.addEventListener('DOMContentLoaded', () => {
 //     const input = document.getElementById('photo');
 //     const previewContainer = document.getElementById('photo-upload');
-    // const cropBtn = document.getElementById('crop-btn');
-    // const canvas = document.getElementById('canvas');
-    // let cropper;
+// const cropBtn = document.getElementById('crop-btn');
+// const canvas = document.getElementById('canvas');
+// let cropper;
 // document.addEventListener('DOMContentLoaded', () => {
 //     const input = document.getElementById('photo');
 //     const previewContainer = document.getElementById('photo-upload');
@@ -112,49 +112,49 @@
 //     // const canvas = document.getElementById('canvas');
 //     // let cropper;
 
-    // input.addEventListener('change', function () {
-    //     const file = input.files[0];
-    //     if (!file) return;
+// input.addEventListener('change', function () {
+//     const file = input.files[0];
+//     if (!file) return;
 //     input.addEventListener('change', function () {
 //         const file = input.files[0];
 //         if (!file) return;
 
-    //     const fileType = file.type;
-    //     previewContainer.innerHTML = ''; // Clear previous
-    //     // cropBtn.style.display = 'none';
+//     const fileType = file.type;
+//     previewContainer.innerHTML = ''; // Clear previous
+//     // cropBtn.style.display = 'none';
 //         const fileType = file.type;
 //         previewContainer.innerHTML = ''; // Clear previous
 //         // cropBtn.style.display = 'none';
 
-    //     const url = URL.createObjectURL(file);
+//     const url = URL.createObjectURL(file);
 //         const url = URL.createObjectURL(file);
 
-    //     if (fileType.startsWith('image/')) {
-    //         const img = document.createElement('img');
-    //         img.src = url;
-    //         previewContainer.appendChild(img);
+//     if (fileType.startsWith('image/')) {
+//         const img = document.createElement('img');
+//         img.src = url;
+//         previewContainer.appendChild(img);
 //         if (fileType.startsWith('image/')) {
 //             const img = document.createElement('img');
 //             img.src = url;
 //             previewContainer.appendChild(img);
 
-            // img.onload = () => {
-            //     if (cropper) {
-            //         cropper.destroy(); // Clean up previous cropper instance
-            //     }
-            //     cropper = new Cropper(img, {
-            //         aspectRatio: 1,
-            //         viewMode: 1
-            //     });
-            //     cropBtn.style.display = 'inline';
-            // };
-    //     } else if (fileType.startsWith('video/')) {
-    //         const video = document.createElement('video');
-    //         video.controls = true;
-    //         video.src = url;
-    //         previewContainer.appendChild(video);
-    //     }
-    //     document.getElementById("next").classList.remove("hidden");
+// img.onload = () => {
+//     if (cropper) {
+//         cropper.destroy(); // Clean up previous cropper instance
+//     }
+//     cropper = new Cropper(img, {
+//         aspectRatio: 1,
+//         viewMode: 1
+//     });
+//     cropBtn.style.display = 'inline';
+// };
+//     } else if (fileType.startsWith('video/')) {
+//         const video = document.createElement('video');
+//         video.controls = true;
+//         video.src = url;
+//         previewContainer.appendChild(video);
+//     }
+//     document.getElementById("next").classList.remove("hidden");
 //             // img.onload = () => {
 //             //     if (cropper) {
 //             //         cropper.destroy(); // Clean up previous cropper instance
@@ -174,20 +174,20 @@
 //         document.getElementById("next").classList.remove("hidden");
 
 
-    // });
+// });
 //     });
 
 // cropBtn.addEventListener('click', function () {
 //     if (!cropper) return;
 
-    //     const croppedCanvas = cropper.getCroppedCanvas();
-    //     canvas.width = croppedCanvas.width;
-    //     canvas.height = croppedCanvas.height;
-    //     const ctx = canvas.getContext('2d');
-    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //     ctx.drawImage(croppedCanvas, 0, 0);
-    //     canvas.style.display = 'block';
-    // });
+//     const croppedCanvas = cropper.getCroppedCanvas();
+//     canvas.width = croppedCanvas.width;
+//     canvas.height = croppedCanvas.height;
+//     const ctx = canvas.getContext('2d');
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
+//     ctx.drawImage(croppedCanvas, 0, 0);
+//     canvas.style.display = 'block';
+// });
 // });
 // window.postOptionsShow = function (next) {
 //     let post = document.getElementById("post");
@@ -225,7 +225,7 @@
 
 
 // For heart animation on double click
-document.querySelectorAll('.container').forEach(function(con) {
+document.querySelectorAll('.container').forEach(function (con) {
     con.addEventListener("dblclick", function (e) {
         var heart = con.querySelector('.heart-icon');
         if (heart) {
@@ -234,7 +234,7 @@ document.querySelectorAll('.container').forEach(function(con) {
             setTimeout(function () {
                 heart.classList.remove('scale-110', 'opacity-80');
                 heart.classList.add('scale-110', 'opacity-0');
-            },900);
+            }, 900);
         }
         var secHeart = con.parentElement.querySelector('.heart-icon-second');
         if (secHeart) {
@@ -245,12 +245,12 @@ document.querySelectorAll('.container').forEach(function(con) {
     });
 });
 
-document.querySelectorAll('.all-icons').forEach(function(con2) {
+document.querySelectorAll('.all-icons').forEach(function (con2) {
     let count = 0;
     var secHeart = con2.querySelector('.heart-icon-second');
     con2.addEventListener("click", function (e) {
         if (secHeart) {
-            if(count === 0) {
+            if (count === 0) {
                 secHeart.classList.add('text-red-500');
                 secHeart.classList.remove('fa-regular');
                 secHeart.classList.add('fa-solid');
@@ -267,14 +267,14 @@ document.querySelectorAll('.all-icons').forEach(function(con2) {
 
 
 // For showing the post options on click
-document.querySelectorAll('.comment-input').forEach(function(cmtInput) {
+document.querySelectorAll('.comment-input').forEach(function (cmtInput) {
     var postIcon = cmtInput.parentElement.querySelector(".post-icon");
     cmtInput.addEventListener("input", function (e) {
         if (postIcon) {
-            if(cmtInput.value.trim() === ""){
+            if (cmtInput.value.trim() === "") {
                 postIcon.classList.add("opacity-0");
                 postIcon.classList.remove("opacity-100");
-            }else{
+            } else {
                 postIcon.classList.remove("opacity-0");
                 postIcon.classList.add("opacity-100");
             }
@@ -307,7 +307,17 @@ async function like(element, postId) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            const postContainer = element.closest('.post-container');
+            const likeCountSpan = postContainer.querySelector('.likeCount');
+            let currentCount = parseInt(likeCountSpan.textContent.trim(), 10);
+            if (data == "liked") {
+                likeCountSpan.textContent = currentCount + 1;
+            }
+            else {
+                likeCountSpan.textContent = currentCount - 1;
+            }
+
+
         })
         .catch((err) => {
             console.log(err);

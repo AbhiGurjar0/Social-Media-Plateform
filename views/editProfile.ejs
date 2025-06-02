@@ -1,279 +1,84 @@
 <%- include("./partials/header") %>
 
-  <main class="w-full h-[100vh]"> 
+  <main class="w-full h-[100vh]">
     <!-- NavBar Div-->
     <%- include("./partials/homeHeader") %>
 
-    <div class=" flex h-[92vh]">
-      <!-- Left side bar -->
-      <div class="w-[18vw]  border-r-[0.2px] shadow-xl h-[100%] pl-4 space-y-6">
-        <!-- top Account setting div -->
-        <div>
-          <h1 class="font-semibold text-lg">Account Setting</h1>
+      <div class=" flex h-[92vh]">
+        <!-- Left side bar -->
+        <div class="w-[18vw]  border-r-[0.2px] shadow-xl h-[100%] pl-4 space-y-6">
+          <!-- top Account setting div -->
+          <div>
+            <h1 class="font-semibold text-lg">Account Setting</h1>
+          </div>
+          <!-- bottom left side bar -->
+          <div class=" space-y-4">
+            <div
+              class=" hover:shadow-md transition ease-in-out duration-500 flex gap-2 items-center text-amber-400 bg-gray-50 py-2">
+              <i class="fa-solid fa-user"></i>
+              <p>Edit Profile</p>
+            </div>
+            <div class=" hover:shadow-md transition ease-in-out duration-500 flex gap-2 items-center py-2">
+              <i class="fa-solid fa-lock"></i>
+              <p>Privacy Settings</p>
+            </div>
+            <div class=" hover:shadow-md transition ease-in-out duration-500 flex gap-2 items-center py-2">
+              <i class="fa-solid fa-bell"></i>
+              <p>Notification Setting</p>
+            </div>
+            <div class=" hover:shadow-md transition ease-in-out duration-500 flex gap-2 items-center py-2">
+              <i class="fa-solid fa-palette"></i>
+              <p>Personal Details</p>
+            </div>
+
+          </div>
+
         </div>
-        <!-- bottom left side bar -->
-        <div class=" space-y-4">
+
+        <!-- main content right side-->
+        <div class="w-[82vw] py-2 h-[100%]  flex flex-col items-center gap-5 overflow-hidden box-border">
+          <h1 class="h-[5vh] font-bold text-2xl w-full  text-center">Edit Profile</h1>
+          <!-- profile area -->
           <div
-            class=" hover:shadow-md transition ease-in-out duration-500 flex gap-2 items-center text-amber-400 bg-gray-50 py-2">
-            <i class="fa-solid fa-user"></i>
-            <p>Edit Profile</p>
+            class="w-[60vw]  hover:shadow-md transition ease-in-out duration-500 flex-col border border-gray-300 rounded-xl flex  h-[50vh]">
+
+            <div class="px-5 py-3">
+              <h1 class="font-bold text-xl">Profile Picture </h1>
+            </div>
+            <div class="flex justify-center flex-col items-center">
+              <div class="w-[10vw] h-[10vw] overflow-hidden rounded-[50%] mb-4">
+                <!-- image should be shown -->
+                <img class=" object-contain object-top "
+                  src="https://images.unsplash.com/photo-1628563694622-5a76957fd09c?q=80&w=2232&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="Profile pic">
+              </div>
+              <div> <!-- thinking of putting button here -->
+                <input class="hidden" type="file" placeholder="Upload Photo" id="upload">
+                <label class="border border-gray-500 border-opacity-0 rounded-sm text-center p-1  px-3"
+                  for="upload">Upload Photo</label>
+              </div>
+            </div>
+
           </div>
-          <div class=" hover:shadow-md transition ease-in-out duration-500 flex gap-2 items-center py-2">
-            <i class="fa-solid fa-lock"></i>
-            <p>Privacy Settings</p>
-          </div>
-          <div class=" hover:shadow-md transition ease-in-out duration-500 flex gap-2 items-center py-2">
-            <i class="fa-solid fa-bell"></i>
-            <p>Notification Setting</p>
-          </div>
-          <div class=" hover:shadow-md transition ease-in-out duration-500 flex gap-2 items-center py-2">
-            <i class="fa-solid fa-palette"></i>
-            <p>Personal Details</p>
+          <!-- personal info are  -->
+          <div
+            class="w-[60vw] border border-gray-300 space-y-1 px-5 py-4 rounded-sm flex-col transition ease-in-out duration-500 flex justify-start hover:shadow-md h-[40vh]">
+            <h1 class="text-2xl font-bold">Personal Information</h1>
+            <p>Name*</p>
+            <input class="p-1.5 border border-gray-300 border-opacity-0 w-[50vw] rounded-md" type="text">
+            <p>Bio*</p>
+            <input class="p-1.5 border border-gray-300 w-[50vw] rounded-md" type="text">
           </div>
 
+          <div class="w-full flex justify-end gap-3 pr-[12vw]">
+            <button
+              class="px-4 hover:shadow-md transition ease-in-out duration-500  py-2 rounded-md bg-zinc-500 text-white">Discard</button>
+            <button
+              class="px-4 hover:shadow-md transition ease-in-out duration-500  py-2 rounded-md  bg-green-300 text-white ">Save</button>
+          </div>
         </div>
 
       </div>
-
-      <!-- main content right side-->
-      <div class="w-[82vw] py-2 h-[100%]  flex flex-col items-center gap-5 overflow-hidden box-border">
-        <h1 class="h-[5vh] font-bold text-2xl w-full  text-center">Edit Profile</h1>
-        <!-- profile area -->
-        <div
-          class="w-[60vw]  hover:shadow-md transition ease-in-out duration-500 flex-col border border-gray-300 rounded-xl flex  h-[50vh]">
-          
-          <div class="px-5 py-3">
-            <h1 class="font-bold text-xl">Profile Picture </h1>
-          </div>
-          <div class="flex justify-center flex-col items-center">
-            <div class="w-[10vw] h-[10vw] overflow-hidden rounded-[50%] mb-4">
-              <!-- image should be shown -->
-              <img class=" object-contain object-top "
-                src="https://images.unsplash.com/photo-1628563694622-5a76957fd09c?q=80&w=2232&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="Profile pic">
-            </div>
-            <div> <!-- thinking of putting button here -->
-              <input class="hidden" type="file" placeholder="Upload Photo" id="upload">
-              <label class="border border-gray-500 border-opacity-0 rounded-sm text-center p-1  px-3"
-                for="upload">Upload Photo</label>
-            </div>
-          </div>
-
-        </div>
-        <!-- personal info are  -->
-        <div
-          class="w-[60vw] border border-gray-300 space-y-1 px-5 py-4 rounded-sm flex-col transition ease-in-out duration-500 flex justify-start hover:shadow-md h-[40vh]">
-          <h1 class="text-2xl font-bold">Personal Information</h1>
-          <p>Name*</p>
-          <input class="p-1.5 border border-gray-300 border-opacity-0 w-[50vw] rounded-md" type="text">
-          <p>Bio*</p>
-          <input class="p-1.5 border border-gray-300 w-[50vw] rounded-md" type="text">
-        </div>
-
-        <div class="w-full flex justify-end gap-3 pr-[12vw]">
-          <button
-            class="px-4 hover:shadow-md transition ease-in-out duration-500  py-2 rounded-md bg-zinc-500 text-white">Discard</button>
-          <button
-            class="px-4 hover:shadow-md transition ease-in-out duration-500  py-2 rounded-md  bg-green-300 text-white ">Save</button>
-        </div>
-      </div>
-
-    </div>
   </main>
-
-
-
-
-
-
-
-
-
-
-  <div class="bg-white w-full max-w-md mx-auto mt-6 rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-    <!-- Header -->
-    <div class="flex items-center justify-between px-4 pt-4">
-      <div class="flex items-center gap-3">
-        <img src="../images/dp.jpg" class="w-10 h-10 rounded-full object-cover border-2 border-pink-500" />
-        <div>
-          <div class="flex items-center gap-1">
-            <span class="font-semibold text-sm">akram_0</span>
-            <img src="../images/Instagrame-Blue-tick.png" class="w-4 h-4" alt="">
-          </div>
-          <span class="text-xs text-gray-500">WNRS Circle Training Facility • 18h</span>
-        </div>
-      </div>
-      <button class="text-gray-500 hover:text-gray-700">
-        <i class="fa-solid fa-ellipsis"></i>
-      </button>
-    </div>
-
-    <!-- comment ssection -->
-    <div class="mt-4 bg-[#232323] rounded-lg mx-4">
-      <main class="text-white bg-black py-6 px-4 rounded-lg space-y-6">
-        <!-- Example Comment -->
-        <div class="flex items-start gap-3 mb-6">
-          <img
-            src="https://plus.unsplash.com/premium_photo-1747290111904-3be22997621e?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt="user" class="w-10 h-10 rounded-full object-cover border-2 border-gray-700" />
-          <div class="flex-1">
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="font-semibold text-sm">madhvi_sh</span>
-              <span class="text-sm opacity-90">Ek hi ilaaj. BLue drum0</span>
-            </div>
-            <div class="flex items-center gap-4 text-xs text-gray-400 mt-1">
-              <span>1w</span>
-              <span>500 likes</span>
-              <a href="#" class="hover:underline">Like</a>
-              <a href="#" class="hover:underline">Reply</a>
-            </div>
-            <div class="flex items-center mt-1 text-xs text-gray-500">
-              <hr class="w-6 mr-2 border-gray-600">
-              <span>View Replies (200)</span>
-            </div>
-          </div>
-          <button class="text-gray-400"><i class="fa-solid fa-heart"></i></button>
-        </div>
-
-        <div class="flex items-start gap-3 mb-6">
-          <img
-            src="https://plus.unsplash.com/premium_photo-1747290111904-3be22997621e?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt="user" class="w-10 h-10 rounded-full object-cover border-2 border-gray-700" />
-          <div class="flex-1">
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="font-semibold text-sm">Sara_2</span>
-              <span class="text-sm opacity-90">I Love Akram Will U marry Me ♥️</span>
-            </div>
-            <div class="flex items-center gap-4 text-xs text-gray-400 mt-1">
-              <span>2d</span>
-              <span>120 likes</span>
-              <a href="#" class="hover:underline">Like</a>
-              <a href="#" class="hover:underline">Reply</a>
-            </div>
-            <div class="flex items-center mt-1 text-xs text-gray-500">
-              <hr class="w-6 mr-2 border-gray-600">
-              <span>View Replies (10)</span>
-            </div>
-          </div>
-          <button class="text-gray-400"><i class="fa-solid fa-heart"></i></button>
-        </div>
-
-        <div class="flex items-start gap-3 mb-6">
-          <img
-            src="https://images.unsplash.com/photo-1611601322175-ef8ec8c85f01?q=80&w=2000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt="user" class="w-10 h-10 rounded-full object-cover border-2 border-gray-700" />
-          <div class="flex-1">
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="font-semibold text-sm">Alice_01</span>
-              <span class="text-sm opacity-90">Abhishek I will do anything for u ♥️ plz marry me...♥️e</span>
-            </div>
-            <div class="flex items-center gap-4 text-xs text-gray-400 mt-1">
-              <span>3d</span>
-              <span>89 likes</span>
-              <a href="#" class="hover:underline">Like</a>
-              <a href="#" class="hover:underline">Reply</a>
-            </div>
-            <div class="flex items-center mt-1 text-xs text-gray-500">
-              <hr class="w-6 mr-2 border-gray-600">
-              <span>View Replies (5)</span>
-            </div>
-          </div>
-          <button class="text-gray-400"><i class="fa-solid fa-heart"></i></button>
-        </div>
-
-
-        <div class="flex items-start gap-3 mb-6">
-          <img
-            src="https://plus.unsplash.com/premium_photo-1747290111904-3be22997621e?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt="user" class="w-10 h-10 rounded-full object-cover border-2 border-gray-700" />
-          <div class="flex-1">
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="font-semibold text-sm">Gappu_Legend</span>
-              <span class="text-sm opacity-90">Abhishek and Akram both are Gay I know them very well ♥️</span>
-            </div>
-            <div class="flex items-center gap-4 text-xs text-gray-400 mt-1">
-              <span>2d</span>
-              <span>120 likes</span>
-              <a href="#" class="hover:underline">Like</a>
-              <a href="#" class="hover:underline">Reply</a>
-            </div>
-            <div class="flex items-center mt-1 text-xs text-gray-500">
-              <hr class="w-6 mr-2 border-gray-600">
-              <span>View Replies (10)</span>
-            </div>
-          </div>
-          <button class="text-gray-400"><i class="fa-solid fa-heart"></i></button>
-        </div>
-
-      </main>
-    </div>
-
-
-
-
-
-    <!-- Actions -->
-    <div class="flex items-center justify-between px-4 pt-3">
-      <div class="flex items-center gap-4">
-        <button class="hover:text-gray-500"><i class="fa-regular fa-heart text-2xl"></i></button>
-        <button class="hover:text-gray-500"><i class="fa-regular fa-comment text-2xl"></i></button>
-        <button class="hover:text-gray-500"><i class="fa-regular fa-paper-plane text-2xl"></i></button>
-      </div>
-      <button class="hover:text-gray-500"><i class="fa-regular fa-bookmark text-2xl"></i></button>
-    </div>
-    <!-- Likes -->
-    <div class="px-4 pt-1">
-      <span class="font-semibold text-sm">10,117 likes</span>
-    </div>
-    <!-- Caption -->
-    <div class="px-4 pt-1 pb-2">
-      <span class="font-semibold text-sm">akram_0</span>
-      <span class="text-sm">👀❤️<span class="text-gray-500"> ...more</span></span>
-      <div class="text-gray-500 text-xs mt-1 cursor-pointer">View all 60 comments</div>
-      <div class="flex items-center mt-2">
-        <input type="text" placeholder="Add a comment..."
-          class="flex-1 border-none outline-none text-sm bg-transparent" />
-        <button class="text-blue-500 text-xs font-semibold">Post</button>
-        <!--By Default hide this button, unhide it when user click om the input field// -->
-        <button class="text-blue-500 text-xs font-semibold ml-2"><i
-            class="fa-regular fa-face-smile text-black hover:text-gray-600"></i></button>
-      </div>
-    </div>
-  </div>
-  </div>
-
-
-
-  </div>
-  <!-- Actions -->
-  <div class="flex items-center justify-between px-4 pt-3">
-    <div class="flex items-center gap-4">
-      <button class="hover:text-gray-500"><i class="fa-regular fa-heart text-2xl"></i></button>
-      <button class="hover:text-gray-500"><i class="fa-regular fa-comment text-2xl"></i></button>
-      <button class="hover:text-gray-500"><i class="fa-regular fa-paper-plane text-2xl"></i></button>
-    </div>
-    <button class="hover:text-gray-500"><i class="fa-regular fa-bookmark text-2xl"></i></button>
-  </div>
-  <!-- Likes -->
-  <div class="px-4 pt-1">
-    <span class="font-semibold text-sm">10,117 likes</span>
-  </div>
-  <!-- Caption -->
-  <div class="px-4 pt-1 pb-2">
-    <span class="font-semibold text-sm">akram_0</span>
-    <span class="text-sm">👀❤️<span class="text-gray-500"> ...more</span></span>
-    <div class="text-gray-500 text-xs mt-1 cursor-pointer">View all 60 comments</div>
-    <div class="flex items-center mt-2">
-      <input type="text" placeholder="Add a comment..."
-        class="flex-1 border-none outline-none text-sm bg-transparent" />
-      <button class="text-blue-500 text-xs font-semibold">Post</button>
-      <!--By Default hide this button, unhide it when user click om the input field// -->
-      <button class="text-blue-500 text-xs font-semibold ml-2"><i
-          class="fa-regular fa-face-smile text-black hover:text-gray-600"></i></button>
-    </div>
-  </div>
-  </div>
-  </div>
-
   <script src="../javascripts/edit.js"></script>
   <%- include("./partials/footer") %>
