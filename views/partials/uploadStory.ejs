@@ -1,0 +1,30 @@
+<div id="storyModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <!-- Clickable outside area (to close) -->
+    <div class="absolute inset-0" id="modalBackdrop"></div>
+
+    <!-- Modal Content -->
+    <div class="relative bg-white p-6 rounded-md w-[90%] max-w-md z-10">
+        <!-- Close Button -->
+        <button id="closeModalBtn" class="absolute top-2 right-2 text-gray-600 hover:text-red-500 text-xl">
+            &times;
+        </button>
+        <!-- Modal Body -->
+        <h2 class="text-xl font-semibold mb-4">Upload Your Story</h2>
+
+        <form class="w-full h-[50vh] bg-white" action="/uploadStory" method="post" enctype="multipart/form-data">
+            <div class="w-full h-[80%] flex justify-center items-center">
+                <input type="file" accept="image/*,video/*" name="media"
+                    class="block  text-sm text-gray-700 border border-gray-300 rounded p-2 mb-4" id="fileInput" />
+            </div>
+            '<button id="uploadBtn"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+                Upload
+            </button>'
+            <!-- File Input -->
+
+        </form>
+
+        <!-- Upload Button -->
+
+    </div>
+</div>

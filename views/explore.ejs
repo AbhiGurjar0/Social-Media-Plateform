@@ -1,32 +1,35 @@
 <%- include("./partials/header") %>
-<%- include("./partials/headerOptions") %>
-    <div class="w-full min-h-screen grid grid-cols-[20vw_1fr]">
+    <div class="w-full fixed h-[8vh] z-999 bg-pink-800 top-0 left-0"><%- include("./partials/headerOptions") %></div>
+
+    <div class="w-full min-h-screen grid grid-cols-[20vw_1fr] absolute top-[9vh]  mb-5">
         <div class="w-[20vw] h-full fixed z-50"> <%- include("./partials/sidebar") %></div>
         <div id="explore" class="tabs w-[80vw] min-h-screen  box-border px-5 col-start-2 mb-2">
             <h1 class="text-2xl font-sans capitalize text-red-400 py-5 font-semibold">Trending page</h1>
             <div class="posts-section flex-wrap box-border flex justify-start gap-2 h-[20px] w-full mt-4">
                 <% posts.forEach((post)=>{%>
-                   
-                        <div onclick="openPost(this,'<%=post._id%>')" class="post-card w-[270px] h-[300px] bg-gray-900  rounded-lg "
-                            content-type="<%= post.video ? 'reels' : 'posts' %>">
-                            <div class=" ..."></div>
-                            <% if (post.video) { %>
-                                <div class="w-full h-full object-cover relative">
-                                    <video paused class="w-full h-full object-cover">
-                                        <source src="data:video/mp4;base64,<%= post.video?.toString('base64') %>"
-                                            type="video/mp4">
-                                        Your browser does not support the video tag.
-                                    </video>
-                                    <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
-                                </div>
-                                <% } else { %>
-                                    <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>"
-                                        alt="Post Image" class="w-full h-full object-cover object-top" />
-                                    <% } %>
-                        </div>
-            
+
+                    <div onclick="openPost(this,'<%=post._id%>')"
+                        class="post-card w-[270px] h-[300px] bg-gray-900  rounded-lg "
+                        content-type="<%= post.video ? 'reels' : 'posts' %>">
+                        <div class=" ..."></div>
+                        <% if (post.video) { %>
+                            <div class="w-full h-full object-cover relative">
+                                <video paused class="w-full h-full object-cover">
+                                    <source src="data:video/mp4;base64,<%= post.video?.toString('base64') %>"
+                                        type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
+                            </div>
+                            <% } else { %>
+                                <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>" alt="Post Image"
+                                    class="w-full h-full object-cover object-top" />
+                                <% } %>
+                    </div>
+
                     <%});%>
             </div>
         </div>
+
         <%- include("./partials/openPost")%>
-        <%- include("./partials/footer") %>
+            <%- include("./partials/footer") %>

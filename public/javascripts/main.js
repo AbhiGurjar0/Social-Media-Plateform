@@ -222,6 +222,11 @@
 // }
 
 
+//go back
+function reverse(element) {
+    window.history.back();
+}
+
 
 
 // For heart animation on double click
@@ -266,24 +271,7 @@ document.querySelectorAll('.all-icons').forEach(function (con2) {
 });
 
 
-// For showing the post options on click
-document.querySelectorAll('.comment-input').forEach(function (cmtInput) {
-    var postIcon = cmtInput.parentElement.querySelector(".post-icon");
-    cmtInput.addEventListener("input", function (e) {
-        if (postIcon) {
-            if (cmtInput.value.trim() === "") {
-                postIcon.classList.add("opacity-0");
-                postIcon.classList.remove("opacity-100");
-            } else {
-                postIcon.classList.remove("opacity-0");
-                postIcon.classList.add("opacity-100");
-            }
-        }
-    });
-});
 
-
-// }
 
 // Like
 
@@ -405,12 +393,17 @@ async function openPost(element, postId) {
     // comment 
     //post creater
     let postUserProfile = document.getElementById("postUserProfile");
+    postUserProfile.dataset.userId = data.createdBy.userId;
     postUserProfile.innerHTML = "";
     postUserProfile.innerHTML = `
   <img src="${data.createdBy.userProfile}" class="w-10 h-10 rounded-full object-cover border-2 border-pink-500" />
   <div class="flex items-center gap-1">
-    <span class="font-semibold text-md">${data.createdBy.userName}</span>
-    <span onclick="followUser('${data.createdBy.userId}')" class="text-md text-blue-500 pl-2 cursor-pointer">Follow</span>
+<span class="font-semibold text-md">${data.createdBy.userName}</span>
+${!data.isOwner ? !data.isFollowing
+            ? `<span onclick="followUser('${data.createdBy.userId}')" class="text-md text-blue-500 pl-2 cursor-pointer">Follow</span>`
+            : `<span onclick="followUser('${data.createdBy.userId}')" class="text-md text-blue-500 pl-2 cursor-pointer">UnFollow</span>` : ''
+        }
+   
   </div>
 `;
 
@@ -473,15 +466,24 @@ function handleOutsideClick(e) {
 
 // Add comment
 
-async function addComment(element) {
+async function addComment(element, postId = "") {
 
-    const commentInput = document.getElementById('commentContent');
+    let commentInput = ""
+    if (!postId) {
+        postId = document.getElementById('post').dataset.postId;
+        commentInput = document.getElementById('commentContent')
+    }
+    else {
+        commentInput = element.parentElement.querySelector(".comment-input");
+    }
+
+
     let postComment = document.getElementById("commentSection");
     const commentText = commentInput.value.trim();
     commentInput.value = "";
     if (!commentText) return;
-    const postContainer = document.getElementById('post');
-    const postId = postContainer.dataset.postId;
+
+
     let response = await fetch("/post/addComment", {
         method: "POST",
         headers: {
@@ -554,14 +556,72 @@ async function addCommentFromHome(button, postId) {
         console.error("Error while commenting:", err);
     }
 }
+//manage Post for home 
 
+async function postOptionsHome(element, userId) {
+
+    let fullPage = document.getElementById("postManagePopUpHome");
+    fullPage.classList.remove("hidden");
+    let option1 = document.getElementById("option1h");
+    let option2 = document.getElementById("option2h");
+    const response = await fetch("/user/userDetails", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            userId
+        }),
+    });
+    let data = await response.json();
+    console.log(data.isOwner);
+    if (data.isOwner) {
+        option1.classList.remove("hidden");
+        option2.classList.add("hidden");
+    }
+    else {
+        option2.classList.remove("hidden");
+        option1.classList.add("hidden");
+
+    }
+    document.body.classList.add("overflow-hidden");
+
+    setTimeout(() => {
+        document.addEventListener("click", handleClickH);
+    }, 10)
+}
 
 // manage post(delete,edit etc.)
 
-async function postOptions(element) {
+async function postOptions(element, userId = "") {
+
     let fullPage = document.getElementById("postManagePopUp");
     fullPage.classList.remove("hidden");
-    let options = document.getElementById("options");
+    let option1 = document.getElementById("option1");
+    let option2 = document.getElementById("option2");
+    if (!userId)
+        userId = document.getElementById("postUserProfile").dataset.userId;
+
+    const response = await fetch("/user/userDetails", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            userId
+        }),
+    });
+    let data = await response.json();
+    console.log(data.isOwner);
+    if (data.isOwner) {
+        option1.classList.remove("hidden");
+        option2.classList.add("hidden");
+    }
+    else {
+        option2.classList.remove("hidden");
+        option1.classList.add("hidden");
+
+    }
     document.body.classList.add("overflow-hidden");
 
     setTimeout(() => {
@@ -569,10 +629,24 @@ async function postOptions(element) {
     }, 10)
 }
 
+//for home
+function handleClickH(e) {
+    let fullPage = document.getElementById("postManagePopUpHome");
+    let option1 = document.getElementById("option1h");
+    let option2 = document.getElementById("option2h");
+    if (!fullPage.classList.contains("hidden") && !option1.contains(e.target) && !option2.contains(e.target)) {
+        fullPage.classList.add("hidden");
+        document.body.classList.remove("overflow-hidden");
+        document.removeEventListener("click", handleClickH);
+
+    }
+
+}
 function handleClick(e) {
     let fullPage = document.getElementById("postManagePopUp");
-    let options = document.getElementById("options");
-    if (!fullPage.classList.contains("hidden") && !options.contains(e.target)) {
+    let option1 = document.getElementById("option1");
+    let option2 = document.getElementById("option2");
+    if (!fullPage.classList.contains("hidden") && !option1.contains(e.target) && !option2.contains(e.target)) {
         fullPage.classList.add("hidden");
         document.body.classList.remove("overflow-hidden");
         document.removeEventListener("click", handleClick);
@@ -606,12 +680,17 @@ async function deletePost(element) {
 //close popup
 function closePopUp(element) {
     let fullPage = document.getElementById("postManagePopUp");
-    let options = document.getElementById("options");
     fullPage.classList.add("hidden");
     document.body.classList.remove("overflow-hidden");
     document.removeEventListener("click", handleClick);
 }
-
+//for home
+function closePopUpH(element) {
+    let fullPage = document.getElementById("postManagePopUpHome");
+    fullPage.classList.add("hidden");
+    document.body.classList.remove("overflow-hidden");
+    document.removeEventListener("click", handleClickH);
+}
 //goto post
 
 function gotoPost(element) {
@@ -665,6 +744,7 @@ function previewSelectedImage(event) {
 //follow user
 
 async function followUser(userId) {
+    console.log("callled")
     let response = await fetch("/user/addFollower", {
         method: "POST",
         headers: {
@@ -674,6 +754,93 @@ async function followUser(userId) {
         body: JSON.stringify({ userId }),
     })
     let data = await response.json();
+    console.log(data);
 
 
 }
+
+// toggle button followers and following
+
+
+function openFollow(element, id) {
+    let follow = document.getElementById('followers');
+    let following = document.getElementById('followings');
+
+
+    let tabs = document.querySelectorAll('.follow-tab');
+    tabs.forEach(tab => tab.classList.remove('font-bold', 'opacity-100'));
+    tabs.forEach(tab => tab.classList.add('opacity-60'));
+
+
+    element.classList.add("font-bold", "opacity-100");
+    element.classList.remove("opacity-60");
+
+    if (id === 'followers') {
+        following.classList.add("hidden");
+        follow.classList.remove("hidden");
+    } else {
+        follow.classList.add("hidden");
+        following.classList.remove("hidden");
+    }
+
+}
+
+
+/// story upload
+
+
+async function uploadStory(element) {
+    document.getElementById('storyModal').classList.remove('hidden');
+
+
+}
+
+document.getElementById('closeModalBtn').onclick = () => {
+    document.getElementById('storyModal').classList.add('hidden');
+};
+document.getElementById('modalBackdrop').onclick = () => {
+    document.getElementById('storyModal').classList.add('hidden');
+};
+
+
+
+function pauseVideo(element, videoId) {
+    const ariaLabel = element.getAttribute('aria-label');
+    const video = document.getElementById(videoId);
+    if (!video) return;
+
+    if (ariaLabel === "Pause") {
+        // Video is currently playing, so pause it
+        video.pause();
+        element.children[0].classList.remove("fa-pause")
+        element.children[1].classList.add("fa-play"); // Hide play icon
+        element.setAttribute('aria-label', 'Play');
+    } else {
+        // Video is currently paused, so play it
+        video.play();
+        element.children[0].classList.add("fa-pause")
+        element.children[1].classList.remove("fa-play")
+        element.setAttribute('aria-label', 'Pause');
+    }
+}
+
+function muteVideo(element, videoId) {
+    const ariaLabel = element.getAttribute('aria-label');
+    const video = document.getElementById(videoId);
+    if (!video) return;
+
+    if (ariaLabel === "Mute") {
+        // Video is currently playing, so pause it
+        video.muted = false;
+        element.children[0].classList.remove("fa-volume-mute")
+        element.children[1].classList.add("fa-solid"); // Hide play icon
+        element.setAttribute('aria-label', 'Unmute');
+    } else {
+        // Video is currently paused, so play it
+        video.muted = true;
+        element.children[0].classList.add("fa-volume-mute")
+        element.children[1].classList.remove("fa-solid")
+        element.setAttribute('aria-label', 'Mute');
+    }
+}
+

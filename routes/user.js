@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require("mongoose");
 const router = express.Router();
 const userModel = require("../models/user-model");
 const postModel = require("../models/post-model");
@@ -7,6 +8,9 @@ const upload = require("../config/multer-config");
 const likeModel = require("../models/like-model");
 const commentModel = require("../models/comments-model")
 const followerModel = require("../models/follow-model")
+
+const followModel = require('../models/follow-model');
+const storyModel = require("../models/story-model")
 
 //profile page
 router.get("/main", isLoggedIn, async (req, res) => {
@@ -45,6 +49,7 @@ router.post("/createPost", upload.single('media'), isLoggedIn, async (req, res) 
             visibility,
             location,
             advancedSetting,
+            createdAt: Date.now(),
 
         })
         let user = await userModel.findOne({ email: req.user.email });
@@ -56,6 +61,32 @@ router.post("/createPost", upload.single('media'), isLoggedIn, async (req, res) 
     catch (err) {
         console.log(err.message);
         return res.redirect("/main");
+    }
+
+
+});
+
+// upload story 
+router.post("/uploadStory", upload.single('media'), isLoggedIn, async (req, res) => {
+    try {
+        const file = req.file;
+        if (!file) return res.redirect("/");
+
+        let story = await storyModel.create({
+            user: req.user._id,
+            image: file?.mimetype.startsWith("image/") ? file.buffer : "",
+            video: file?.mimetype.startsWith("video/") ? file.buffer : "",
+            createdAt: Date.now(),
+        })
+        let user = await userModel.findOne({ email: req.user.email });
+        user.story.push(story._id);
+        await user.save();
+
+        res.redirect("/");
+    }
+    catch (err) {
+        console.log(err.message);
+        return res.redirect("/");
     }
 
 
@@ -120,7 +151,7 @@ router.post("/post/like/users/:postId", async (req, res) => {
 });
 
 
-router.post("/post/postDetails/:postId", async (req, res) => {
+router.post("/post/postDetails/:postId", isLoggedIn, async (req, res) => {
     let post = await postModel.findById(req.params.postId)
         .populate({
             path: "comments",
@@ -133,6 +164,17 @@ router.post("/post/postDetails/:postId", async (req, res) => {
             path: "userId",
             select: "firstName profilePic"
         });
+    const loggedInUser = await userModel.findById(req.user._id);
+
+    // Check if logged-in user is the post owner
+    const isOwner = String(post.userId._id) === String(loggedInUser._id);
+
+    // Check if logged-in user follows the post owner
+    const isFollowing = await followModel.findOne({
+        follower: loggedInUser._id,
+        following: post.userId._id
+    });
+
     const likes = await likeModel
         .find({ postId: req.params.postId });
 
@@ -157,8 +199,9 @@ router.post("/post/postDetails/:postId", async (req, res) => {
                 userId: null,
                 userName: "Unknown",
                 userProfile: null
-            }
-
+            },
+        isOwner: isOwner,
+        isFollowing: !!isFollowing,
     });
 
 })
@@ -184,7 +227,7 @@ router.post("/post/addComment", isLoggedIn, async (req, res) => {
     );
     res.json({
         userName: user.firstName,
-        profilePic: user.profilePic ? user.ProfilePic : "default.jpg",
+        profilePic: user.profilePic ? user.profilePic : "default.jpg",
 
     });
 
@@ -193,20 +236,26 @@ router.post("/post/addComment", isLoggedIn, async (req, res) => {
 
 //see others profile
 
-router.get("/user/:userId", async (req, res) => {
+router.get("/user/:userId", isLoggedIn, async (req, res, next) => {
     try {
-        const user = await userModel
-            .findOne({ _id: req.params.userId })
-            .populate("posts");
+        const { userId } = req.params;
 
+        // Validate if userId is a valid ObjectId
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+
+            next();
+            return;
+        }
+
+        const user = await userModel.findOne({ _id: userId }).populate("posts");
         if (!user) return res.status(404).send("User not found");
+
         res.render("main", { user, posts: user.posts });
     } catch (err) {
         console.error("Error fetching user or posts:", err);
         res.status(500).send("Server error");
     }
-})
-
+});
 //delete post
 
 router.post("/post/delete", isLoggedIn, async (req, res) => {
@@ -237,28 +286,73 @@ router.post("/user/addFollower", isLoggedIn, async (req, res) => {
     try {
         let { userId } = req.body;
         if (req.user._id.equals(userId)) {
-            return;
+            return res.status(400).json({ message: "You can't follow yourself." });
         }
-        await followerModel.create({
+
+        // Check if already following
+        const existingFollow = await followerModel.findOne({
             follower: req.user._id,
             following: userId,
-            createdAt: Date.now(),
         });
 
-        await userModel.findByIdAndUpdate(req.user._id, {
-            $addToSet: { following: userId },
-        });
+        if (existingFollow) {
+            // Unfollow logic
+            await followerModel.deleteOne({
+                follower: req.user._id,
+                following: userId,
+            });
 
-        await userModel.findByIdAndUpdate(userId, {
-            $addToSet: { follower: req.user._id },
-        });
+            await userModel.findByIdAndUpdate(req.user._id, {
+                $pull: { following: userId },
+            });
 
-        res.json({ message: "Follow successful" });
+            await userModel.findByIdAndUpdate(userId, {
+                $pull: { followers: req.user._id },
+            });
+
+            return res.json({ message: "Unfollowed successfully" });
+        } else {
+            // Follow logic
+            await followerModel.create({
+                follower: req.user._id,
+                following: userId,
+                createdAt: Date.now(),
+            });
+
+            await userModel.findByIdAndUpdate(req.user._id, {
+                $addToSet: { following: userId },
+            });
+
+            await userModel.findByIdAndUpdate(userId, {
+                $addToSet: { followers: req.user._id },
+            });
+
+            return res.json({ message: "Followed successfully" });
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+
+//for checking user is owner or not delete post
+
+router.post("/user/userdetails", isLoggedIn, async (req, res) => {
+    try {
+        let { userId } = req.body;
+
+
+        let isOwner = String(userId) === String(req.user._id);
+        res.json({ isOwner })
+
+
+    } catch (err) {
+        console.error("Error checking user ownership:", err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
 
 
 
@@ -267,9 +361,28 @@ router.post("/user/addFollower", isLoggedIn, async (req, res) => {
 router.get("/signin", (req, res) => {
     res.render("login");
 })
-router.get("/user/followers", (req, res) => {
-    res.render("follower");
-})
+router.get("/user/followers/:userId", async (req, res) => {
+    try {
+        const user = await userModel.findById(req.params.userId);
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+        const followers = await followerModel.find({ following: user._id }).populate('follower');
+        const following = await followerModel.find({ follower: user._id }).populate('following');
+
+        res.render("follower", {
+            followers: followers,
+            following: following,
+            currentUser: user
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
+
 //edit profile page
 router.get("/profile/edit", (req, res) => {
     res.render("editProfile");
@@ -292,14 +405,29 @@ router.get("/postDetails", async (req, res) => {
 });
 
 //home page
-router.get("/", async (req, res) => {
+router.get("/", isLoggedIn, async (req, res) => {
     try {
-        let posts = await postModel.find({})
-            .populate("userId")
+        let posts = await postModel.find()
+            .populate({
+                path: "userId",
+                select: "firstName profilePic"
+            })
             .populate("comments");
+        let stories = await storyModel.find().populate("user");
+        let user = await userModel.findOne({ _id: req.user._id });
+        const following = await followerModel.find({ follower: user._id }).populate('following');
 
-        posts = posts.filter(post => post.userId); // remove posts with missing user
-        res.render("home", { posts });
+        // Get all the followed user IDs
+        const followingIds = user.following.map(f => f._id.toString());
+        followingIds.push(req.user._id.toString());
+
+        // Filter stories to only those created by followed users
+        stories = stories.filter(story => followingIds.includes(story.user._id.toString()));
+
+
+        posts = posts.filter(post => post.userId);
+        // remove posts with missing user
+        res.render("home", { posts, stories });
     } catch (err) {
         console.error("Error:", err);
         if (!res.headersSent) {
@@ -317,5 +445,22 @@ router.get("/explore", async (req, res) => {
 router.get("/notifications", (req, res) => {
     res.render("notification");
 })
+
+//view story
+
+router.get("/user/story/:storyId", async (req, res) => {
+    let story = await storyModel.findOne({ _id: req.params.storyId }).populate("user");
+    const storyExpiryDuration = 24 * 60 * 60 * 1000;
+    const createdAt = new Date(story.createdAt);
+    const currentTime = new Date();
+    const timeElapsed = currentTime - createdAt;
+    const timeLeft = storyExpiryDuration - timeElapsed;
+    let hours = Math.floor(24 - (((timeLeft / 1000) / 60) / 60));
+
+ 
+    res.render("viewStory", { story, hours });
+})
+
+
 
 module.exports = router;

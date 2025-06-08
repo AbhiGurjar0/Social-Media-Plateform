@@ -1,0 +1,104 @@
+<%- include("./partials/header") %>
+    <div class="bg-[#181818] flex items-center justify-center min-h-screen p-4">
+        <div class="relative max-w-[420px] w-full bg-[#181818] rounded-md select-none h-[80%]">
+            <!-- Instagram logo top left -->
+            <div class="absolute top-4 left-4">
+                <h1 class="font-instagram text-white text-[28px] leading-none select-none">
+                    Instagram
+                </h1>
+            </div>
+            <!-- Close icon top right -->
+           <button onclick="reverse(this)" aria-label="Close"
+                    class="absolute top-4 right-4 text-white text-xl leading-none focus:outline-none">
+                    <i class="fas fa-times">
+                    </i>
+                </button>
+            
+            <!-- Story container -->
+            <div class="mt-12 bg-black rounded-md overflow-hidden h-full">
+                <!-- Story header -->
+                <div class="flex items-center justify-between px-3 py-2 border-b border-gray-700">
+                    <div class="flex items-center space-x-2">
+                        <a href="/user/<%=story.user._id%>"><img alt="Profile picture of kylieccentral"
+                                class="w-6 h-6 rounded-full object-cover" height="24"
+                                src="data:image/jpeg;base64,<%=story.user?.profilePic?.toString('base64')%>"
+                                width="24" />
+                        </a>
+                        <div class="text-white text-[12px] font-semibold leading-none">
+                            <div class="flex items-center space-x-1">
+                                <a href="/user/<%=story.user._id%>"><span>
+                                        <%=story.user.firstName%>
+                                    </span>
+                                </a>
+                                <span class="text-gray-400 font-normal">
+                                    <%=hours%>h
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3 text-gray-400 text-[12px]">
+                        <button onclick="muteVideo(this,'storyVideo')" aria-label="Mute" class="focus:outline-none">
+                            <i class="fas fa-volume-mute">
+                            </i>
+                            <i class="fa-volume-high"></i>
+                        </button>
+                        <button onclick="pauseVideo(this,'storyVideo')" aria-label="Pause" class="focus:outline-none">
+                            <i class="fas fa-pause">
+                            </i>
+                            <i class="fa-solid "></i>
+                        </button>
+                        <button onclick="postOptions(this,'<%=story.user._id%>')" aria-label="More options"
+                            class="focus:outline-none">
+                            <i class="fas fa-ellipsis-h">
+                            </i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Story image -->
+                <% if (story) { %>
+                    <a href="/user/story/<%=story._id%>">
+                        <div class="flex flex-col items-center cursor-pointer">
+                            <div class="w-full h-[60vh]  ">
+                                <% if (story.video?.length) { %>
+                                    <div class="w-full h-full object-cover relative">
+                                        <video id="storyVideo" class="w-full h-full object-cover" autoplay muted>
+                                            <source src="data:video/mp4;base64,<%= story.video?.toString('base64') %>"
+                                                type="video/mp4">
+                                        </video>
+                                    </div>
+                                    <% } else if (story.image) { %>
+                                        <img src="data:image/jpeg;base64,<%= story.image?.toString('base64') %>"
+                                            alt="Story Image" class="w-full h-full object-cover object-center" />
+                                        <% } %>
+
+                            </div>
+                        </div>
+                    </a>
+                    <% } %>
+
+                        <!-- Bottom black fade area -->
+                        <div class="h-20 bg-gradient-to-t from-black to-transparent">
+                        </div>
+            </div>
+            <!-- Reply input and icons -->
+            <div class="flex items-center space-x-4 px-3 py-2 mt-2">
+                <input
+                    class="flex-grow bg-transparent border border-gray-600 rounded-full text-white text-[12px] placeholder-gray-500 py-1 px-4 focus:outline-none focus:ring-1 focus:ring-white"
+                    placeholder="Reply to kylieccentral..." type="text" />
+                <button aria-label="Like" class="text-white text-lg focus:outline-none">
+                    <i class="far fa-heart">
+                    </i>
+                </button>
+                <button aria-label="Send" class="text-white text-lg focus:outline-none">
+                    <i class="far fa-paper-plane">
+                    </i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="postManagePopUp" class="main-container overflow-hidden fixed bg-transparent
+          inset-0  backdrop-blur-sm z-50 w-full h-screen hidden">
+        <%- include("./partials/managePost") %>
+    </div>
+
+    <%- include("./partials/footer") %>

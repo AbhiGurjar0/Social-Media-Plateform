@@ -31,12 +31,13 @@
                             <span>
                                 <%=posts?posts.length:'0'%> <span class="text-gray-300">Posts</span>
                             </span>
-                            <a class="cursor-pointer text-shadow-black" href="/user/followers"><span>
+                            <a class="cursor-pointer text-shadow-black" href="/user/followers/<%=user?._id%>"><span>
                                     <%=user.followers.length%> <span class="text-gray-300">Followers</span>
                                 </span></a>
-                            <span>
-                                <%=user.followers.length%> <span class="text-gray-300">Following</span>
                             </span>
+                            <a class="cursor-pointer text-shadow-black" href="/user/followers/<%=user?._id%>"><span>
+                                    <%=user.following.length%> <span class="text-gray-300">Following</span>
+                                </span></a>
                         </div>
                     </div>
                     <div class="edit-profile-div flex justify-end items-center mt-9 text-[11px]">
@@ -89,14 +90,14 @@
 
                 <div class="flex justify-around items-center h-[30px] gap-2 font-bold text-blue-500 rounded-lg ">
                     <h2 class="bg-amber-100 w-[33%] h-[100%] text-center rounded-lg"
-                        onclick="sectionToggle(this,'all')">All
+                        onclick="sectionToggle(this,'post')">Post
                     </h2>
                     <h2 class="bg-amber-700  w-[33%] h-[100%] text-center rounded-lg"
                         onclick="sectionToggle(this,'reels')">
                         Reels</h2>
                     <h2 class=" bg-black  w-[33%] h-[100%] text-center rounded-lg"
-                        onclick="sectionToggle(this,'posts')">
-                        Posts</h2>
+                        onclick="sectionToggle(this,'saved')">
+                        Saved</h2>
                 </div>
 
                 <div class="posts-section flex-wrap box-border flex justify-start gap-2 h-[20px] w-full mt-4">
