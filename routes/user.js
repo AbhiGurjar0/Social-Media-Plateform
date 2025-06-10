@@ -392,10 +392,21 @@ router.get("/createPost", (req, res) => {
     res.render("createPost");
 })
 
-router.get("/editProfile", (req, res) => {
-    res.render("editProfile");
+router.get("/editProfile", isLoggedIn, async (req, res) => {
+    let user = await userModel.findOne({ _id: req.user._id });
+    res.render("editProfile", { user });
 })
 
+//edit Profile
+
+router.post("/user/editProfile", isLoggedIn, async (req, res) => {
+    let { bio, name } = req.body;
+    await userModel.findOneAndUpdate({ _id: req.user._id }, {
+        Bio: bio,
+        firstName: name
+    }, { new: true });
+    res.redirect('/main');
+})
 //postDetails
 
 router.get("/postDetails", async (req, res) => {
@@ -457,7 +468,7 @@ router.get("/user/story/:storyId", async (req, res) => {
     const timeLeft = storyExpiryDuration - timeElapsed;
     let hours = Math.floor(24 - (((timeLeft / 1000) / 60) / 60));
 
- 
+
     res.render("viewStory", { story, hours });
 })
 

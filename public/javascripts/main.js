@@ -230,45 +230,43 @@ function reverse(element) {
 
 
 // For heart animation on double click
-document.querySelectorAll('.container').forEach(function (con) {
-    con.addEventListener("dblclick", function (e) {
-        var heart = con.querySelector('.heart-icon');
-        if (heart) {
-            heart.classList.remove('scale-50', 'opacity-0');
-            heart.classList.add('scale-110', 'opacity-80');
-            setTimeout(function () {
-                heart.classList.remove('scale-110', 'opacity-80');
-                heart.classList.add('scale-110', 'opacity-0');
-            }, 900);
-        }
-        var secHeart = con.parentElement.querySelector('.heart-icon-second');
-        if (secHeart) {
-            secHeart.classList.add('text-red-500');
-            secHeart.classList.remove('fa-regular');
-            secHeart.classList.add('fa-solid');
-        }
-    });
-});
+// document.querySelectorAll('.container').forEach(function (con) {
+//     con.addEventListener("dblclick", function (e) {
+//         var heart = con.querySelector('.heart-icon');
+//         if (heart) {
+//             heart.classList.remove('scale-50', 'opacity-0');
+//             heart.classList.add('scale-110', 'opacity-80');
+//             setTimeout(function () {
+//                 heart.classList.remove('scale-110', 'opacity-80');
+//                 heart.classList.add('scale-110', 'opacity-0');
+//             }, 900);
+//         }
+//         var secHeart = con.parentElement.querySelector('.heart-icon-second');
+//         if (secHeart) {
+//             secHeart.classList.add('text-red-500');
+//             secHeart.classList.remove('fa-regular');
+//             secHeart.classList.add('fa-solid');
+//         }
+//     });
+// });
 
-document.querySelectorAll('.all-icons').forEach(function (con2) {
-    let count = 0;
-    var secHeart = con2.querySelector('.heart-icon-second');
-    con2.addEventListener("click", function (e) {
-        if (secHeart) {
-            if (count === 0) {
-                secHeart.classList.add('text-red-500');
-                secHeart.classList.remove('fa-regular');
-                secHeart.classList.add('fa-solid');
-                count = 1;
-            } else {
-                secHeart.classList.remove('text-red-500');
-                secHeart.classList.add('fa-regular');
-                secHeart.classList.remove('fa-solid');
-                count = 0;
-            }
-        }
-    });
-});
+// document.querySelectorAll('.all-icons').forEach(function (con2) {
+//     let count = 0;
+//     var secHeart = con2.querySelector('.heart-icon-second');
+//     con2.addEventListener("click", function (e) {
+//         if (secHeart) {
+//             if (count === 0) {
+//                
+//                 count = 1;
+//             } else {
+//                 secHeart.classList.remove('text-red-500');
+//                 secHeart.classList.add('fa-regular');
+//                 secHeart.classList.remove('fa-solid');
+//                 count = 0;
+//             }
+//         }
+//     });
+// });
 
 
 
@@ -299,9 +297,12 @@ async function like(element, postId) {
             const likeCountSpan = postContainer.querySelector('.likeCount');
             let currentCount = parseInt(likeCountSpan.textContent.trim(), 10);
             if (data == "liked") {
+                element.children[0].classList.add('text-red-500');
                 likeCountSpan.textContent = currentCount + 1;
+
             }
             else {
+                element.children[0].classList.remove('text-red-500');
                 likeCountSpan.textContent = currentCount - 1;
             }
 
@@ -376,7 +377,7 @@ async function openPost(element, postId) {
     if (data.video) {
         postContent.innerHTML = `
         <div class="w-full h-full object-cover relative">
-            <video autoplay class="w-full h-full object-cover">
+            <video id="openPostVideo"   autoplay class="w-full h-full object-cover">
                 <source src="data:video/mp4;base64,${data.video}"
                     type="video/mp4">
                     Your browser does not support the video tag.
@@ -813,13 +814,13 @@ function pauseVideo(element, videoId) {
         // Video is currently playing, so pause it
         video.pause();
         element.children[0].classList.remove("fa-pause")
-        element.children[1].classList.add("fa-play"); // Hide play icon
+        element?.children[1]?.classList.add("fa-play"); // Hide play icon
         element.setAttribute('aria-label', 'Play');
     } else {
         // Video is currently paused, so play it
         video.play();
         element.children[0].classList.add("fa-pause")
-        element.children[1].classList.remove("fa-play")
+        element?.children[1]?.classList.remove("fa-play")
         element.setAttribute('aria-label', 'Pause');
     }
 }
