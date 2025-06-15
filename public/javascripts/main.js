@@ -69,20 +69,28 @@
 
 // //All, reels, posts section content
 
+  function sectionToggle(clickedTab, sectionId) {
+    // Hide all sections
+    document.querySelectorAll('.section').forEach(sec => sec.classList.add('hidden'));
 
-// function sectionToggle(top, contentType) {
-//     let allPosts = document.querySelectorAll(".post-card");
-//     allPosts.forEach(post => {
-//         post.classList.add("hidden"); // Hide all
-//     });
+    // Show selected section
+    document.getElementById(`${sectionId}-section`).classList.remove('hidden');
 
-//     // Show only matching type (or all)
-//     if (contentType === "all") {
-//         document.querySelectorAll(".post-card").forEach(post => post.classList.remove("hidden"));
-//     } else {
-//         document.querySelectorAll(`[content-type=${contentType}]`).forEach(post => post.classList.remove("hidden"));
-//     }
-// }
+    // Reset all tab button styles
+    document.querySelectorAll('.tab-btn').forEach(tab => {
+      tab.classList.remove('bg-amber-100', 'bg-amber-700', 'bg-black', 'text-white');
+      tab.classList.add('bg-gray-200');
+    });
+
+    // Set active tab style
+    clickedTab.classList.remove('bg-gray-200');
+    clickedTab.classList.add('bg-blue-500', 'text-white');
+  }
+
+  // Optional: Default to "posts"
+  window.addEventListener('DOMContentLoaded', () => {
+    sectionToggle(document.querySelector('.tab-btn'), 'posts');
+  });
 
 // //video open 
 
@@ -268,13 +276,29 @@ function reverse(element) {
 //     });
 // });
 
+//double click trigger
+
+// document.addEventListener("DOMContentLoaded", () => {
+//     const postArea = document.getElementById("post-area-<%= post._id %>");
+//     const likeBtn = document.getElementById("like-btn-<%= post._id %>");
+
+
+//     // // Double click on post
+//     // if (postArea) {
+//     postArea.addEventListener("dblclick", () => {
+//         like(likeBtn, "<%= post._id %>", true);
+//         console.log("postArea", postArea);
+//     });
+//     // }
+// });
+
+
 
 
 
 // Like
 
-async function like(element, postId) {
-
+async function like(element, postId = "", triggeredByDoubleClick = false) {
     if (!postId) {
         const postElement = document.getElementById('post');
         postId = postElement?.dataset?.postId;
@@ -284,36 +308,58 @@ async function like(element, postId) {
             return;
         }
     }
-    fetch(`/post/like/${postId}`, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({}),
-    })
-        .then(response => response.json())
-        .then(data => {
-            const postContainer = element.closest('.post-container');
-            const likeCountSpan = postContainer.querySelector('.likeCount');
-            let currentCount = parseInt(likeCountSpan.textContent.trim(), 10);
-            if (data == "liked") {
-                element.children[0].classList.add('text-red-500');
-                likeCountSpan.textContent = currentCount + 1;
 
-            }
-            else {
-                element.children[0].classList.remove('text-red-500');
-                likeCountSpan.textContent = currentCount - 1;
-            }
+    let likeCount = document.getElementById("likeCount");
+    const likeCountSpan = document.getElementById(`likeCount-${postId}`);
+    const animatedHeart = document.querySelector(`#heart-animation-${postId}`);
+    let currentCount = parseInt(likeCountSpan.textContent.trim(), 10);
+
+    try {
+        const response = await fetch(`/post/like/${postId}`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+        });
+
+        const data = await response.json();
+        let heartIcon;
+
+        if (triggeredByDoubleClick) {
+            const postContainer = element.closest(".post-container");
+            heartIcon = postContainer?.querySelector(`#like-icon-${postId}`);
+        } else {
+            heartIcon = element.querySelector("i") || element;
+        }
 
 
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+        if (data.liked) {
+            heartIcon.classList.add("fa-solid", "text-red-500");
+            likeCountSpan.textContent = currentCount + 1;
+            likeCount.innerHTML = `${currentCount + 1}`;
+        } else {
+            heartIcon.classList.remove("fa-solid", "text-red-500");
+            heartIcon.classList.add("fa-regular", "text-gray-500");
+            likeCountSpan.textContent = currentCount - 1;
+            likeCount.innerHTML = `${currentCount - 1}`;
+        }
+
+        // ❤️ Trigger animation only on double click
+        // if (triggeredByDoubleClick && animatedHeart) {
+        //     animatedHeart.classList.remove("opacity-0", "scale-50");
+        //     animatedHeart.classList.add("opacity-100", "scale-100");
+
+        //     setTimeout(() => {
+        //         animatedHeart.classList.remove("opacity-100", "scale-100");
+        //         animatedHeart.classList.add("opacity-0", "scale-50");
+        //     }, 600);
+        // }
+
+    } catch (err) {
+        console.log(err);
+    }
 }
-
-
 
 //view liked
 
@@ -521,6 +567,64 @@ async function addComment(element, postId = "") {
   `
 
 }
+//like 
+
+// document.addEventListener("DOMContentLoaded", () => {
+//     const likeBtn = document.getElementById("like-btn");
+//     const likeCount = document.getElementById("likeCount");
+//     const heartIcon = document.getElementById("heart-icon");
+//     const dblHeart = document.getElementById("dbl-heart");
+//     const postArea = document.getElementById("post-area");
+
+//     let liked = window.isLiked;
+
+//     // Initial state
+//     updateHeartIcon();
+
+//     likeBtn.addEventListener("click", () => {
+//         toggleLike();
+//     });
+
+//     postArea.addEventListener("dblclick", () => {
+//         showDoubleHeart();
+//         toggleLike();
+//     });
+
+//     function toggleLike() {
+//         fetch(`/like/${postId}`, {
+//             method: "POST",
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify({ userId }),
+//         })
+//             .then(res => res.json())
+//             .then(data => {
+//                 liked = data.liked;
+//                 likeCount.textContent = data.likes;
+//                 updateHeartIcon();
+//             });
+//     }
+
+//     function updateHeartIcon() {
+//         if (liked) {
+//             heartIcon.setAttribute("fill", "red");
+//             heartIcon.setAttribute("stroke", "red");
+//             heartIcon.classList.add("scale-110", "transition", "duration-300");
+//         } else {
+//             heartIcon.setAttribute("fill", "none");
+//             heartIcon.setAttribute("stroke", "currentColor");
+//             heartIcon.classList.remove("scale-110");
+//         }
+//     }
+
+//     function showDoubleHeart() {
+//         dblHeart.classList.remove("opacity-0");
+//         dblHeart.classList.add("opacity-100");
+//         setTimeout(() => {
+//             dblHeart.classList.remove("opacity-100");
+//             dblHeart.classList.add("opacity-0");
+//         }, 700);
+//     }
+// });
 
 
 //Add comment from home 
@@ -557,40 +661,7 @@ async function addCommentFromHome(button, postId) {
         console.error("Error while commenting:", err);
     }
 }
-//manage Post for home 
 
-async function postOptionsHome(element, userId) {
-
-    let fullPage = document.getElementById("postManagePopUpHome");
-    fullPage.classList.remove("hidden");
-    let option1 = document.getElementById("option1h");
-    let option2 = document.getElementById("option2h");
-    const response = await fetch("/user/userDetails", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            userId
-        }),
-    });
-    let data = await response.json();
-    console.log(data.isOwner);
-    if (data.isOwner) {
-        option1.classList.remove("hidden");
-        option2.classList.add("hidden");
-    }
-    else {
-        option2.classList.remove("hidden");
-        option1.classList.add("hidden");
-
-    }
-    document.body.classList.add("overflow-hidden");
-
-    setTimeout(() => {
-        document.addEventListener("click", handleClickH);
-    }, 10)
-}
 
 // manage post(delete,edit etc.)
 
@@ -630,19 +701,7 @@ async function postOptions(element, userId = "") {
     }, 10)
 }
 
-//for home
-function handleClickH(e) {
-    let fullPage = document.getElementById("postManagePopUpHome");
-    let option1 = document.getElementById("option1h");
-    let option2 = document.getElementById("option2h");
-    if (!fullPage.classList.contains("hidden") && !option1.contains(e.target) && !option2.contains(e.target)) {
-        fullPage.classList.add("hidden");
-        document.body.classList.remove("overflow-hidden");
-        document.removeEventListener("click", handleClickH);
 
-    }
-
-}
 function handleClick(e) {
     let fullPage = document.getElementById("postManagePopUp");
     let option1 = document.getElementById("option1");
@@ -659,7 +718,13 @@ function handleClick(e) {
 //post delete
 async function deletePost(element) {
     let openedPost = document.getElementById("post");
+    console.log("openedPost", openedPost);
     let postId = openedPost.dataset.postId;
+    console.log("postId", postId);
+    if (!postId) {
+        console.error('Post ID is missing');
+        return;
+    }
     await fetch("/post/delete", {
         method: "POST",
         headers: {
@@ -685,13 +750,7 @@ function closePopUp(element) {
     document.body.classList.remove("overflow-hidden");
     document.removeEventListener("click", handleClick);
 }
-//for home
-function closePopUpH(element) {
-    let fullPage = document.getElementById("postManagePopUpHome");
-    fullPage.classList.add("hidden");
-    document.body.classList.remove("overflow-hidden");
-    document.removeEventListener("click", handleClickH);
-}
+
 //goto post
 
 function gotoPost(element) {
@@ -845,3 +904,31 @@ function muteVideo(element, videoId) {
     }
 }
 
+
+//save reel
+
+ async function save(element, postId) {
+    const icon = element.querySelector('i');
+
+    try {
+      const res = await fetch(`/reel/save/${postId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({}) // you can send more if needed
+      });
+
+      const result = await res.json();
+
+      if (result.status === 'saved') {
+        icon.classList.remove('fa-regular');
+        icon.classList.add('fa-solid', 'text-blue-500');
+      } else if (result.status === 'unsaved') {
+        icon.classList.remove('fa-solid', 'text-blue-500');
+        icon.classList.add('fa-regular');
+      }
+    } catch (err) {
+      console.error("Error while saving/un-saving reel:", err);
+    }
+  }

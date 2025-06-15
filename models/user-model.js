@@ -2,17 +2,24 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema(
     {
         profilePic: Buffer,
-        firstName: {
+        userName: {
+            type: String,
+            required: true,
+            maxlength: 10,
+            unique: true,
+            validate: {
+                validator: function (v) {
+                    return /^[a-zA-Z]+$/.test(v);
+                },
+                message: props => `${props.value} is not a valid user name! Only letters are allowed.`
+            }
+        },
+        fullName: {
             type: String,
             required: true,
             maxlength: 10,
         },
-        lastName: {
-            type: String,
-            required: true,
-            maxlength: 10,
-        },
-        Bio:String,
+        bio: String,
         email: {
             type: String,
             required: true,

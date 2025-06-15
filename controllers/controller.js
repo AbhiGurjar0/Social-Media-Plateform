@@ -8,7 +8,7 @@ const { generateToken } = require('../utils/generateToken');
 
 module.exports.registerUser = async (req, res) => {
     try {
-        let { firstName, lastName, email, password } = req.body;
+        let { userName, fullName, email, password } = req.body;
         let isExist = await userModel.findOne({ email: email.toLowerCase() });
         if (isExist) {
             return res.send("user Already Exist");
@@ -16,8 +16,8 @@ module.exports.registerUser = async (req, res) => {
         let salt = await bcrypt.genSalt(10);
         let hashedPassword = await bcrypt.hash(password, salt);
         await userModel.create({
-            firstName,
-            lastName,
+            userName,
+            fullName,
             email: email.toLowerCase(),
             password: hashedPassword,
         });

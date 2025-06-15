@@ -1,133 +1,151 @@
 <%- include("./partials/header") %>
- <div class="w-full fixed h-[8vh] z-999 bg-pink-800 top-0 left-0"><%- include("./partials/headerOptions") %></div>
-        <div id="main-content" class="w-full min-h-screen grid grid-cols-[20vw_1fr] absolute top-[9vh]  mb-5">
-            <div class="w-[20vw] h-full fixed z-50"> <%- include("./partials/sidebar") %></div>
-            <div id="profile" class="tabs w-[80vw] min-h-screen  box-border px-5 col-start-2 mb-2">
-                <div class="main-content flex ">
-                    <div class="pic-div p-8">
-                        <form action="/uploadPic" method="POST" enctype="multipart/form-data">
-                            <div id="photo" class="relative w-32 h-32">
-                                <label for="photoInput" class="cursor-pointer w-full h-full block">
-                                    <!-- Image preview will be here -->
-                                    <img id="profilePreview"
-                                        src="data:image/jpeg;base64,<%=user.profilePic?.toString('base64') %>"
-                                        alt="Profile"
-                                        class="h-32 w-32 rounded-full object-cover object-top border-2 border-gray-400 hover:opacity-80 transition">
-                                </label>
-                                <input type="file" id="photoInput" name="media" accept="image/*" class="hidden"
-                                    onchange="previewImage(event)">
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="username-div mt-9 ml-1">
-                        <h1 class="text-[20px] font-bold mb-2">
-                            <%=user.firstName%>
-                                <%=user.lastName%>
-                        </h1>
-                        <p class="text-gray-500 text-[12px]">
-                            <%=user.Bio%>
-                        </p>
-                        <div class="follower-post-div flex space-x-4 text-[14px] mt-4.5">
-                            <span>
-                                <%=posts?posts.length:'0'%> <span class="text-gray-300">Posts</span>
-                            </span>
-                            <a class="cursor-pointer text-shadow-black" href="/user/followers/<%=user?._id%>"><span>
-                                    <%=user.followers.length%> <span class="text-gray-300">Followers</span>
-                                </span></a>
-                            </span>
-                            <a class="cursor-pointer text-shadow-black" href="/user/followers/<%=user?._id%>"><span>
-                                    <%=user.following.length%> <span class="text-gray-300">Following</span>
-                                </span></a>
+    <div class="w-full fixed h-[8vh] z-999 bg-pink-800 top-0 left-0"><%- include("./partials/headerOptions") %></div>
+    <div id="main-content" class="w-full min-h-screen grid grid-cols-[20vw_1fr] absolute top-[9vh]  mb-5">
+        <div class="w-[20vw] h-full fixed z-50"> <%- include("./partials/sidebar") %></div>
+        <div id="profile" class="tabs w-[80vw] min-h-screen  box-border px-5 col-start-2 mb-2">
+            <div class="main-content flex ">
+                <div class="pic-div p-8">
+                    <form action="/uploadPic" method="POST" enctype="multipart/form-data">
+                        <div id="photo" class="relative w-32 h-32">
+                            <label for="photoInput" class="cursor-pointer w-full h-full block">
+                                <!-- Image preview will be here -->
+                                <img id="profilePreview"
+                                    src="data:image/jpeg;base64,<%=user.profilePic?.toString('base64') %>" alt="Profile"
+                                    class="h-32 w-32 rounded-full object-cover object-top border-2 border-gray-400 hover:opacity-80 transition">
+                            </label>
+                            <input type="file" id="photoInput" name="media" accept="image/*" class="hidden"
+                                onchange="previewImage(event)">
                         </div>
-                    </div>
-                    <div class="edit-profile-div flex justify-end items-center mt-9 text-[11px]">
-                        <a href="/editProfile"> <button
-                                class="w-[95px] h-[28px] border-1 flex justify-center items-center rounded px-2 bg-white text-gray-700 hover:bg-b cursor-pointer ml-65 mb-10">
-                                <i class="fa-solid fa-plus mr-2"></i>Edit Profile
-                            </button>
-                        </a>
-                    </div>
+                    </form>
                 </div>
 
-                <div class="highlight-section flex items-center h-[120px] w-full space-x-4  ml-10 ">
+                <div class="username-div mt-9 ml-1">
+                    <h1 class="text-[20px] font-bold mb-2">
+                        <%=user.userName%>
 
-                    <div class="h-20 w-20 rounded-full border  p-1 flex justify-center items-center">
-                        <div class="h-full w-full bg-white rounded-full flex justify-center items-center">
-                            <img src="../images/add.png" class="w-[30px] h-[30px] rounded-full" alt="">
-                        </div>
-                    </div>
+                    </h1>
 
-                    <div
-                        class="h-20 w-20 rounded-full bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 p-0.5 flex justify-center items-center">
-                        <div class="h-full w-full bg-white rounded-full">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Story"
-                                class="h-full w-full rounded-full">
-                        </div>
+                    <div class="follower-post-div flex space-x-4 text-[14px] mt-4.5">
+                        <span>
+                            <%=posts?posts.length:'0'%> <span class="text-gray-300">Posts</span>
+                        </span>
+                        <a class="cursor-pointer text-shadow-black" href="/user/followers/<%=user?._id%>"><span>
+                                <%=user.followers.length%> <span class="text-gray-300">Followers</span>
+                            </span></a>
+                        </span>
+                        <a class="cursor-pointer text-shadow-black" href="/user/followers/<%=user?._id%>"><span>
+                                <%=user.following.length%> <span class="text-gray-300">Following</span>
+                            </span></a>
                     </div>
-                    <div
-                        class="h-20 w-20 rounded-full bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 p-0.5 flex justify-center items-center">
-                        <div class="h-full w-full bg-white rounded-full">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Story"
-                                class="h-full w-full rounded-full">
-                        </div>
-                    </div>
-                    <div
-                        class="h-20 w-20 rounded-full bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 p-0.5 flex justify-center items-center">
-                        <div class="h-full w-full bg-white rounded-full">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Story"
-                                class="h-full w-full rounded-full">
-                        </div>
-                    </div>
-                    <div
-                        class="h-20 w-20 rounded-full bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 p-0.5 flex justify-center items-center">
-                        <div class="h-full w-full bg-white rounded-full">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Story"
-                                class="h-full w-full rounded-full">
-                        </div>
+                    <div class="text-sm mt-2 leading-snug">
+                        <span class="block text-[14px] font-semibold text-black">
+                            <%= user.fullName %>
+                        </span>
+                        <span class="block text-gray-600 text-[13px]">
+                            <%= user.bio %>
+                        </span>
                     </div>
                 </div>
-
-
-                <div class="flex justify-around items-center h-[30px] gap-2 font-bold text-blue-500 rounded-lg ">
-                    <h2 class="bg-amber-100 w-[33%] h-[100%] text-center rounded-lg"
-                        onclick="sectionToggle(this,'post')">Post
-                    </h2>
-                    <h2 class="bg-amber-700  w-[33%] h-[100%] text-center rounded-lg"
-                        onclick="sectionToggle(this,'reels')">
-                        Reels</h2>
-                    <h2 class=" bg-black  w-[33%] h-[100%] text-center rounded-lg"
-                        onclick="sectionToggle(this,'saved')">
-                        Saved</h2>
-                </div>
-
-                <div class="posts-section flex-wrap box-border flex justify-start gap-2 h-[20px] w-full mt-4">
-                    <% posts.forEach((post)=>{%>
-
-                        <div onclick="openPost(this,'<%=post._id%>')"
-                            class="post-card w-[270px] h-[300px] bg-gray-900  rounded-lg "
-                            content-type="<%= post.video ? 'reels' : 'posts' %>">
-                            <div class=" ..."></div>
-                            <% if (post.video) { %>
-                                <div class="w-full h-full object-cover relative">
-                                    <video paused class="w-full h-full object-cover">
-                                        <source src="data:video/mp4;base64,<%= post.video?.toString('base64') %>"
-                                            type="video/mp4">
-                                        Your browser does not support the video tag.
-                                    </video>
-                                    <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
-                                </div>
-                                <% } else { %>
-                                    <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>"
-                                        alt="Post Image" class="w-full h-full object-cover" />
-                                    <% } %>
-                        </div>
-
-
-                        <%});%>
+                <div class="edit-profile-div flex justify-end items-center mt-9 text-[11px]">
+                    <a href="/editProfile"> <button
+                            class="w-[95px] h-[28px] border-1 flex justify-center items-center rounded px-2 bg-white text-gray-700 hover:bg-b cursor-pointer ml-65 mb-10">
+                            <i class="fa-solid fa-plus mr-2"></i>Edit Profile
+                        </button>
+                    </a>
                 </div>
             </div>
+
+            <div class="highlight-section flex items-center h-[120px] w-full space-x-4  ml-10 ">
+
+                <div class="h-20 w-20 rounded-full border  p-1 flex justify-center items-center">
+                    <div class="h-full w-full bg-white rounded-full flex justify-center items-center">
+                        <img src="../images/add.png" class="w-[30px] h-[30px] rounded-full" alt="">
+                    </div>
+                </div>
+
+                <div
+                    class="h-20 w-20 rounded-full bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 p-0.5 flex justify-center items-center">
+                    <div class="h-full w-full bg-white rounded-full">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Story"
+                            class="h-full w-full rounded-full">
+                    </div>
+                </div>
+                <div
+                    class="h-20 w-20 rounded-full bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 p-0.5 flex justify-center items-center">
+                    <div class="h-full w-full bg-white rounded-full">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Story"
+                            class="h-full w-full rounded-full">
+                    </div>
+                </div>
+                <div
+                    class="h-20 w-20 rounded-full bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 p-0.5 flex justify-center items-center">
+                    <div class="h-full w-full bg-white rounded-full">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Story"
+                            class="h-full w-full rounded-full">
+                    </div>
+                </div>
+                <div
+                    class="h-20 w-20 rounded-full bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 p-0.5 flex justify-center items-center">
+                    <div class="h-full w-full bg-white rounded-full">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Story"
+                            class="h-full w-full rounded-full">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="flex justify-around items-center h-[30px] gap-2 font-bold text-blue-500 rounded-lg ">
+                <h2 class="tab-btn bg-amber-100 w-[33%] h-[100%] text-center rounded-lg"
+                    onclick="sectionToggle(this, 'posts')">Post</h2>
+                <h2 class="tab-btn bg-amber-700 w-[33%] h-[100%] text-center rounded-lg"
+                    onclick="sectionToggle(this, 'reels')">Reels</h2>
+                <h2 class="tab-btn bg-black w-[33%] h-[100%] text-center rounded-lg"
+                    onclick="sectionToggle(this, 'saved')">Saved</h2>
+            </div>
+
+            <!-- ✅ Posts Section -->
+            <div id="posts-section" class="section mt-4 flex flex-wrap gap-2">
+                <% posts.forEach((post)=> { if (!post.video) { %>
+                    <div onclick="openPost(this,'<%=post._id%>')"
+                        class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
+                        <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>"
+                            class="w-full h-full object-cover" />
+                    </div>
+                    <% } }); %>
+            </div>
+
+            <!-- ✅ Reels Section -->
+            <div id="reels-section" class="section mt-4 flex flex-wrap gap-2 hidden">
+                <% posts.forEach((post)=> { if (post.video) { %>
+                    <div onclick="openPost(this,'<%=post._id%>')"
+                        class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
+                        <video class="w-full h-full object-cover">
+                            <source src="data:video/mp4;base64,<%= post.video?.toString('base64') %>" type="video/mp4">
+                        </video>
+                        <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
+                    </div>
+                    <% } }); %>
+            </div>
+
+            <!-- ✅ Saved Section -->
+            <div id="saved-section" class="section mt-4 flex flex-wrap gap-2 hidden">
+                <% savedPosts?.forEach(p=> { %>
+                    <div onclick="openPost(this,'<%=p._id%>')"
+                        class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
+                        <% if (p.video) { %>
+                            <video class="w-full h-full object-cover">
+                                <source src="data:video/mp4;base64,<%= p.video?.toString('base64') %>" type="video/mp4">
+                            </video>
+                            <% } else { %>
+                                <img src="data:image/jpeg;base64,<%= p.image?.toString('base64') %>"
+                                    class="w-full h-full object-cover" />
+                                <% } %>
+                    </div>
+                    <% } ); %>
+            </div>
+
         </div>
-        <%- include("./partials/openPost")%>
-            <script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
-            <%- include("./partials/footer") %>
+    </div>
+    <%- include("./partials/openPost")%>
+        <script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
+        <%- include("./partials/footer") %>

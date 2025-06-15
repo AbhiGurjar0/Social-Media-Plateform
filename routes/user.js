@@ -8,7 +8,7 @@ const upload = require("../config/multer-config");
 const likeModel = require("../models/like-model");
 const commentModel = require("../models/comments-model")
 const followerModel = require("../models/follow-model")
-
+const saveModel = require("../models/saved-model");
 const followModel = require('../models/follow-model');
 const storyModel = require("../models/story-model")
 
@@ -20,7 +20,14 @@ router.get("/main", isLoggedIn, async (req, res) => {
             .populate("posts");
 
         if (!user) return res.status(404).send("User not found");
-        res.render("main", { user, posts: user.posts });
+        const savedReels = await saveModel.find({ userId: req.user._id });
+
+        const savedPostIds = savedReels.map(r => r.postId);
+
+        // Fetch all posts (even by others) whose IDs are saved by the user
+        const savedPosts = await postModel.find({ _id: { $in: savedPostIds } }).populate('userId');
+
+        res.render("main", { user, posts: user.posts, savedReels, savedPosts });
     } catch (err) {
         console.error("Error fetching user or posts:", err);
         res.status(500).send("Server error");
@@ -95,42 +102,54 @@ router.post("/uploadStory", upload.single('media'), isLoggedIn, async (req, res)
 //like post
 router.post("/post/like/:postId", isLoggedIn, async (req, res) => {
     try {
-        let post = await postModel
+        const post = await postModel
             .findOne({ _id: req.params.postId })
-            .select("like userId")
-            .populate("like");
+            .populate({
+                path: 'like',
+                populate: {
+                    path: 'userId',
+                    model: 'User'
+                }
+            });
+        const isLiked = post.like.some((like) => like.userId.equals(req.user._id));
 
-        let isLiked = post.like.some((like) => like.userId.equals(req.user._id));
         if (!isLiked) {
-            let liked = await likeModel.create({
+            const newLike = await likeModel.create({
                 userId: req.user._id,
                 postId: req.params.postId
             });
 
             await postModel.updateOne(
                 { _id: req.params.postId },
-                { $push: { like: liked._id } }
+                { $push: { like: newLike._id } }
             );
-
-            return res.json("liked");
         } else {
-            let liked = await likeModel.findOneAndDelete({
+            const removedLike = await likeModel.findOneAndDelete({
                 userId: req.user._id,
                 postId: post._id
             });
 
             await postModel.updateOne(
                 { _id: req.params.postId },
-                { $pull: { like: liked._id } }
+                { $pull: { like: removedLike._id } }
             );
-
-            return res.json("unliked");
         }
+
+        // Fetch updated like count
+        const updatedPost = await postModel.findById(req.params.postId).populate("like");
+        const totalLikes = updatedPost.like.length;
+
+        return res.json({
+            liked: !isLiked,
+            likes: totalLikes
+        });
+
     } catch (err) {
         console.error(err);
         return res.status(500).json({ error: "Something went wrong" });
     }
 });
+
 
 //open Like
 router.post("/post/like/users/:postId", async (req, res) => {
@@ -264,6 +283,30 @@ router.post("/post/delete", isLoggedIn, async (req, res) => {
     res.json("post Successfulyy Deleted");
 
 })
+
+//save post
+router.post('/reel/save/:postId', isLoggedIn, async (req, res) => {
+    const userId = req.user._id;
+    const postId = req.params.postId;
+
+    try {
+        const existing = await saveModel.findOne({ userId, postId });
+
+        if (existing) {
+            // If already saved → unsave it
+            await saveModel.deleteOne({ _id: existing._id });
+            return res.json({ status: 'unsaved' });
+        } else {
+            // Not saved yet → save it
+            await saveModel.create({ userId, postId });
+            return res.json({ status: 'saved' });
+        }
+    } catch (err) {
+        console.error("Save reel error:", err);
+        return res.status(500).json({ error: 'Server error' });
+    }
+});
+
 
 //upload profile picture
 router.post("/uploadPic", upload.single("media"), isLoggedIn, async (req, res) => {
@@ -400,10 +443,10 @@ router.get("/editProfile", isLoggedIn, async (req, res) => {
 //edit Profile
 
 router.post("/user/editProfile", isLoggedIn, async (req, res) => {
-    let { bio, name } = req.body;
+    let { bio, fullName } = req.body;
     await userModel.findOneAndUpdate({ _id: req.user._id }, {
-        Bio: bio,
-        firstName: name
+        bio,
+        fullName
     }, { new: true });
     res.redirect('/main');
 })
@@ -423,7 +466,14 @@ router.get("/", isLoggedIn, async (req, res) => {
                 path: "userId",
                 select: "firstName profilePic"
             })
-            .populate("comments");
+            .populate("comments")
+            .populate({
+                path: 'like',
+                populate: {
+                    path: 'userId', // ✅ now you can access like.userId._id
+                    model: 'User'
+                }
+            });
         let stories = await storyModel.find().populate("user");
         let user = await userModel.findOne({ _id: req.user._id });
         const following = await followerModel.find({ follower: user._id }).populate('following');
@@ -432,13 +482,15 @@ router.get("/", isLoggedIn, async (req, res) => {
         const followingIds = user.following.map(f => f._id.toString());
         followingIds.push(req.user._id.toString());
 
+        //saved reel
+        const savedReels = await saveModel.find({ userId: req.user._id });
+
         // Filter stories to only those created by followed users
         stories = stories.filter(story => followingIds.includes(story.user._id.toString()));
 
-
         posts = posts.filter(post => post.userId);
         // remove posts with missing user
-        res.render("home", { posts, stories });
+        res.render("home", { user, posts, stories, savedReels });
     } catch (err) {
         console.error("Error:", err);
         if (!res.headersSent) {
@@ -467,6 +519,12 @@ router.get("/user/story/:storyId", async (req, res) => {
     const timeElapsed = currentTime - createdAt;
     const timeLeft = storyExpiryDuration - timeElapsed;
     let hours = Math.floor(24 - (((timeLeft / 1000) / 60) / 60));
+    if (hours == 0) {
+        hours = Math.floor((24 - (((timeLeft / 1000) / 60 / 60))) * 60) + 'm8';
+    }
+    else {
+        hours + 'h';
+    }
 
 
     res.render("viewStory", { story, hours });
