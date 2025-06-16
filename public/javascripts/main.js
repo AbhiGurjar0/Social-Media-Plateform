@@ -1,75 +1,26 @@
 
-// // for toggle button
-// var content = document.getElementById('advanced-settings-content');
-// var icon = document.getElementById('advanced-settings-icon');
+// for toggle button
+var content = document.getElementById('advanced-settings-content');
+var icon = document.getElementById('advanced-settings-icon');
 
-// const userModel = require("../../models/user-model");
-
-// function toggleAdvancedSettings() {
-//     if (content.classList.contains('hidden')) {
-//         content.classList.remove('hidden');
-//         icon.classList.remove('fa-chevron-down');
-//         icon.classList.add('fa-chevron-up');
-//     } else {
-//         content.classList.add('hidden');
-//         icon.classList.remove('fa-chevron-up');
-//         icon.classList.add('fa-chevron-down');
-//     }
-// }
+function toggleAdvancedSettings() {
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        icon.classList.remove('fa-chevron-down');
+        icon.classList.add('fa-chevron-up');
+    } else {
+        content.classList.add('hidden');
+        icon.classList.remove('fa-chevron-up');
+        icon.classList.add('fa-chevron-down');
+    }
+}
 
 
-// //showing  right side conten according to sidebar
 
-// function showContent(left, content) {
-//     document.getElementById(content).classList.remove('hidden');
-// }
-// function showContent(left, content) {
-//     document.getElementById(content).classList.remove('hidden');
-// }
-
-// //createPost
-// let mainContent = document.getElementById('main-content');
-// let openBtn = document.getElementById('openBtn');
-// //createPost
-// let mainContent = document.getElementById('main-content');
-// let openBtn = document.getElementById('openBtn');
-
-// function createPost(left, content) {
-//     let post = document.getElementById(content);
-//     post.classList.remove('hidden');
-//     mainContent.classList.add('blur-sm', 'pointer-events-none', 'select-none');
-// }
-// function createPost(left, content) {
-//     let post = document.getElementById(content);
-//     post.classList.remove('hidden');
-//     mainContent.classList.add('blur-sm', 'pointer-events-none', 'select-none');
-// }
-
-// document.addEventListener("click", (event) => {
-//     let post = document.getElementById('createPost')
-//     let upload = document.getElementById("post");
-//     let isOnPost = upload.contains(event.target);
-//     let isOnButton = openBtn.contains(event.target);
-// document.addEventListener("click", (event) => {
-//     let post = document.getElementById('createPost')
-//     let upload = document.getElementById("post");
-//     let isOnPost = upload.contains(event.target);
-//     let isOnButton = openBtn.contains(event.target);
-
-//     if (!isOnPost && !isOnButton && !upload.classList.contains("hidden")) {
-//         post.classList.add("hidden");
-//         mainContent.classList.remove('blur-sm', 'pointer-events-none', 'select-none');
-//     }
-// });
-//     if (!isOnPost && !isOnButton && !upload.classList.contains("hidden")) {
-//         post.classList.add("hidden");
-//         mainContent.classList.remove('blur-sm', 'pointer-events-none', 'select-none');
-//     }
-// });
 
 // //All, reels, posts section content
 
-  function sectionToggle(clickedTab, sectionId) {
+function sectionToggle(clickedTab, sectionId) {
     // Hide all sections
     document.querySelectorAll('.section').forEach(sec => sec.classList.add('hidden'));
 
@@ -78,223 +29,34 @@
 
     // Reset all tab button styles
     document.querySelectorAll('.tab-btn').forEach(tab => {
-      tab.classList.remove('bg-amber-100', 'bg-amber-700', 'bg-black', 'text-white');
-      tab.classList.add('bg-gray-200');
+        tab.classList.remove('bg-amber-100', 'bg-amber-700', 'bg-black', 'text-white');
+        tab.classList.add('bg-gray-200');
     });
 
     // Set active tab style
     clickedTab.classList.remove('bg-gray-200');
     clickedTab.classList.add('bg-blue-500', 'text-white');
-  }
-
-  // Optional: Default to "posts"
-  window.addEventListener('DOMContentLoaded', () => {
-    sectionToggle(document.querySelector('.tab-btn'), 'posts');
-  });
-
-// //video open 
-
-// const modal = document.getElementById("mediaModal");
-// const mediaContent = document.getElementById("mediaContent")
-
-// modal.addEventListener("click", function (e) {
-//     if (!mediaContent.contains(e.target)) {
-//       window.location.href ="/main";
-//     } 
-// });
-
-
-
-//for cropping 
-// const input = document.getElementById('media-input');
-// document.addEventListener('DOMContentLoaded', () => {
-//     const input = document.getElementById('photo');
-//     const previewContainer = document.getElementById('photo-upload');
-// const cropBtn = document.getElementById('crop-btn');
-// const canvas = document.getElementById('canvas');
-// let cropper;
-// document.addEventListener('DOMContentLoaded', () => {
-//     const input = document.getElementById('photo');
-//     const previewContainer = document.getElementById('photo-upload');
-//     // const cropBtn = document.getElementById('crop-btn');
-//     // const canvas = document.getElementById('canvas');
-//     // let cropper;
-
-// input.addEventListener('change', function () {
-//     const file = input.files[0];
-//     if (!file) return;
-//     input.addEventListener('change', function () {
-//         const file = input.files[0];
-//         if (!file) return;
-
-//     const fileType = file.type;
-//     previewContainer.innerHTML = ''; // Clear previous
-//     // cropBtn.style.display = 'none';
-//         const fileType = file.type;
-//         previewContainer.innerHTML = ''; // Clear previous
-//         // cropBtn.style.display = 'none';
-
-//     const url = URL.createObjectURL(file);
-//         const url = URL.createObjectURL(file);
-
-//     if (fileType.startsWith('image/')) {
-//         const img = document.createElement('img');
-//         img.src = url;
-//         previewContainer.appendChild(img);
-//         if (fileType.startsWith('image/')) {
-//             const img = document.createElement('img');
-//             img.src = url;
-//             previewContainer.appendChild(img);
-
-// img.onload = () => {
-//     if (cropper) {
-//         cropper.destroy(); // Clean up previous cropper instance
-//     }
-//     cropper = new Cropper(img, {
-//         aspectRatio: 1,
-//         viewMode: 1
-//     });
-//     cropBtn.style.display = 'inline';
-// };
-//     } else if (fileType.startsWith('video/')) {
-//         const video = document.createElement('video');
-//         video.controls = true;
-//         video.src = url;
-//         previewContainer.appendChild(video);
-//     }
-//     document.getElementById("next").classList.remove("hidden");
-//             // img.onload = () => {
-//             //     if (cropper) {
-//             //         cropper.destroy(); // Clean up previous cropper instance
-//             //     }
-//             //     cropper = new Cropper(img, {
-//             //         aspectRatio: 1,
-//             //         viewMode: 1
-//             //     });
-//             //     cropBtn.style.display = 'inline';
-//             // };
-//         } else if (fileType.startsWith('video/')) {
-//             const video = document.createElement('video');
-//             video.controls = true;
-//             video.src = url;
-//             previewContainer.appendChild(video);
-//         }
-//         document.getElementById("next").classList.remove("hidden");
-
-
-// });
-//     });
-
-// cropBtn.addEventListener('click', function () {
-//     if (!cropper) return;
-
-//     const croppedCanvas = cropper.getCroppedCanvas();
-//     canvas.width = croppedCanvas.width;
-//     canvas.height = croppedCanvas.height;
-//     const ctx = canvas.getContext('2d');
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
-//     ctx.drawImage(croppedCanvas, 0, 0);
-//     canvas.style.display = 'block';
-// });
-// });
-// window.postOptionsShow = function (next) {
-//     let post = document.getElementById("post");
-//     post.classList.remove("w-[35vw]");
-//     post.classList.add("w-[60vw]");
-//     next.classList.add("hidden")
-// }
-// function cancelPost() {
-//     let post = document.getElementById('createPost')
-//     post.classList.add("hidden");
-//     mainContent.classList.remove('blur-sm', 'pointer-events-none', 'select-none');
-//     const croppedCanvas = cropper.getCroppedCanvas();
-//     canvas.width = croppedCanvas.width;
-//     canvas.height = croppedCanvas.height;
-//     const ctx = canvas.getContext('2d');
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
-//     ctx.drawImage(croppedCanvas, 0, 0);
-//     canvas.style.display = 'block';
-// });
-// });
-// window.postOptionsShow = function (next) {
-//     let post = document.getElementById("post");
-//     post.classList.remove("w-[35vw]");
-//     post.classList.add("w-[60vw]");
-//     next.classList.add("hidden")
-// }
-// function cancelPost() {
-//     let post = document.getElementById('createPost')
-//     post.classList.add("hidden");
-//     mainContent.classList.remove('blur-sm', 'pointer-events-none', 'select-none');
-
-// }
-
-
-//go back
-function reverse(element) {
-    window.history.back();
 }
 
+// Optional: Default to "posts"
+window.addEventListener('DOMContentLoaded', () => {
+    sectionToggle(document.querySelector('.tab-btn'), 'posts');
+});
 
+//when video ends  in story
+const video = document.getElementById("storyVideo") || '';
 
-// For heart animation on double click
-// document.querySelectorAll('.container').forEach(function (con) {
-//     con.addEventListener("dblclick", function (e) {
-//         var heart = con.querySelector('.heart-icon');
-//         if (heart) {
-//             heart.classList.remove('scale-50', 'opacity-0');
-//             heart.classList.add('scale-110', 'opacity-80');
-//             setTimeout(function () {
-//                 heart.classList.remove('scale-110', 'opacity-80');
-//                 heart.classList.add('scale-110', 'opacity-0');
-//             }, 900);
-//         }
-//         var secHeart = con.parentElement.querySelector('.heart-icon-second');
-//         if (secHeart) {
-//             secHeart.classList.add('text-red-500');
-//             secHeart.classList.remove('fa-regular');
-//             secHeart.classList.add('fa-solid');
-//         }
-//     });
-// });
+video.addEventListener("ended", () => {
 
-// document.querySelectorAll('.all-icons').forEach(function (con2) {
-//     let count = 0;
-//     var secHeart = con2.querySelector('.heart-icon-second');
-//     con2.addEventListener("click", function (e) {
-//         if (secHeart) {
-//             if (count === 0) {
-//                
-//                 count = 1;
-//             } else {
-//                 secHeart.classList.remove('text-red-500');
-//                 secHeart.classList.add('fa-regular');
-//                 secHeart.classList.remove('fa-solid');
-//                 count = 0;
-//             }
-//         }
-//     });
-// });
+    setTimeout(() => {
+        reverse();
+    }, 1000);
+});
 
-//double click trigger
-
-// document.addEventListener("DOMContentLoaded", () => {
-//     const postArea = document.getElementById("post-area-<%= post._id %>");
-//     const likeBtn = document.getElementById("like-btn-<%= post._id %>");
-
-
-//     // // Double click on post
-//     // if (postArea) {
-//     postArea.addEventListener("dblclick", () => {
-//         like(likeBtn, "<%= post._id %>", true);
-//         console.log("postArea", postArea);
-//     });
-//     // }
-// });
-
-
-
-
+//go back
+function reverse(element = "") {
+    window.history.back();
+}
 
 // Like
 
@@ -310,7 +72,7 @@ async function like(element, postId = "", triggeredByDoubleClick = false) {
     }
 
     let likeCount = document.getElementById("likeCount");
-    const likeCountSpan = document.getElementById(`likeCount-${postId}`);
+    const likeCountSpan = document.getElementById(`likeCount-${postId}`) || likeCount;
     const animatedHeart = document.querySelector(`#heart-animation-${postId}`);
     let currentCount = parseInt(likeCountSpan.textContent.trim(), 10);
 
@@ -328,7 +90,7 @@ async function like(element, postId = "", triggeredByDoubleClick = false) {
 
         if (triggeredByDoubleClick) {
             const postContainer = element.closest(".post-container");
-            heartIcon = postContainer?.querySelector(`#like-icon-${postId}`);
+            heartIcon = postContainer?.querySelector(`#like-icon-${postId}`) || document.querySelector(`#like-icon-popup`);
         } else {
             heartIcon = element.querySelector("i") || element;
         }
@@ -346,15 +108,15 @@ async function like(element, postId = "", triggeredByDoubleClick = false) {
         }
 
         // ❤️ Trigger animation only on double click
-        // if (triggeredByDoubleClick && animatedHeart) {
-        //     animatedHeart.classList.remove("opacity-0", "scale-50");
-        //     animatedHeart.classList.add("opacity-100", "scale-100");
+        if (triggeredByDoubleClick && animatedHeart) {
+            animatedHeart.classList.remove("opacity-0", "scale-50");
+            animatedHeart.classList.add("opacity-100", "scale-100");
 
-        //     setTimeout(() => {
-        //         animatedHeart.classList.remove("opacity-100", "scale-100");
-        //         animatedHeart.classList.add("opacity-0", "scale-50");
-        //     }, 600);
-        // }
+            setTimeout(() => {
+                animatedHeart.classList.remove("opacity-100", "scale-100");
+                animatedHeart.classList.add("opacity-0", "scale-50");
+            }, 600);
+        }
 
     } catch (err) {
         console.log(err);
@@ -406,6 +168,18 @@ async function openPost(element, postId) {
     let postComment = document.getElementById("commentSection");
     let likeCount = document.getElementById("likeCount");
     const commentInput = document.getElementById('commentContent');
+    const likeButton = document.querySelector('#popup-like-button');
+    const likeIcon = document.querySelector('#like-icon-popup');
+    //for like button
+    likeButton.setAttribute('data-post-id', postId);
+    likeButton.setAttribute('data-liked', post.liked ? 'true' : 'false');
+    //for save button
+    const saveButton = document.querySelector('#save-button');
+    saveButton.setAttribute('data-post-id', postId);
+    const saveIcon = saveButton.querySelector('i');
+
+
+
     commentInput.value = "";
     document.body.classList.add("overflow-hidden");
     post.dataset.postId = postId;
@@ -418,7 +192,12 @@ async function openPost(element, postId) {
     });
 
     const data = await response.json();
-
+    if (data.isLiked) {
+        likeIcon.classList.add("fa-solid", "text-red-500");
+    }
+    if (data.isSaved) {
+        saveIcon.classList.add("fa-solid", "text-blue-500");
+    }
     postContent.innerHTML = "";
     if (data.video) {
         postContent.innerHTML = `
@@ -567,64 +346,6 @@ async function addComment(element, postId = "") {
   `
 
 }
-//like 
-
-// document.addEventListener("DOMContentLoaded", () => {
-//     const likeBtn = document.getElementById("like-btn");
-//     const likeCount = document.getElementById("likeCount");
-//     const heartIcon = document.getElementById("heart-icon");
-//     const dblHeart = document.getElementById("dbl-heart");
-//     const postArea = document.getElementById("post-area");
-
-//     let liked = window.isLiked;
-
-//     // Initial state
-//     updateHeartIcon();
-
-//     likeBtn.addEventListener("click", () => {
-//         toggleLike();
-//     });
-
-//     postArea.addEventListener("dblclick", () => {
-//         showDoubleHeart();
-//         toggleLike();
-//     });
-
-//     function toggleLike() {
-//         fetch(`/like/${postId}`, {
-//             method: "POST",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify({ userId }),
-//         })
-//             .then(res => res.json())
-//             .then(data => {
-//                 liked = data.liked;
-//                 likeCount.textContent = data.likes;
-//                 updateHeartIcon();
-//             });
-//     }
-
-//     function updateHeartIcon() {
-//         if (liked) {
-//             heartIcon.setAttribute("fill", "red");
-//             heartIcon.setAttribute("stroke", "red");
-//             heartIcon.classList.add("scale-110", "transition", "duration-300");
-//         } else {
-//             heartIcon.setAttribute("fill", "none");
-//             heartIcon.setAttribute("stroke", "currentColor");
-//             heartIcon.classList.remove("scale-110");
-//         }
-//     }
-
-//     function showDoubleHeart() {
-//         dblHeart.classList.remove("opacity-0");
-//         dblHeart.classList.add("opacity-100");
-//         setTimeout(() => {
-//             dblHeart.classList.remove("opacity-100");
-//             dblHeart.classList.add("opacity-0");
-//         }, 700);
-//     }
-// });
 
 
 //Add comment from home 
@@ -864,9 +585,13 @@ document.getElementById('modalBackdrop').onclick = () => {
 
 
 
-function pauseVideo(element, videoId) {
+function pauseVideo(element, videoId = "") {
+    let video;
+    if (!videoId)
+        video = element.children[0];
+    else video = document.getElementById(videoId);
     const ariaLabel = element.getAttribute('aria-label');
-    const video = document.getElementById(videoId);
+
     if (!video) return;
 
     if (ariaLabel === "Pause") {
@@ -907,28 +632,81 @@ function muteVideo(element, videoId) {
 
 //save reel
 
- async function save(element, postId) {
+async function save(element, postId = "") {
     const icon = element.querySelector('i');
+    if (postId === "") {
+
+        postId = element.getAttribute('data-post-id');
+
+        if (!postId) {
+            console.error('Post ID is missing');
+            return;
+        }
+    }
 
     try {
-      const res = await fetch(`/reel/save/${postId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({}) // you can send more if needed
-      });
+        const res = await fetch(`/reel/save/${postId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({}) // you can send more if needed
+        });
 
-      const result = await res.json();
+        const result = await res.json();
 
-      if (result.status === 'saved') {
-        icon.classList.remove('fa-regular');
-        icon.classList.add('fa-solid', 'text-blue-500');
-      } else if (result.status === 'unsaved') {
-        icon.classList.remove('fa-solid', 'text-blue-500');
-        icon.classList.add('fa-regular');
-      }
+        if (result.status === 'saved') {
+            icon.classList.remove('fa-regular');
+            icon.classList.add('fa-solid', 'text-blue-500');
+        } else if (result.status === 'unsaved') {
+            icon.classList.remove('fa-solid', 'text-blue-500');
+            icon.classList.add('fa-regular');
+        }
     } catch (err) {
-      console.error("Error while saving/un-saving reel:", err);
+        console.error("Error while saving/un-saving reel:", err);
     }
-  }
+}
+
+
+//decription more option toggle
+function toggleCaption(postId) {
+    const caption = document.getElementById(`caption-${postId}`);
+    const shortText = caption.querySelector(".short");
+    const fullText = caption.querySelector(".full");
+
+    if (shortText.classList.contains("hidden")) {
+        shortText.classList.remove("hidden");
+        fullText.classList.add("hidden");
+    } else {
+        shortText.classList.add("hidden");
+        fullText.classList.remove("hidden");
+    }
+}
+
+//story scrollbar
+
+const scrollContainer = document.getElementById('stories-scroll')||"";
+const leftArrow = document.getElementById('stories-prev')||"";
+const rightArrow = document.getElementById('stories-next')||"";
+
+// Scroll handler
+function scrollStories(direction) {
+    const scrollAmount = 150;
+    if (direction === 'left') {
+        scrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    } else {
+        scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+}
+
+// Update arrow visibility
+function updateArrows() {
+    leftArrow.style.display = scrollContainer.scrollLeft > 10 ? 'block' : 'none';
+    const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+    rightArrow.style.display = scrollContainer.scrollLeft < maxScrollLeft - 10 ? 'block' : 'none';
+}
+
+// Trigger on scroll
+scrollContainer.addEventListener('scroll', updateArrows);
+window.addEventListener('load', updateArrows);
+

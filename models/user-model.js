@@ -9,11 +9,11 @@ const userSchema = new mongoose.Schema(
             unique: true,
             validate: {
                 validator: function (v) {
-                    return /^[a-zA-Z]+$/.test(v);
+                    return /^[a-zA-Z_]+[\d]*$/.test(v);
                 },
-                message: props => `${props.value} is not a valid user name! Only letters are allowed.`
+                message: props => `${props.value} is not a valid user name! Only letters and underscores are allowed.`
             }
-        },
+        }, 
         fullName: {
             type: String,
             required: true,

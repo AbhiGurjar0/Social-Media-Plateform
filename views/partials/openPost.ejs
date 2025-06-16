@@ -2,7 +2,8 @@
           inset-0  backdrop-blur-sm z-50 w-full h-screen hidden">
     <div id="post" data-post-id=""
         class="w-[75vw] h-[90vh] bg-red-500 col-start-2 flex absolute top-10 left-40 z-999 shadow-md rounded-md overflow-hidden">
-        <div onclick="pauseVideo(this ,'openPostVideo')" aria-label="Pause" id="mediaContent" class="w-[50%] h-full bg-amber-400">
+        <div ondblclick="like(this, '', true)" onclick="pauseVideo(this ,'openPostVideo')" aria-label="Pause"
+            id="mediaContent" class="w-[50%] h-full bg-amber-400">
 
 
         </div>
@@ -31,15 +32,21 @@
                 </div>
                 <!-- Actions -->
                 <div class="actions w-full ">
-                    <div class="flex items-center justify-between px-4 pt-3 h-[10%]">
+                    <div class="post-container flex items-center justify-between px-4 pt-3 h-[10%]">
                         <div class="flex items-center gap-4">
-                            <button onclick="like(this)" class="hover:text-gray-500"><i
-                                    class="fa-regular fa-heart text-2xl"></i></button>
+                            <!-- Inside popup/modal -->
+                            <button onclick="like(this)" class="text-2xl" id="popup-like-button" data-post-id=""
+                                data-liked="">
+                                <i id="like-icon-popup" class="fa-regular fa-heart"></i>
+                            </button>
                             <button class="hover:text-gray-500"><i class="fa-regular fa-comment text-2xl"></i></button>
                             <button class="hover:text-gray-500"><i
                                     class="fa-regular fa-paper-plane text-2xl"></i></button>
                         </div>
-                        <button class="hover:text-gray-500"><i class="fa-regular fa-bookmark text-2xl"></i></button>
+
+                        <button id="save-button" data-post-id="" onclick="save(this,'')" class="hover:text-gray-500">
+                            <i id="save-icon-popup" class="fa-regular fa-bookmark text-2xl"></i>
+                        </button>
                     </div>
                     <!-- Likes -->
                     <div class="px-2 pt-3">

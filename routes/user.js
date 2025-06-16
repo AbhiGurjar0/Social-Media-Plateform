@@ -26,8 +26,9 @@ router.get("/main", isLoggedIn, async (req, res) => {
 
         // Fetch all posts (even by others) whose IDs are saved by the user
         const savedPosts = await postModel.find({ _id: { $in: savedPostIds } }).populate('userId');
+        const loggedInUser = user;
 
-        res.render("main", { user, posts: user.posts, savedReels, savedPosts });
+        res.render("main", { user, posts: user.posts, savedReels, savedPosts, loggedInUser });
     } catch (err) {
         console.error("Error fetching user or posts:", err);
         res.status(500).send("Server error");
@@ -156,10 +157,10 @@ router.post("/post/like/users/:postId", async (req, res) => {
     try {
         const likes = await likeModel
             .find({ postId: req.params.postId })
-            .populate("userId", "firstName profilePic");
+            .populate("userId", "userName profilePic");
 
         const userDetails = likes.map(like => ({
-            userName: like.userId.firstName,
+            userName: like.userId.userName,
             userProfile: like.userId.profilePic || "default.jpg"
         }));
 
@@ -176,12 +177,12 @@ router.post("/post/postDetails/:postId", isLoggedIn, async (req, res) => {
             path: "comments",
             populate: {
                 path: "userId",
-                select: "firstName profilePic"
+                select: "userName profilePic"
             }
         })
         .populate({
             path: "userId",
-            select: "firstName profilePic"
+            select: "userName profilePic"
         });
     const loggedInUser = await userModel.findById(req.user._id);
 
@@ -196,12 +197,14 @@ router.post("/post/postDetails/:postId", isLoggedIn, async (req, res) => {
 
     const likes = await likeModel
         .find({ postId: req.params.postId });
-
+    const isLiked = likes.some((like) => like.userId.equals(req.user._id));
+    const isSaved = await saveModel.findOne({ userId: req.user._id, postId: req.params.postId });
     const commentDetails = post.comments.map((comment) => ({
-        userName: comment.userId.firstName,
+        userName: comment.userId.userName,
         userProfile: comment.userId.profilePic,
         content: comment.content
     }));
+
 
     res.json({
         video: post.video ? post.video.toString('base64') : '',
@@ -211,7 +214,7 @@ router.post("/post/postDetails/:postId", isLoggedIn, async (req, res) => {
         createdBy: post.userId
             ? {
                 userId: post.userId._id,
-                userName: post.userId.firstName,
+                userName: post.userId.userName,
                 userProfile: post.userId.profilePic
             }
             : {
@@ -221,6 +224,8 @@ router.post("/post/postDetails/:postId", isLoggedIn, async (req, res) => {
             },
         isOwner: isOwner,
         isFollowing: !!isFollowing,
+        isLiked: isLiked,
+        isSaved: isSaved,
     });
 
 })
@@ -245,7 +250,7 @@ router.post("/post/addComment", isLoggedIn, async (req, res) => {
         { $push: { comments: createdComment._id } },
     );
     res.json({
-        userName: user.firstName,
+        userName: user.userName,
         profilePic: user.profilePic ? user.profilePic : "default.jpg",
 
     });
@@ -267,9 +272,17 @@ router.get("/user/:userId", isLoggedIn, async (req, res, next) => {
         }
 
         const user = await userModel.findOne({ _id: userId }).populate("posts");
+        const loggedInUser = await userModel.findById(req.user._id);
+        const savedReels = await saveModel.find({ userId: req.user._id });
+
+        const savedPostIds = savedReels.map(r => r.postId);
+
+        // Fetch all posts (even by others) whose IDs are saved by the user
+        const savedPosts = await postModel.find({ _id: { $in: savedPostIds } }).populate('userId');
+
         if (!user) return res.status(404).send("User not found");
 
-        res.render("main", { user, posts: user.posts });
+        res.render("main", { user, posts: user.posts, loggedInUser, savedPosts });
     } catch (err) {
         console.error("Error fetching user or posts:", err);
         res.status(500).send("Server error");
@@ -464,7 +477,7 @@ router.get("/", isLoggedIn, async (req, res) => {
         let posts = await postModel.find()
             .populate({
                 path: "userId",
-                select: "firstName profilePic"
+                select: "userName profilePic"
             })
             .populate("comments")
             .populate({
@@ -520,7 +533,7 @@ router.get("/user/story/:storyId", async (req, res) => {
     const timeLeft = storyExpiryDuration - timeElapsed;
     let hours = Math.floor(24 - (((timeLeft / 1000) / 60) / 60));
     if (hours == 0) {
-        hours = Math.floor((24 - (((timeLeft / 1000) / 60 / 60))) * 60) + 'm8';
+        hours = Math.floor((24 - (((timeLeft / 1000) / 60 / 60))) * 60) + 'm';
     }
     else {
         hours + 'h';

@@ -129,19 +129,25 @@
 
             <!-- ✅ Saved Section -->
             <div id="saved-section" class="section mt-4 flex flex-wrap gap-2 hidden">
-                <% savedPosts?.forEach(p=> { %>
-                    <div onclick="openPost(this,'<%=p._id%>')"
-                        class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
-                        <% if (p.video) { %>
-                            <video class="w-full h-full object-cover">
-                                <source src="data:video/mp4;base64,<%= p.video?.toString('base64') %>" type="video/mp4">
-                            </video>
+                <% if(user._id!==loggedInUser._id) { %>
+
+                    <% savedPosts?.forEach(p=> { %>
+                        <div onclick="openPost(this,'<%=p._id%>')"
+                            class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
+                            <% if (p.video) { %>
+                                <video class="w-full h-full object-cover">
+                                    <source src="data:video/mp4;base64,<%= p.video?.toString('base64') %>"
+                                        type="video/mp4">
+                                </video>
+                                <% } else { %>
+                                    <img src="data:image/jpeg;base64,<%= p.image?.toString('base64') %>"
+                                        class="w-full h-full object-cover" />
+                                    <% } %>
+                        </div>
+                        <% } ); %>
                             <% } else { %>
-                                <img src="data:image/jpeg;base64,<%= p.image?.toString('base64') %>"
-                                    class="w-full h-full object-cover" />
+                                <h2 class="text-gray-500 text-center w-full">This user has no saved posts.</h2>
                                 <% } %>
-                    </div>
-                    <% } ); %>
             </div>
 
         </div>
