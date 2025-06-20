@@ -1,4 +1,4 @@
-<div id="openPost" class="main-container overflow-hidden fixed bg-transparent
+<div id="openPost" class="main-container overflow-hidden fixed bg-transparent top-10
           inset-0  backdrop-blur-sm z-50 w-full h-screen hidden">
     <div id="post" data-post-id=""
         class="w-[75vw] h-[90vh] bg-red-500 col-start-2 flex absolute top-10 left-40 z-999 shadow-md rounded-md overflow-hidden">
@@ -49,11 +49,11 @@
                         </button>
                     </div>
                     <!-- Likes -->
-                    <div class="px-2 pt-3">
-                        <span id="likeCount" class="font-semibold text-sm px-1"> 0 </span>likes
+                    <div id="likeCountContainer" class="px-2 pt-3">
+                        <span id="likeCount" class="font-semibold text-sm px-1"> 0 </span> likes
                     </div>
                     <!-- Caption -->
-                    <div class="px-4 pt-1 pb-2">
+                    <div id="captionContainer" class="px-4 pt-1 pb-2">
                         <div class="flex items-center mt-2">
                             <input id="commentContent" type="text" placeholder="Add a comment..."
                                 class="flex-1 border-none outline-none text-sm bg-transparent" />

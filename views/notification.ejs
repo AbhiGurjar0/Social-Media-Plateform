@@ -1,104 +1,66 @@
 <!--main div-->
 <%- include("./partials/headerOptions") %>
-<div class="flex">
-    <!--side bar link-->
-    <div class="w-[20vw] h-full fixed z-50 mt-6 "> <%- include("./partials/sidebar") %></div>
-    <!-- notification content -->
-    <div class=" ml-[19vw] mt-10 flex flex-col space-y-4 box-border"> <!--main div for content-->
-        <div>
-            <h1 class="text-2xl font-semibold">Notifications</h1>
-        </div>
-
-        <div>
-            <div class="flex items-center space-x-1">
-                <h1 class="font-semibold mb-4 text-[18px]">Today</h1>
-                <a href=""> <i class="text-[10px] mb-4 font-semibold fa-solid fa-chevron-down"></i></a>
-            </div>
-            <div class=" flex justify-between items-center w-[60vw] border-b-1 border-t-1 border-zinc-300">
-                <!--for icon and profile-->
-                <div class="flex space-x-4">
-
-                    <div class=" h-10 w-10 overflow-hidden rounded-full object-cover"><!-- for profile-->
-                        <a href=""><img class="overflow-hidden rounded-full object-cover"
-                                src="https://images.unsplash.com/photo-1745834311180-688615cf5308?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                alt="alexa"></a>
-                    </div>
-                    <div> <!--message + likes-->
-                        <div class="flex items-center space-x-1">
-                            <p class="text-sm font-semibold">Alex</p>
-                            <p class="text-sm">liked your post</p>
-                        </div>
-                        <div class="flex items-center space-x-1">
-                            <i class="fa-solid fa-heart text-sm"></i>
-                            <p class="text-[13px] text-zinc-500">2h ago</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-4"> <!--post-->
-                    <div class=" w-15 h-15 rounded-xl overflow-hidden"><img
-                            src="https://images.unsplash.com/photo-1731296325603-78df1c9f78b9?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
-                    </div>
-                </div>
+    <div class="flex">
+        <!--side bar link-->
+        <div class="w-[20vw] h-full fixed z-50 mt-6 "> <%- include("./partials/sidebar") %></div>
+        <!-- notification content -->
+        <div class=" ml-[19vw] mt-10 flex flex-col space-y-4 box-border"> <!--main div for content-->
+            <div>
+                <h1 class="text-2xl font-semibold">Notifications</h1>
             </div>
 
-            <div class=" flex justify-between items-center w-[60vw] border-b-1  border-zinc-300">
-                <!--for icon and profile-->
-                <div class="flex space-x-4">
+            <div>
+                <div class="flex items-center space-x-1">
+                    <h1 class="font-semibold mb-4 text-[18px]">Today</h1>
 
-                    <div class=" h-10 w-10 overflow-hidden rounded-full object-cover"><!-- for profile-->
-                        <a href=""><img class="overflow-hidden rounded-full object-cover"
-                                src="https://images.unsplash.com/photo-1745834311180-688615cf5308?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                alt="alexa"></a>
-                    </div>
-                    <div> <!--message + likes-->
-                        <div class="flex items-center space-x-1">
-                            <p class="text-sm font-semibold">Alex</p>
-                            <p class="text-sm">liked your post</p>
+                </div>
+                <% notifications.reverse().forEach(notification=> { %>
+                    <div class=" flex justify-between items-center w-[60vw] border-b-1 border-t-1 border-zinc-300">
+                        <!--for icon and profile-->
+                        <div class="flex space-x-4">
+
+                            <div class=" h-10 w-10 overflow-hidden rounded-full object-cover"><!-- for profile-->
+                                <a href=""><img class="overflow-hidden rounded-full object-cover"
+                                        src="data:image/jpg;base64,<%= notification?.userId2?.profilePic %>"
+                                        alt="<%= notification?.userId2?.userName %>"></a>
+                            </div>
+                            <div> <!--message + likes-->
+                                <div class="flex items-center space-x-1">
+                                    <p class="text-sm font-semibold">
+                                        <%= notification?.userId2?.userName %>
+                                    </p>
+                                    <%if(notification.action.toString()==='like'){%>
+                                        <p class="text-sm">liked your post</p>
+                                        <%}%>
+                                            <%if(notification.action.toString()==='comment'){%>
+                                                <p class="text-sm">commented on your post</p>
+                                                <%}%>
+                                                    <%if(notification.action.toString()==='follow'){%>
+                                                        <p class="text-sm">started following you</p>
+                                                        <%}%>
+                                                            <%if(notification.action.toString()==='mention'){%>
+                                                                <p class="text-sm">mentioned you in a post</p>
+                                                                <%}%>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fa-solid fa-heart text-sm"></i>
+                                    <p class="text-[13px] text-zinc-500">
+                                        <%= notification?.createdAt?.toLocaleString() %>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex items-center space-x-1">
-                            <i class="fa-solid fa-heart text-sm"></i>
-                            <p class="text-[13px] text-zinc-500">2h ago</p>
+                        <div class="p-4"> <!--post-->
+                            <div class=" w-15 h-15 rounded-xl overflow-hidden"><img
+                                    src="data:image/jpg;base64,<%= notification?.postId?.image %>" alt="post image">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="p-4"> <!--post-->
-                    <div class=" w-15 h-15 rounded-xl overflow-hidden"><img
-                            src="https://images.unsplash.com/photo-1731296325603-78df1c9f78b9?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-
-        <!-- This Month -->
-        <div>
-            <div class="flex items-center space-x-1">
-                <h1 class="font-semibold mb-4 text-[18px]">This Month</h1>
-                <a href=""> <i class="text-[10px] mb-4 font-semibold fa-solid fa-chevron-down"></i></a>
-            </div>
-
-            <div class=" flex justify-between items-center w-[60vw] border-b-1  border-zinc-400 h-[90px]">
-                <!--for icon and profile-->
-
-            </div>
-            <div class=" flex justify-between items-center w-[60vw] border-b-1  border-zinc-400 h-[70px]">
-                <!--for icon and profile-->
-
-            </div>
-
-        </div>
-
-        <!-- Earlier -->
-        <div>
-            <div class="flex items-center space-x-1">
-                <h1 class="font-semibold mb-4 text-[18px]">Earlier</h1>
-                <a href=""> <i class="text-[10px] mb-4 font-semibold fa-solid fa-chevron-down"></i></a>
+                    <% }) %>
             </div>
 
 
 
         </div>
+
     </div>
-
-</div>

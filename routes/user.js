@@ -10,7 +10,8 @@ const commentModel = require("../models/comments-model")
 const followerModel = require("../models/follow-model")
 const saveModel = require("../models/saved-model");
 const followModel = require('../models/follow-model');
-const storyModel = require("../models/story-model")
+const storyModel = require("../models/story-model");
+const notificationModel = require('../models/notification-model');
 
 //profile page
 router.get("/main", isLoggedIn, async (req, res) => {
@@ -44,8 +45,9 @@ router.get("/postDetails/:postId", isLoggedIn, async (req, res) => {
 //post creation 
 router.post("/createPost", upload.single('media'), isLoggedIn, async (req, res) => {
     try {
+        console.log(req.body)
         const file = req.file;
-        let { caption, tags, location, visibility, advancedSetting } = req.body;
+        let { caption, tags, location, visibility, hideLikeViewCounts, disableComments } = req.body;
         // console.log(req.file);
 
         let post = await postModel.create({
@@ -56,7 +58,8 @@ router.post("/createPost", upload.single('media'), isLoggedIn, async (req, res) 
             tags,
             visibility,
             location,
-            advancedSetting,
+            hideLikeViewCounts: hideLikeViewCounts === 'on' ? true : false,
+            disableComments: disableComments === 'on' ? true : false,
             createdAt: Date.now(),
 
         })
@@ -113,13 +116,18 @@ router.post("/post/like/:postId", isLoggedIn, async (req, res) => {
                 }
             });
         const isLiked = post.like.some((like) => like.userId.equals(req.user._id));
-
         if (!isLiked) {
             const newLike = await likeModel.create({
                 userId: req.user._id,
                 postId: req.params.postId
             });
-
+            await notificationModel.create({
+                userId: post.userId,
+                userId2: req.user._id,
+                postId: post._id,
+                action: 'like',
+                createdAt: Date.now()
+            });
             await postModel.updateOne(
                 { _id: req.params.postId },
                 { $push: { like: newLike._id } }
@@ -206,6 +214,7 @@ router.post("/post/postDetails/:postId", isLoggedIn, async (req, res) => {
     }));
 
 
+
     res.json({
         video: post.video ? post.video.toString('base64') : '',
         image: post.image ? post.image.toString('base64') : '',
@@ -226,6 +235,9 @@ router.post("/post/postDetails/:postId", isLoggedIn, async (req, res) => {
         isFollowing: !!isFollowing,
         isLiked: isLiked,
         isSaved: isSaved,
+        disableComments: post.disableComments,
+        hideLikeViewCounts: post.hideLikeViewCounts,
+
     });
 
 })
@@ -241,6 +253,16 @@ router.post("/post/addComment", isLoggedIn, async (req, res) => {
         content: comment,
     });
     let user = await userModel.findOne({ _id: req.user._id });
+    // Fetch the post to get the original owner's userId
+    const post = await postModel.findById(postId);
+
+    await notificationModel.create({
+        userId: post.userId, // post owner
+        userId2: req.user._id,
+        postId: createdComment.postId,
+        action: 'comment',
+        createdAt: Date.now()
+    });
     await postModel.updateOne(
         { _id: postId },
         { $push: { comments: createdComment._id } },
@@ -374,7 +396,12 @@ router.post("/user/addFollower", isLoggedIn, async (req, res) => {
                 following: userId,
                 createdAt: Date.now(),
             });
-
+            await notificationModel.create({
+                userId: userId,
+                userId2: req.user._id,
+                action: 'follow',
+                createdAt: Date.now()
+            });
             await userModel.findByIdAndUpdate(req.user._id, {
                 $addToSet: { following: userId },
             });
@@ -518,8 +545,15 @@ router.get("/explore", async (req, res) => {
 })
 
 //notification page
-router.get("/notifications", (req, res) => {
-    res.render("notification");
+router.get("/notifications", isLoggedIn, async (req, res) => {
+    let notifications = await notificationModel.find({ userId: req.user._id }).populate({
+        path: "userId2",
+        select: "userName profilePic"
+    }).populate({
+        path: "postId",
+        select: "image video"
+    });
+    res.render("notification", { notifications });
 })
 
 //view story
@@ -536,12 +570,37 @@ router.get("/user/story/:storyId", async (req, res) => {
         hours = Math.floor((24 - (((timeLeft / 1000) / 60 / 60))) * 60) + 'm';
     }
     else {
-        hours + 'h';
+        hours += 'h';
     }
 
 
     res.render("viewStory", { story, hours });
 })
+
+router.post("/post/likes", isLoggedIn, async (req, res) => {
+    try {
+        const postId = req.body.postId;
+        const likes = await likeModel.find({ postId }).populate("userId");
+
+        const likesWithBase64 = likes.map((like) => {
+            const user = like.userId;
+            return {
+                ...like._doc,
+                userId: {
+                    ...user._doc,
+                    profilePic: user.profilePic
+                        ? user.profilePic.toString("base64") // ✅ Convert Buffer to base64 string
+                        : null,
+                },
+            };
+        });
+
+        res.json({ likes: likesWithBase64 });
+    } catch (error) {
+        console.error("Error fetching likes:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
 
 
 

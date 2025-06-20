@@ -105,7 +105,7 @@
 
             <!-- ✅ Posts Section -->
             <div id="posts-section" class="section mt-4 flex flex-wrap gap-2">
-                <% posts.forEach((post)=> { if (!post.video) { %>
+                <% posts.reverse().forEach((post)=> { if (!post.video) { %>
                     <div onclick="openPost(this,'<%=post._id%>')"
                         class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
                         <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>"
@@ -116,7 +116,7 @@
 
             <!-- ✅ Reels Section -->
             <div id="reels-section" class="section mt-4 flex flex-wrap gap-2 hidden">
-                <% posts.forEach((post)=> { if (post.video) { %>
+                <% posts.reverse().forEach((post)=> { if (post.video) { %>
                     <div onclick="openPost(this,'<%=post._id%>')"
                         class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
                         <video class="w-full h-full object-cover">
@@ -129,9 +129,9 @@
 
             <!-- ✅ Saved Section -->
             <div id="saved-section" class="section mt-4 flex flex-wrap gap-2 hidden">
-                <% if(user._id!==loggedInUser._id) { %>
+                <% if(user._id.toString() === loggedInUser._id.toString()) { %>
 
-                    <% savedPosts?.forEach(p=> { %>
+                    <% savedPosts?.reverse().forEach(p=> { %>
                         <div onclick="openPost(this,'<%=p._id%>')"
                             class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
                             <% if (p.video) { %>

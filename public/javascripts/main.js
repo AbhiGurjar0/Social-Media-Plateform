@@ -24,8 +24,13 @@ function sectionToggle(clickedTab, sectionId) {
     // Hide all sections
     document.querySelectorAll('.section').forEach(sec => sec.classList.add('hidden'));
 
-    // Show selected section
-    document.getElementById(`${sectionId}-section`).classList.remove('hidden');
+    // Try to show selected section
+    const targetSection = document.getElementById(`${sectionId}-section`);
+    if (targetSection) {
+        targetSection.classList.remove('hidden');
+    } else {
+        console.warn(`No section found with ID: ${sectionId}-section`);
+    }
 
     // Reset all tab button styles
     document.querySelectorAll('.tab-btn').forEach(tab => {
@@ -34,9 +39,14 @@ function sectionToggle(clickedTab, sectionId) {
     });
 
     // Set active tab style
+    if (!clickedTab) {
+        console.warn("clickedTab is null. Did you pass it correctly?");
+        return;
+    }
     clickedTab.classList.remove('bg-gray-200');
     clickedTab.classList.add('bg-blue-500', 'text-white');
 }
+
 
 // Optional: Default to "posts"
 window.addEventListener('DOMContentLoaded', () => {
@@ -44,13 +54,16 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 //when video ends  in story
-const video = document.getElementById("storyVideo") || '';
+document.addEventListener('DOMContentLoaded', () => {
+    const video = document.getElementById("storyVideo");
 
-video.addEventListener("ended", () => {
-
-    setTimeout(() => {
-        reverse();
-    }, 1000);
+    if (video) {
+        video.addEventListener("ended", () => {
+            setTimeout(() => {
+                reverse();
+            }, 1000);
+        });
+    }
 });
 
 //go back
@@ -125,36 +138,36 @@ async function like(element, postId = "", triggeredByDoubleClick = false) {
 
 //view liked
 
-async function openLike(like, postId) {
-    try {
-        await fetch(`/post/like/users/${postId}`, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({}),
-        })
-            .then(response => response.json())
-            .then(data => {
-                let userDetails = data;
-                userDetails.forEach(users => {
-                    let user = document.createElement('div');
+// async function openLike(like, postId) {
+//     try {
+//         await fetch(`/post/like/users/${postId}`, {
+//             method: "POST",
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({}),
+//         })
+//             .then(response => response.json())
+//             .then(data => {
+//                 let userDetails = data;
+//                 userDetails.forEach(users => {
+//                     let user = document.createElement('div');
 
 
-                });
+//                 });
 
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+//             })
+//             .catch((err) => {
+//                 console.log(err);
+//             })
 
-    } catch (err) {
-        console.log("err in opening like ");
-        console.log(err);
+//     } catch (err) {
+//         console.log("err in opening like ");
+//         console.log(err);
 
-    }
+//     }
 
-}
+// }
 
 
 
@@ -237,8 +250,15 @@ ${!data.isOwner ? !data.isFollowing
     // All comments
     postComment.innerHTML = "";
     console.log(data.comments.length);
-    data.comments.forEach(comment => {
-        postComment.innerHTML += `
+    if (data.disableComments) {
+        postComment.innerHTML = `<p class="text-gray-500 text-sm">Comments are disabled for this post.</p>`;
+        document.getElementById("captionContainer").classList.add("hidden");
+    }
+    else {
+
+        document.getElementById("captionContainer").classList.remove("hidden");
+        data.comments.forEach(comment => {
+            postComment.innerHTML += `
    <div class="flex items-start space-x-3 space-y-2">
   <img src="${comment.userProfile}" alt="${comment.userName}'s profile picture"
        class="w-8 h-8 rounded-full object-cover overflow-hidden" />
@@ -260,10 +280,22 @@ ${!data.isOwner ? !data.isFollowing
 </div>
 
   `;
-    });
+        });
+    }
     //likes on post 
     likeCount.innerHTML = "";
-    likeCount.innerHTML = `${data.likeCount}`
+    if (!data.hideLikeViewCounts) {
+        document.getElementById("likeCountContainer").classList.remove("hidden");
+        likeCount.innerHTML = `${data.likeCount}`;
+    }
+    else {
+        document.getElementById("likeCountContainer").classList.add("hidden");
+
+    }
+
+
+
+
 
     fullPage.classList.remove("hidden");
     setTimeout(() => {
@@ -683,30 +715,100 @@ function toggleCaption(postId) {
     }
 }
 
-//story scrollbar
 
-const scrollContainer = document.getElementById('stories-scroll')||"";
-const leftArrow = document.getElementById('stories-prev')||"";
-const rightArrow = document.getElementById('stories-next')||"";
-
-// Scroll handler
 function scrollStories(direction) {
+    const scrollContainer = document.getElementById('stories-scroll');
     const scrollAmount = 150;
-    if (direction === 'left') {
-        scrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-    } else {
-        scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    scrollContainer.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+    });
+};
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 1️⃣ Select your DOM elements
+    const scrollContainer = document.getElementById('stories-scroll');
+    const leftArrow = document.getElementById('stories-prev');
+    const rightArrow = document.getElementById('stories-next');
+
+    // 2️⃣ Define scroll handler
+
+    // 3️⃣ Define function to update arrow visibility
+    function updateArrows() {
+        const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+        leftArrow.style.display = scrollContainer.scrollLeft > 5 ? 'block' : 'none';
+        rightArrow.style.display = scrollContainer.scrollLeft < maxScrollLeft - 5 ? 'block' : 'none';
     }
-}
 
-// Update arrow visibility
-function updateArrows() {
-    leftArrow.style.display = scrollContainer.scrollLeft > 10 ? 'block' : 'none';
-    const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-    rightArrow.style.display = scrollContainer.scrollLeft < maxScrollLeft - 10 ? 'block' : 'none';
-}
+    // 4️⃣ Attach event listeners for arrow buttons
+    leftArrow.addEventListener('click', () => scrollStories('left'));
+    rightArrow.addEventListener('click', () => scrollStories('right'));
 
-// Trigger on scroll
-scrollContainer.addEventListener('scroll', updateArrows);
-window.addEventListener('load', updateArrows);
+    // 5️⃣ Attach scroll and load event listeners
+    scrollContainer.addEventListener('scroll', updateArrows);
+    window.addEventListener('load', updateArrows);
 
+    // 6️⃣ Optional: manually trigger update once
+    updateArrows(); // To set correct initial state
+});
+
+
+//show likes 
+
+// function showLikes(postId) {
+//     // const likeCount = document.getElementById(`likeCount-${postId}`);
+//     // const likeCountValue = parseInt(likeCount.textContent.trim(), 10);
+//     document.getElementById("likesModel").classList.remove("hidden");
+//     let details = document.getElementById("likeDetails");
+
+//     // if (likeCountValue > 0) {
+//         fetch("/post/like", {
+//             method: "POST",
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({postId}),
+//         })
+//             .then(response => response.json())
+//             .then(data => {
+//                 // Handle the data returned from the server
+//                 console.log(data);
+//                 const likes = data.likes;
+//                 details.innerHTML = ""; // Clear previous likes
+//                 likes.forEach(like => {
+//                     // Display each like
+//                     details.innerHTML += `
+//                        <li
+//                         class="flex items-center justify-between px-5 py-4 hover:bg-gray-700 transition-colors duration-300">
+//                         <div class="flex items-center space-x-4">
+//                             <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2859d5e1-99a5-4cc7-a36e-65b88ccf9843.png"
+//                                 alt="Profile photo of _felicity__04, user GUNGUN with heart icon"
+//                                 class="w-12 h-12 rounded-full object-cover" loading="lazy" />
+//                             <div>
+//                                 <p class="text-white font-semibold leading-tight select-text">
+//                                     ${like.userId.userName || "Unknown User"}
+//                                     <span class="text-gray-400 text-sm">(@${like.userId.userName})</span>
+//                                 </p>
+//                                 <p class="text-gray-400 text-sm select-text">
+//                                   ${like.userId.fullName || "Unknown User"}
+//                                 </p>
+//                             </div>
+//                         </div>
+//                         <button onclick="followUser('${like.userId._id}')"
+//                             class="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-white px-4 py-1 rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-blue-400"
+//                             type="button">Follow</button>
+//                     </li>
+//                     `;
+//                 });
+//                 // You can display the likes in a modal or any other way you prefer
+//             })
+//             .catch(err => {
+//                 console.error("Error fetching likes:", err);
+//             });
+//     // } else {
+//     //     alert("No likes yet!");
+//     // }
+
+// }

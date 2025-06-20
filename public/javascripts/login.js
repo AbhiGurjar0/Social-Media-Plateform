@@ -1,16 +1,26 @@
 
 // for sign up and sign in nevigation 
-document.getElementById("signUp").addEventListener("click", () => {
-    document.getElementById("login-container").classList.add("hidden");
-    document.getElementById("signup-container").classList.remove("hidden");
+document.addEventListener("DOMContentLoaded", () => {
+    const signUpBtn = document.getElementById("signUp");
+    const signInBtn = document.getElementById("signIn");
+    const loginContainer = document.getElementById("login-container");
+    const signupContainer = document.getElementById("signup-container");
 
-})
+    if (signUpBtn && loginContainer && signupContainer) {
+        signUpBtn.addEventListener("click", () => {
+            loginContainer.classList.add("hidden");
+            signupContainer.classList.remove("hidden");
+        });
+    }
 
-document.getElementById("signIn").addEventListener("click", () => {
-    document.getElementById("signup-container").classList.add("hidden");
-    document.getElementById("login-container").classList.remove("hidden");
+    if (signInBtn && loginContainer && signupContainer) {
+        signInBtn.addEventListener("click", () => {
+            signupContainer.classList.add("hidden");
+            loginContainer.classList.remove("hidden");
+        });
+    }
+});
 
-})
 
 
 // for eye Button Login
@@ -19,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const openIcon = document.getElementById("open");
     const closeIcon = document.getElementById("close");
     const password = document.getElementById("password");
+    if(openIcon===null) return ;
 
     openIcon.addEventListener("click", () => {
         openIcon.style.display = 'none';
@@ -40,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const openIcon = document.getElementById("openr");
     const closeIcon = document.getElementById("closer");
     const password = document.getElementById("passwordr");
+     if(openIcon===null) return ;
 
     openIcon.addEventListener("click", () => {
         openIcon.style.display = 'none';

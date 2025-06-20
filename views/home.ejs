@@ -19,7 +19,7 @@
           <!-- Left arrow -->
           <button onclick="scrollStories('left')" id="stories-prev"
             class="absolute left-0 z-10 bg-white rounded-full shadow p-2 text-gray-700 hover:bg-gray-100 disabled:opacity-50"
-            style="display:none;">
+            >
             <i class="fa-solid fa-chevron-left"></i>
           </button>
 
@@ -138,7 +138,7 @@
 
           <!-- Likes -->
           <div class="px-4 pt-1">
-            <span onclick="openLike(this,'<%= post._id %>')" class="font-semibold text-sm">
+            <span onclick="showLikes(this,'<%= post._id %>')" class="font-semibold text-sm cursor-pointer">
               <span id="likeCount-<%= post._id %>" class="ml-2">
                 <%= post.like.length %>
               </span> Likes
@@ -200,4 +200,5 @@
         <%- include("./partials/managePostForHome") %>
       </div>
       <%- include("./partials/uploadStory") %>
+      <%- include("./partials/likes") %>
         <%- include("./partials/footer") %>
