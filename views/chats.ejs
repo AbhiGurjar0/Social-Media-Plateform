@@ -57,17 +57,17 @@
                                 class="group border-b border-gray-200 cursor-pointer hover:bg-orange-50 transition-colors">
                                 <a href="#" class="flex items-center px-5 py-4">
                                     <img class="w-10 h-10 rounded-full object-cover mr-4 shadow-sm border border-gray-300"
-                                        src="data:image/jpeg;base64,<%= user.profilePic.toString('base64') %>"
+                                        src="data:image/jpeg;base64,<%= user?.profilePic?.toString('base64') %>"
                                         alt="<%= user.userName %>" />
                                     <div class="flex-1 min-w-0">
                                         <div class="flex justify-between items-center">
                                             <p class="font-semibold text-gray-900 truncate">
                                                 <%= user.fullName %>
                                             </p>
-                                            <span
-                                                class="text-xs text-white bg-orange-400 rounded-full px-2.5 py-0.5 font-semibold select-none">2</span>
+                                            
                                         </div>
-                                        <p class="text-sm text-gray-400 truncate">Hey, did you see the latest update?
+                                       
+                                        <p class="text-sm text-gray-400 truncate">@<%=user.userName%>
                                         </p>
                                     </div>
                                 </a>
@@ -89,7 +89,7 @@
                 <header class="flex items-center justify-between border-b border-gray-200 p-6 shadow-sm">
                     <div class="flex items-center space-x-3">
                         <img src="data:image/jpeg;base64,<%=selectedUser?.profilePic?.toString('base64')%>"
-                            alt="Chat Group" class="w-12 h-12 rounded-full shadow" />
+                            alt="Chat Group" class="w-12 h-12 rounded-full shadow overflow-hidden" />
                         <div>
                             <h3 id="message" class="font-bold text-lg text-gray-900">
                                 <%=selectedUser?.fullName%>
@@ -114,12 +114,13 @@
 
                 <section id="chatContainer"
                     class="flex-1 px-8 py-6 min-h-[75vh] overflow-y-auto box-border space-y-8 bg-gray-50">
+
                     <% messages.forEach(message=> {
-                        const isSender = message.sender._id.equals(selectedUser._id); // is other person
+                        const isSender = message.sender._id.equals(selectedUser?._id); // current user is sender
                         %>
-                        <div class="flex mb-2 <%= isSender ? 'justify-end' : 'justify-start' %> p-2">
+                        <div class="flex mb-2 <%= isSender ? 'justify-start' : 'justify-end' %> p-2">
                             <div
-                                class="<%= isSender ? 'bg-gray-100 text-black' : 'bg-orange-400 text-white' %> px-4 py-2 rounded-xl max-w-md">
+                                class="<%= isSender ? 'bg-orange-400 text-white':'bg-green-400 text-black' %> px-4 py-2 rounded-xl max-w-md">
                                 <p>
                                     <%= message.text %>
                                 </p>
@@ -130,6 +131,7 @@
                         </div>
                         <% }) %>
                 </section>
+
 
 
 
@@ -159,59 +161,74 @@
 
         const otherUserId = document.getElementById('roomId1').value;
         const userId = document.getElementById('roomId2').value;
+
+        // Use a consistent room ID (same for both users)
+        const roomId = [userId, otherUserId].sort().join('_');
+
         socket.emit('joinRoom', {
-            userId: userId,
-            otherUserId: otherUserId,
+            userId,
+            otherUserId
         });
 
-        // Handle form send
+        // Handle form submit
         function submitted(sender, receiver) {
             const chatForm = document.getElementById('chatForm');
             if (chatForm) {
-                console.log("Jio")
+                const msg = document.getElementById('messageInput').value.trim();
+                if (!msg) return;
 
-                console.log("HI")
-                const msg = document.getElementById('messageInput').value;
-
-                // Append locally
-                appendMessage(msg, 'sent');
+                const timestamp = new Date();
 
                 // Emit to socket
                 socket.emit('sendMessage', {
-                
                     senderId: sender,
                     receiverId: receiver,
-                    message: msg
+                    message: msg,
+                    timestamp: timestamp,
+                    roomId: roomId
                 });
 
+                // Append locally
+                appendMessage({
+                    text: msg,
+                    timestamp: timestamp
+                }, 'sent');
+
                 document.getElementById('messageInput').value = '';
-
             }
-        };
+        }
 
-        // Listen for incoming messages
-        socket.on('receiveMessage', (msg) => {
-            appendMessage(msg, 'received');
+        // Receive messages
+        socket.on('receiveMessage', (data) => {
+            appendMessage(data, 'received');
         });
 
-        // Append to chat
-        function appendMessage(text, type) {
-            const chatContainer = document.getElementById('chatContainer');
-            // const isSender = message.sender._id.equals(selectedUser._id); // is other person
-            chatContainer.innerHTML += `
-                <div class="flex mb-2 p-2">
-                    <div
-                        class="bg-orange-400 text-black px-4 py-2 rounded-xl max-w-md">
-                        <p>
-                            ${text}
-                        </p>
-                        <p class="text-xs mt-1 text-right">
-                            ${new Date(message.timestamp).toLocaleTimeString()}
-                        </p>
-                    </div>
-                </div>`
+        // Append message to chat
+        function appendMessage(data, type) {
 
+            const chatContainer = document.getElementById('chatContainer');
+            const timestamp = new Date(data.timestamp).toLocaleTimeString();
+
+            const alignment = type === 'sent' ? 'justify-end' : 'justify-start';
+            const bgColor = type === 'sent' ? 'bg-green-400' : 'bg-orange-400';
+
+            const div = document.createElement('div');
+            div.className = `flex ${alignment} mb-2`;
+
+            div.innerHTML = `
+        <div class="${bgColor} text-black px-4 py-2 rounded-xl max-w-md">
+            <p>${data.text}</p>
+            <p class="text-xs mt-1 text-right">${timestamp}</p>
+        </div>
+    `;
+
+            chatContainer.appendChild(div);
+            chatContainer.scrollTop = chatContainer.scrollHeight; // Auto scroll
         }
+        window.addEventListener('DOMContentLoaded', () => {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        });
     </script>
 
 

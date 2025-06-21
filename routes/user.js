@@ -633,6 +633,19 @@ router.get('/chat/:userId', isLoggedIn, async (req, res) => {
     });
 });
 
+router.get('/messages/unread-count', async (req, res) => {
+    const { sender, receiver } = req.query;
+
+    const count = await messageModel.countDocuments({
+        sender,
+        receiver,
+        read: false
+    });
+
+    res.json({ count });
+});
+
+
 
 
 module.exports = router;

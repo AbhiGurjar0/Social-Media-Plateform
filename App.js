@@ -23,36 +23,50 @@ function generateRoomId(userId1, userId2) {
     const raw = [userId1, userId2].sort().join("_");
     return crypto.createHash("sha256").update(raw).digest("hex");
 }
-
 io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 
-    socket.on('joinRoom', ({
-        userId, otherUserId
-    }) => {
+    socket.on('joinRoom', async ({ userId, otherUserId }) => {
+        // Inside socket.on('joinRoom')
+        await messageModel.updateMany(
+            { sender: otherUserId, receiver: userId, read: false },
+            { $set: { read: true } }
+        );
+
         const roomId = generateRoomId(userId, otherUserId);
         socket.join(roomId);
         console.log(`User ${userId} joined room: ${roomId}`);
     });
 
-
     socket.on('sendMessage', async (data) => {
+        const { senderId, receiverId, message, timestamp, roomId } = data;
+
         // Save to DB
         await messageModel.create({
-            sender: data.senderId,
-            receiver: data.receiverId,
-            text: data.message
+            sender: senderId,
+            receiver: receiverId,
+            text: message,
+            timestamp: timestamp,
+             read: false
         });
 
-        // Emit to room
-        socket.to(data.roomId).emit('receiveMessage', data.message);
+        // Send to other user in room
+        socket.to(roomId).emit('receiveMessage', {
+            text: message,
+            timestamp: timestamp
+        });
     });
-
 
     socket.on('disconnect', () => {
         console.log('User disconnected');
     });
 });
+
+// Utility to generate consistent room ID
+function generateRoomId(user1, user2) {
+    return [user1, user2].sort().join('_');
+}
+
 
 
 
