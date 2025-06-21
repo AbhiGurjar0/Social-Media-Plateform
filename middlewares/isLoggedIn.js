@@ -3,6 +3,8 @@ const userModel = require("../models/user-model");
 
 module.exports = async (req, res, next) => {
     try {
+        // if (req.isAuthenticated()) return next();
+
         const token = req.cookies.token;
         if (!token) {
             return res.redirect("/signin");

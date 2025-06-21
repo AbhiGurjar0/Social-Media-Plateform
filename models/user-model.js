@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
                 },
                 message: props => `${props.value} is not a valid user name! Only letters and underscores are allowed.`
             }
-        }, 
+        },
         fullName: {
             type: String,
             required: true,

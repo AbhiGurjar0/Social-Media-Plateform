@@ -162,7 +162,7 @@ router.post("/post/like/:postId", isLoggedIn, async (req, res) => {
 
 
 //open Like
-router.post("/post/like/users/:postId", async (req, res) => {
+router.post("/post/like/users/:postId", isLoggedIn, async (req, res) => {
     try {
         const likes = await likeModel
             .find({ postId: req.params.postId })
@@ -645,7 +645,8 @@ router.get('/messages/unread-count', async (req, res) => {
     res.json({ count });
 });
 
-
-
+const passport = require('passport');
+router.get('/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 module.exports = router;

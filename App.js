@@ -4,21 +4,36 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const path = require('path');
+const passport = require('passport');
 const index = require('./routes/user')
 const db = require("./config/mongoose-connection");
 const { registerUser, loginUser, logoutUser } = require('./controllers/controller')
 const cookieParser = require("cookie-parser");
 app.set("view engine", "ejs");
 const crypto = require('crypto');
+const session = require('express-session');
+const messageModel = require("./models/message-model");
+require('./config/passport');
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
-const messageModel = require("./models/message-model");
 app.use("/", index);
 app.use("/register", registerUser);
 app.use("/login", loginUser);
 app.use("/logout", logoutUser);
+
+app.use(session({
+    secret: 'your-session-secret',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/auth', require('./routes/auth'));
+
 function generateRoomId(userId1, userId2) {
     const raw = [userId1, userId2].sort().join("_");
     return crypto.createHash("sha256").update(raw).digest("hex");
@@ -47,7 +62,7 @@ io.on('connection', (socket) => {
             receiver: receiverId,
             text: message,
             timestamp: timestamp,
-             read: false
+            read: false
         });
 
         // Send to other user in room

@@ -30,12 +30,14 @@ module.exports.registerUser = async (req, res) => {
 //Login
 module.exports.loginUser = async (req, res) => {
     try {
-        let { email, password } = req.body;
+        let { email, password = '' } = req.body;
         let user = await userModel.findOne({ email: email.toLowerCase() });
+        let result;
         if (!user) {
             return res.send("user does not Exist");
         }
-        let result = await bcrypt.compare(password, user.password);
+        if (password)
+            result = await bcrypt.compare(password, user.password);
         if (result) {
             let token = generateToken(user);
             // console.log(token)
