@@ -307,6 +307,9 @@ function closePost() {
     const fullPage = document.getElementById("openPost");
     fullPage.classList.add("hidden");
     document.body.classList.remove("overflow-hidden");
+    let video = document.getElementById('openPostVideo');
+    video.pause();
+    video.currentTime = 0;
 
     // Remove event listener after closing
     document.removeEventListener("click", handleOutsideClick);
@@ -454,7 +457,6 @@ async function postOptions(element, userId = "") {
     }, 10)
 }
 
-
 function handleClick(e) {
     let fullPage = document.getElementById("postManagePopUp");
     let option1 = document.getElementById("option1");
@@ -467,12 +469,87 @@ function handleClick(e) {
     }
 
 }
+//close popup
+function closePopUp(element) {
+    let fullPage = document.getElementById("postManagePopUp");
+    fullPage.classList.add("hidden");
+    document.body.classList.remove("overflow-hidden");
+    document.removeEventListener("click", handleClick);
+}
+
+
+
+// for Home 
+
+async function postOptionsForHome(element, userId, postId = "") {
+
+    let fullPage = document.getElementById("postManagePopUpHome");
+    fullPage.classList.remove("hidden");
+    fullPage.dataset.postId = postId;
+    let option1 = document.getElementById("option1h");
+    let option2 = document.getElementById("option2h");
+    // if (!userId)
+    //     userId = document.getElementById("postUserProfile").dataset.userId;
+
+    const response = await fetch("/user/userDetails", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            userId
+        }),
+    });
+    let data = await response.json();
+    console.log(data.isOwner);
+    if (data.isOwner) {
+        option1.classList.remove("hidden");
+        option2.classList.add("hidden");
+    }
+    else {
+        option2.classList.remove("hidden");
+        option1.classList.add("hidden");
+
+    }
+    document.body.classList.add("overflow-hidden");
+
+    setTimeout(() => {
+        document.addEventListener("click", handleClickH);
+    }, 10)
+}
+
+
+//for home
+
+function handleClickH(e) {
+    let fullPage = document.getElementById("postManagePopUpHome");
+    let option1 = document.getElementById("option1h");
+    let option2 = document.getElementById("option2h");
+    if (!fullPage.classList.contains("hidden") && !option1.contains(e.target) && !option2.contains(e.target)) {
+        fullPage.classList.add("hidden");
+        document.body.classList.remove("overflow-hidden");
+        document.removeEventListener("click", handleClickH);
+
+    }
+
+}
+
+// for home
+function closePopUpH(element) {
+    let fullPage = document.getElementById("postManagePopUpHome");
+    fullPage.classList.add("hidden");
+    document.body.classList.remove("overflow-hidden");
+    document.removeEventListener("click", handleClickH);
+}
 
 //post delete
 async function deletePost(element) {
     let openedPost = document.getElementById("post");
     console.log("openedPost", openedPost);
     let postId = openedPost.dataset.postId;
+    if (!postId) {
+        postId = document.getElementById("postManagePopUpHome").dataset.postId;
+    }
     console.log("postId", postId);
     if (!postId) {
         console.error('Post ID is missing');
@@ -496,13 +573,7 @@ async function deletePost(element) {
         })
 }
 
-//close popup
-function closePopUp(element) {
-    let fullPage = document.getElementById("postManagePopUp");
-    fullPage.classList.add("hidden");
-    document.body.classList.remove("overflow-hidden");
-    document.removeEventListener("click", handleClick);
-}
+
 
 //goto post
 
@@ -608,16 +679,25 @@ async function uploadStory(element) {
 
 }
 
-document.getElementById('closeModalBtn').onclick = () => {
-    document.getElementById('storyModal').classList.add('hidden');
-};
-document.getElementById('modalBackdrop').onclick = () => {
-    document.getElementById('storyModal').classList.add('hidden');
-};
+document.addEventListener('DOMContentLoaded', () => {
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    if (closeModalBtn) {
+        closeModalBtn.onclick = () => {
+            document.getElementById('storyModal').classList.add('hidden');
+        };
+    }
+    if (modalBackdrop) {
+        modalBackdrop.onclick = () => {
+            document.getElementById('storyModal').classList.add('hidden');
+        };
+    }
+});
 
 
 
 function pauseVideo(element, videoId = "") {
+
     let video;
     if (!videoId)
         video = element.children[0];
@@ -730,9 +810,12 @@ function scrollStories(direction) {
 document.addEventListener('DOMContentLoaded', () => {
     // 1️⃣ Select your DOM elements
     const scrollContainer = document.getElementById('stories-scroll');
-    const leftArrow = document.getElementById('stories-prev');
+    const leftArrow = document.getElementById('stories-prev') || "";
     const rightArrow = document.getElementById('stories-next');
-
+    if (!scrollContainer || !leftArrow || !rightArrow) {
+        console.error("One or more required elements are missing.");
+        return;
+    }
     // 2️⃣ Define scroll handler
 
     // 3️⃣ Define function to update arrow visibility
@@ -812,3 +895,5 @@ document.addEventListener('DOMContentLoaded', () => {
 //     // }
 
 // }
+
+

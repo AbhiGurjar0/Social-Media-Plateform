@@ -12,6 +12,7 @@ const saveModel = require("../models/saved-model");
 const followModel = require('../models/follow-model');
 const storyModel = require("../models/story-model");
 const notificationModel = require('../models/notification-model');
+const messageModel = require('../models/message-model');
 
 //profile page
 router.get("/main", isLoggedIn, async (req, res) => {
@@ -600,6 +601,36 @@ router.post("/post/likes", isLoggedIn, async (req, res) => {
         console.error("Error fetching likes:", error);
         res.status(500).json({ error: "Internal server error" });
     }
+});
+
+router.get('/chats', isLoggedIn, async (req, res) => {
+    let users = await userModel.find({ _id: { $ne: req.user._id } });
+    const loggedInUserId = req.user._id;
+    res.render("chats", { users, loggedInUserId, messages: [], selectedUser: null });
+});
+router.get('/chat/:userId', isLoggedIn, async (req, res) => {
+    const loggedInUserId = req.user._id; // assuming session auth
+    const selectedUserId = req.params.userId;
+
+    let users = await userModel.find({ _id: { $ne: req.user._id } });// all other users
+
+    const messages = await messageModel.find({
+        $or: [
+            { sender: loggedInUserId, receiver: selectedUserId },
+            { sender: selectedUserId, receiver: loggedInUserId }
+        ]
+    })
+        .sort({ timestamp: 1 })
+        .populate('sender');
+
+    const selectedUser = await userModel.findById(selectedUserId);
+
+    res.render('chats', {
+        users,
+        messages,
+        selectedUser,
+        loggedInUserId
+    });
 });
 
 

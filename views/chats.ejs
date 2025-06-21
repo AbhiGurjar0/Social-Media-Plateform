@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Modern Tailwind Chat UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../javascripts/main.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="bg-gray-50 h-screen antialiased flex items-center justify-center p-2 box-border">
+    <div class="flex h-full  w-full bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200 box-border">
+        <!-- Sidebar -->
+        <aside class="grid [grid-template-columns:50px_auto]  w-80 border-r border-gray-200 bg-white">
+            <div class="col-span-1 box-border border-r">
+                <!-- Sidebar icons -->
+
+                <div class="flex flex-col items-center space-y-2 pt-4 pb-2  border-gray-200">
+                    <a href="/"><button type="button" aria-label="Home"
+                            class="p-2 rounded-lg hover:bg-orange-100 transition-colors">
+                            <i class="fa-solid fa-house"></i>
+                        </button></a>
+                    <a href="/createPost"> <button type="button" aria-label="Add"
+                            class="p-2 rounded-lg hover:bg-orange-100 transition-colors">
+                            <i class="fa-solid fa-plus"></i>
+                        </button></a>
+                    <a href="/main"><button type="button" aria-label="Profile"
+                            class="p-2 rounded-lg hover:bg-orange-100 transition-colors">
+                            <i class="fa-solid fa-user"></i>
+                        </button></a>
+                    <a href="/notifications"><button type="button" aria-label="notifications"
+                            class="p-2 rounded-lg hover:bg-orange-100 transition-colors">
+                            <i class="fa-solid fa-bell"></i>
+                        </button></a>
+                    <a href="/chats"><button type="button" aria-label="chats"
+                            class="p-2 rounded-lg hover:bg-orange-100 transition-colors">
+                            <i class="fa-solid fa-comments"></i>
+                        </button></a>
+                </div>
+            </div>
+
+            <div class="col-span-1 w-60">
+                <!-- Messages Header -->
+                <h2 class="px-5 py-4 font-bold text-lg text-gray-900 border-b border-gray-200">Messages</h2>
+
+                <!-- Messages list -->
+                <nav class="flex-1 overflow-y-auto">
+                    <ul>
+                        <% users.forEach(user=> { %>
+                            <li onclick="window.location.href='/chat/<%= user._id %>'"
+                                class="group border-b border-gray-200 cursor-pointer hover:bg-orange-50 transition-colors">
+                                <a href="#" class="flex items-center px-5 py-4">
+                                    <img class="w-10 h-10 rounded-full object-cover mr-4 shadow-sm border border-gray-300"
+                                        src="data:image/jpeg;base64,<%= user.profilePic.toString('base64') %>"
+                                        alt="<%= user.userName %>" />
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-center">
+                                            <p class="font-semibold text-gray-900 truncate">
+                                                <%= user.fullName %>
+                                            </p>
+                                            <span
+                                                class="text-xs text-white bg-orange-400 rounded-full px-2.5 py-0.5 font-semibold select-none">2</span>
+                                        </div>
+                                        <p class="text-sm text-gray-400 truncate">Hey, did you see the latest update?
+                                        </p>
+                                    </div>
+                                </a>
+                            </li>
+                            <% }) %>
+
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+
+        <!-- Chat Content Panel -->
+        <%if(selectedUser){%>
+
+
+            <main class="flex-1 flex flex-col box-border">
+                <!-- Chat header -->
+                <header class="flex items-center justify-between border-b border-gray-200 p-6 shadow-sm">
+                    <div class="flex items-center space-x-3">
+                        <img src="data:image/jpeg;base64,<%=selectedUser?.profilePic?.toString('base64')%>"
+                            alt="Chat Group" class="w-12 h-12 rounded-full shadow" />
+                        <div>
+                            <h3 id="message" class="font-bold text-lg text-gray-900">
+                                <%=selectedUser?.fullName%>
+                            </h3>
+
+                        </div>
+                    </div>
+                    <div class="flex space-x-6 text-gray-400">
+                        <button aria-label="Voice Call" class="hover:text-orange-400 transition-colors">
+                            <i data-feather="phone" class="w-5 h-5"></i>
+                        </button>
+                        <button aria-label="Video Call" class="hover:text-orange-400 transition-colors">
+                            <i data-feather="video" class="w-5 h-5"></i>
+                        </button>
+                        <button aria-label="Info" class="hover:text-orange-400 transition-colors">
+                            <i data-feather="info" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </header>
+
+
+
+                <section id="chatContainer"
+                    class="flex-1 px-8 py-6 min-h-[75vh] overflow-y-auto box-border space-y-8 bg-gray-50">
+                    <% messages.forEach(message=> {
+                        const isSender = message.sender._id.equals(selectedUser._id); // is other person
+                        %>
+                        <div class="flex mb-2 <%= isSender ? 'justify-end' : 'justify-start' %> p-2">
+                            <div
+                                class="<%= isSender ? 'bg-gray-100 text-black' : 'bg-orange-400 text-white' %> px-4 py-2 rounded-xl max-w-md">
+                                <p>
+                                    <%= message.text %>
+                                </p>
+                                <p class="text-xs mt-1 text-right">
+                                    <%= new Date(message.timestamp).toLocaleTimeString() %>
+                                </p>
+                            </div>
+                        </div>
+                        <% }) %>
+                </section>
+
+
+
+                <!-- Chat input -->
+                <input type="hidden" id="roomId1" value="<%= selectedUser._id %>" />
+                <input type="hidden" id="roomId2" value="<%= loggedInUserId %>" />
+                <form id="chatForm" class="flex items-center gap-4 p-5 border-t border-gray-200 bg-white shadow-inner">
+
+                    <input id="messageInput" type="text" placeholder="Type a message..." autocomplete="off"
+                        class="flex-1 rounded-xl border border-gray-300 px-4 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition"
+                        required aria-label="Message input" />
+
+                    <div onclick="submitted('<%=loggedInUserId%>','<%=selectedUser._id%>')" aria-label="Send message"
+                        class="bg-orange-400 hover:bg-orange-500 text-white rounded-xl shadow px-5 py-3 flex items-center justify-center transition"
+                        title="Send message">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </div>
+                </form>
+            </main>
+            <% } else{%>
+                <div class="w-full h-full flex justify-center items-center text-3xl">no user yet.</div>
+                <%}%>
+    </div>
+    <script>
+
+        const socket = io(); // connect to server
+
+        const otherUserId = document.getElementById('roomId1').value;
+        const userId = document.getElementById('roomId2').value;
+        socket.emit('joinRoom', {
+            userId: userId,
+            otherUserId: otherUserId,
+        });
+
+        // Handle form send
+        function submitted(sender, receiver) {
+            const chatForm = document.getElementById('chatForm');
+            if (chatForm) {
+                console.log("Jio")
+
+                console.log("HI")
+                const msg = document.getElementById('messageInput').value;
+
+                // Append locally
+                appendMessage(msg, 'sent');
+
+                // Emit to socket
+                socket.emit('sendMessage', {
+                
+                    senderId: sender,
+                    receiverId: receiver,
+                    message: msg
+                });
+
+                document.getElementById('messageInput').value = '';
+
+            }
+        };
+
+        // Listen for incoming messages
+        socket.on('receiveMessage', (msg) => {
+            appendMessage(msg, 'received');
+        });
+
+        // Append to chat
+        function appendMessage(text, type) {
+            const chatContainer = document.getElementById('chatContainer');
+            // const isSender = message.sender._id.equals(selectedUser._id); // is other person
+            chatContainer.innerHTML += `
+                <div class="flex mb-2 p-2">
+                    <div
+                        class="bg-orange-400 text-black px-4 py-2 rounded-xl max-w-md">
+                        <p>
+                            ${text}
+                        </p>
+                        <p class="text-xs mt-1 text-right">
+                            ${new Date(message.timestamp).toLocaleTimeString()}
+                        </p>
+                    </div>
+                </div>`
+
+        }
+    </script>
+
+
+</body>
+
+</html>

@@ -18,8 +18,7 @@
 
           <!-- Left arrow -->
           <button onclick="scrollStories('left')" id="stories-prev"
-            class="absolute left-0 z-10 bg-white rounded-full shadow p-2 text-gray-700 hover:bg-gray-100 disabled:opacity-50"
-            >
+            class="absolute left-0 z-10 bg-white rounded-full shadow p-2 text-gray-700 hover:bg-gray-100 disabled:opacity-50">
             <i class="fa-solid fa-chevron-left"></i>
           </button>
 
@@ -83,7 +82,7 @@
                 <span class="text-xs text-gray-500">WNRS Circle Training Facility • 18h</span>
               </div>
             </div>
-            <button onclick="postOptionsHome(this,'<%=post.userId._id%>')"
+            <button onclick="postOptionsForHome(this,'<%=post.userId._id%>','<%= post._id %>')"
               class="home text-gray-500 hover:text-gray-700">
               <i class="fa-solid fa-ellipsis"></i>
             </button>
@@ -137,55 +136,61 @@
           </div>
 
           <!-- Likes -->
-          <div class="px-4 pt-1">
-            <span onclick="showLikes(this,'<%= post._id %>')" class="font-semibold text-sm cursor-pointer">
-              <span id="likeCount-<%= post._id %>" class="ml-2">
-                <%= post.like.length %>
-              </span> Likes
-            </span>
-          </div>
-
-          <!-- Caption -->
-          <div class="px-4 pt-1 pb-2">
-            <span class="font-semibold text-sm">
-              <%= post.userId.firstName %>
-            </span>
-            <% const words=post.caption.trim().split(/\s+/); const isLong=words.length> 6;
-              const shortCaption = words.slice(0, 6).join(" ");
-              %>
-
-              <span class="text-sm" id="caption-<%= post._id %>">
-                <span class="short ">
-                  <%= shortCaption %>
-                    <% if (isLong) { %>
-                      <span class="text-blue-500 cursor-pointer <%= isLong ? '' : 'hidden' %>"
-                        onclick="toggleCaption('<%= post._id %>')">...more</span>
-                      <% } %>
-                </span>
-
-                <span class="full hidden">
-                  <%= post.caption %>
-                    <span class="text-blue-500 cursor-pointer" onclick="toggleCaption('<%= post._id %>')"> less</span>
-                </span>
+          <% if(!(post.hideLikeViewCounts)) { %>
+            <div class="px-4 pt-1">
+              <span onclick="showLikes(this,'<%= post._id %>')" class="font-semibold text-sm cursor-pointer">
+                <span id="likeCount-<%= post._id %>" class="ml-2">
+                  <%= post.like.length %>
+                </span> Likes
               </span>
-              <div onclick="openPost(this,'<%= post._id %>')" class="text-gray-500 text-xs mt-1 cursor-pointer">
-                <% if (post.comments.length> 0) { %>
-                  View all <%= post.comments.length %> comments
-                    <% } %>
-              </div>
+            </div>
+            <% } %>
+
+              <!-- Caption -->
               <div class="px-4 pt-1 pb-2">
-                <div class="flex items-center mt-2">
-                  <input type="text" placeholder="Add a comment..."
-                    class="flex-1 border-none outline-none text-sm bg-transparent comment-input" />
-                  <p onclick="addComment(this,'<%=post._id%>')"
-                    class="text-blue-500 text-xs font-semibold cursor-pointer">
-                    Post</p>
-                  <!--By Default hide this button, unhide it when user click om the input field// -->
-                  <p class="text-blue-500 text-xs font-semibold ml-2"><i
-                      class="fa-regular fa-face-smile text-black hover:text-gray-600"></i></button>
-                </div>
+                <span class="font-semibold text-sm">
+                  <%= post.userId.firstName %>
+                </span>
+                <% const words=post.caption.trim().split(/\s+/); const isLong=words.length> 6;
+                  const shortCaption = words.slice(0, 6).join(" ");
+                  %>
+
+                  <span class="text-sm" id="caption-<%= post._id %>">
+                    <span class="short ">
+                      <%= shortCaption %>
+                        <% if (isLong) { %>
+                          <span class="text-blue-500 cursor-pointer <%= isLong ? '' : 'hidden' %>"
+                            onclick="toggleCaption('<%= post._id %>')">...more</span>
+                          <% } %>
+                    </span>
+
+                    <span class="full hidden">
+                      <%= post.caption %>
+                        <span class="text-blue-500 cursor-pointer" onclick="toggleCaption('<%= post._id %>')">
+                          less</span>
+                    </span>
+                  </span>
+                  <% if(!(post.disableComments)){%>
+                    <div onclick="openPost(this,'<%= post._id %>')" class="text-gray-500 text-xs mt-1 cursor-pointer">
+                      <% if (post.comments.length> 0) { %>
+                        View all <%= post.comments.length %> comments
+                          <% } %>
+                    </div>
+
+                    <div class="px-4 pt-1 pb-2">
+                      <div class="flex items-center mt-2">
+                        <input type="text" placeholder="Add a comment..."
+                          class="flex-1 border-none outline-none text-sm bg-transparent comment-input" />
+                        <p onclick="addComment(this,'<%=post._id%>')"
+                          class="text-blue-500 text-xs font-semibold cursor-pointer">
+                          Post</p>
+                        <!--By Default hide this button, unhide it when user click om the input field// -->
+                        <p class="text-blue-500 text-xs font-semibold ml-2"><i
+                            class="fa-regular fa-face-smile text-black hover:text-gray-600"></i></button>
+                      </div>
+                    </div>
+                    <%}%>
               </div>
-          </div>
         </div>
         <% }) %>
     </div>
@@ -195,10 +200,10 @@
       <div></div>
     </div>
     <%- include("./partials/openPost") %>
-      <div id="postManagePopUpHome" class="Home main-container overflow-hidden fixed bg-transparent
+      <div id="postManagePopUpHome" data-post-id="" class="Home main-container overflow-hidden fixed bg-transparent
           inset-0  backdrop-blur-sm z-50 w-full h-screen hidden">
         <%- include("./partials/managePostForHome") %>
       </div>
       <%- include("./partials/uploadStory") %>
-      <%- include("./partials/Likes") %>
-        <%- include("./partials/footer") %>
+        <%- include("./partials/Likes") %>
+          <%- include("./partials/footer") %>
