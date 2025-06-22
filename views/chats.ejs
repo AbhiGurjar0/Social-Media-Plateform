@@ -26,6 +26,11 @@
                             class="p-2 rounded-lg hover:bg-orange-100 transition-colors">
                             <i class="fa-solid fa-house"></i>
                         </button></a>
+                    <a href="/explore"> <button type="button" aria-label="explore"
+                            class="py-2 pl-2 rounded-lg hover:bg-orange-100 transition-colors">
+                            <i class="fas fa-compass h-5 w-5 mr-2"></i>
+                        </button></a>
+
                     <a href="/createPost"> <button type="button" aria-label="Add"
                             class="p-2 rounded-lg hover:bg-orange-100 transition-colors">
                             <i class="fa-solid fa-plus"></i>
@@ -56,7 +61,7 @@
                             <li onclick="window.location.href='/chat/<%= user._id %>'"
                                 class="group border-b border-gray-200 cursor-pointer hover:bg-orange-50 transition-colors">
                                 <a href="#" class="flex items-center px-5 py-4">
-                                    <img class="w-10 h-10 rounded-full object-cover mr-4 shadow-sm border border-gray-300"
+                                    <img class="w-10 h-10 rounded-full object-cover mr-4 shadow-sm border border-gray-300  overflow-hidden"
                                         src="data:image/jpeg;base64,<%= user?.profilePic?.toString('base64') %>"
                                         alt="<%= user.userName %>" />
                                     <div class="flex-1 min-w-0">
@@ -64,9 +69,9 @@
                                             <p class="font-semibold text-gray-900 truncate">
                                                 <%= user.fullName %>
                                             </p>
-                                            
+
                                         </div>
-                                       
+
                                         <p class="text-sm text-gray-400 truncate">@<%=user.userName%>
                                         </p>
                                     </div>
@@ -89,7 +94,7 @@
                 <header class="flex items-center justify-between border-b border-gray-200 p-6 shadow-sm">
                     <div class="flex items-center space-x-3">
                         <img src="data:image/jpeg;base64,<%=selectedUser?.profilePic?.toString('base64')%>"
-                            alt="Chat Group" class="w-12 h-12 rounded-full shadow overflow-hidden" />
+                            alt="<%=selectedUser?.userName%>" class="w-12 h-12 rounded-full shadow overflow-hidden" />
                         <div>
                             <h3 id="message" class="font-bold text-lg text-gray-900">
                                 <%=selectedUser?.fullName%>

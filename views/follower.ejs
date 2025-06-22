@@ -1,6 +1,6 @@
 <!-- Nave bar.... -->
-<div class="flex justify-between items-center box-border px-4 py-3 h-[8vh]">
-    <!--  Left side navbar -->
+<!-- <div class="flex justify-between items-center box-border px-4 py-3 h-[8vh]">
+    <!--  Left side navbar 
 
     <div class="flex box-border items-center">
         <div class="flex gap-6 items-center">
@@ -17,7 +17,7 @@
             </div>
         </div>
     </div>
-    <!-- Right side nav-bar -->
+    <!-- Right side nav-bar 
     <nav class="flex justify-end items-center p-4 text-[12px]">
         <div class="flex items-center">
             <a href="/createPost"
@@ -28,7 +28,7 @@
             <img class="h-7 mr-5 cursor-pointer" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="">
         </div>
     </nav>
-</div>
+</div> -->
 <!-- right side and main content -->
 <div class=" flex">
 
@@ -69,7 +69,7 @@
                         <div class="flex flex-col items-start">
                             <!-- username -->
                             <p class="font-bold opacity-80 text-md">
-                                <%=follower.follower.firstName%>
+                                <%=follower?.follower?.userName%>
                             </p>
                             <p class="opacity-60 text-sm"></p>
                         </div>
@@ -97,14 +97,22 @@
                         <div class="flex flex-col items-start">
                             <!-- username -->
                             <p class="font-bold opacity-80 text-md">
-                                <%=follower.following.firstName%>
+                                <%=follower?.following?.fullName%>
                             </p>
-                            <p class="opacity-60 text-sm">@bobw</p>
+                            <p class="opacity-60 text-sm">@<%=follower?.following?.userName%>
+                            </p>
                         </div>
                     </div>
                     <div>
                         <!-- buttons -->
-                        <button class="bg-amber-600 border-black px-6 py-[5px] rounded-md text-white">Follow</button>
+                        <% if (follower.isFollowed) { %>
+                            <button class="bg-gray-400 border-black px-6 py-[5px] rounded-md text-white"
+                                disabled>Following</button>
+                            <% } else { %>
+                                <button onclick="followUser('<%=follower?.following?._id%>')"
+                                    class="bg-amber-600 border-black px-6 py-[5px] rounded-md text-white">Follow</button>
+                                <% } %>
+
                     </div>
                 </div>
 

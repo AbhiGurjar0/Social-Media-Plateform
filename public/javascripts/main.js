@@ -136,38 +136,6 @@ async function like(element, postId = "", triggeredByDoubleClick = false) {
     }
 }
 
-//view liked
-
-// async function openLike(like, postId) {
-//     try {
-//         await fetch(`/post/like/users/${postId}`, {
-//             method: "POST",
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({}),
-//         })
-//             .then(response => response.json())
-//             .then(data => {
-//                 let userDetails = data;
-//                 userDetails.forEach(users => {
-//                     let user = document.createElement('div');
-
-
-//                 });
-
-//             })
-//             .catch((err) => {
-//                 console.log(err);
-//             })
-
-//     } catch (err) {
-//         console.log("err in opening like ");
-//         console.log(err);
-
-//     }
-
-// }
 
 
 
@@ -836,64 +804,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // 6️⃣ Optional: manually trigger update once
     updateArrows(); // To set correct initial state
 });
-
-
-//show likes 
-
-// function showLikes(postId) {
-//     // const likeCount = document.getElementById(`likeCount-${postId}`);
-//     // const likeCountValue = parseInt(likeCount.textContent.trim(), 10);
-//     document.getElementById("likesModel").classList.remove("hidden");
-//     let details = document.getElementById("likeDetails");
-
-//     // if (likeCountValue > 0) {
-//         fetch("/post/like", {
-//             method: "POST",
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({postId}),
-//         })
-//             .then(response => response.json())
-//             .then(data => {
-//                 // Handle the data returned from the server
-//                 console.log(data);
-//                 const likes = data.likes;
-//                 details.innerHTML = ""; // Clear previous likes
-//                 likes.forEach(like => {
-//                     // Display each like
-//                     details.innerHTML += `
-//                        <li
-//                         class="flex items-center justify-between px-5 py-4 hover:bg-gray-700 transition-colors duration-300">
-//                         <div class="flex items-center space-x-4">
-//                             <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2859d5e1-99a5-4cc7-a36e-65b88ccf9843.png"
-//                                 alt="Profile photo of _felicity__04, user GUNGUN with heart icon"
-//                                 class="w-12 h-12 rounded-full object-cover" loading="lazy" />
-//                             <div>
-//                                 <p class="text-white font-semibold leading-tight select-text">
-//                                     ${like.userId.userName || "Unknown User"} 
-//                                     <span class="text-gray-400 text-sm">(@${like.userId.userName})</span>
-//                                 </p>
-//                                 <p class="text-gray-400 text-sm select-text">
-//                                   ${like.userId.fullName || "Unknown User"}
-//                                 </p>
-//                             </div>
-//                         </div>
-//                         <button onclick="followUser('${like.userId._id}')"
-//                             class="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-white px-4 py-1 rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-blue-400"
-//                             type="button">Follow</button>
-//                     </li>
-//                     `;
-//                 });
-//                 // You can display the likes in a modal or any other way you prefer
-//             })
-//             .catch(err => {
-//                 console.error("Error fetching likes:", err);
-//             });
-//     // } else {
-//     //     alert("No likes yet!");
-//     // }
-
-// }
 
 

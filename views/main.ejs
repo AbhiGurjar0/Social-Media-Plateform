@@ -46,13 +46,15 @@
                         </span>
                     </div>
                 </div>
-                <div class="edit-profile-div flex justify-end items-center mt-9 text-[11px]">
-                    <a href="/editProfile"> <button
-                            class="w-[95px] h-[28px] border-1 flex justify-center items-center rounded px-2 bg-white text-gray-700 hover:bg-b cursor-pointer ml-65 mb-10">
+                <div class="edit-profile-div flex justify-center items-center text-[20px] w-[20vw] pt-15 h-[20vh] ">
+                    <a href="/editProfile" class="">
+                        <button
+                            class="box-border h-[28px] border-2 border-gray-200 p-4 flex justify-center items-center rounded-md  bg-white text-gray-700 hover:bg-b cursor-pointer ml-65 mb-10">
                             <i class="fa-solid fa-plus mr-2"></i>Edit Profile
                         </button>
                     </a>
                 </div>
+
             </div>
 
             <div class="highlight-section flex items-center h-[120px] w-full space-x-4  ml-10 ">
@@ -63,34 +65,7 @@
                     </div>
                 </div>
 
-                <div
-                    class="h-20 w-20 rounded-full bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 p-0.5 flex justify-center items-center">
-                    <div class="h-full w-full bg-white rounded-full">
-                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Story"
-                            class="h-full w-full rounded-full">
-                    </div>
-                </div>
-                <div
-                    class="h-20 w-20 rounded-full bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 p-0.5 flex justify-center items-center">
-                    <div class="h-full w-full bg-white rounded-full">
-                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Story"
-                            class="h-full w-full rounded-full">
-                    </div>
-                </div>
-                <div
-                    class="h-20 w-20 rounded-full bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 p-0.5 flex justify-center items-center">
-                    <div class="h-full w-full bg-white rounded-full">
-                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Story"
-                            class="h-full w-full rounded-full">
-                    </div>
-                </div>
-                <div
-                    class="h-20 w-20 rounded-full bg-gradient-to-r from-orange-400 via-red-500 to-pink-600 p-0.5 flex justify-center items-center">
-                    <div class="h-full w-full bg-white rounded-full">
-                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Story"
-                            class="h-full w-full rounded-full">
-                    </div>
-                </div>
+               
             </div>
 
 
@@ -129,7 +104,7 @@
 
             <!-- ✅ Saved Section -->
             <div id="saved-section" class="section mt-4 flex flex-wrap gap-2 hidden">
-                <% if(user._id.toString() === loggedInUser._id.toString()) { %>
+                <% if(user._id.toString()===loggedInUser._id.toString()) { %>
 
                     <% savedPosts?.reverse().forEach(p=> { %>
                         <div onclick="openPost(this,'<%=p._id%>')"

@@ -39,7 +39,7 @@ function generateRoomId(userId1, userId2) {
     return crypto.createHash("sha256").update(raw).digest("hex");
 }
 io.on('connection', (socket) => {
-    console.log('User connected:', socket.id);
+    // console.log('User connected:', socket.id);
 
     socket.on('joinRoom', async ({ userId, otherUserId }) => {
         // Inside socket.on('joinRoom')
@@ -73,7 +73,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
-        console.log('User disconnected');
+        // console.log('User disconnected');
     });
 });
 
