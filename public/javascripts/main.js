@@ -74,6 +74,7 @@ function reverse(element = "") {
 // Like
 
 async function like(element, postId = "", triggeredByDoubleClick = false) {
+
     if (!postId) {
         const postElement = document.getElementById('post');
         postId = postElement?.dataset?.postId;
@@ -90,6 +91,7 @@ async function like(element, postId = "", triggeredByDoubleClick = false) {
     let currentCount = parseInt(likeCountSpan.textContent.trim(), 10);
 
     try {
+
         const response = await fetch(`/post/like/${postId}`, {
             method: "POST",
             headers: {
@@ -202,8 +204,9 @@ async function openPost(element, postId) {
     let postUserProfile = document.getElementById("postUserProfile");
     postUserProfile.dataset.userId = data.createdBy.userId;
     postUserProfile.innerHTML = "";
-    postUserProfile.innerHTML = `
-  <img src="${data.createdBy.userProfile}" class="w-10 h-10 rounded-full object-cover border-2 border-pink-500" />
+    postUserProfile.innerHTML = `<img src="data:image/jpeg;base64,${data.createdBy.userProfile}" alt="${data.createdBy.userName}"
+              class="w-10 h-10 rounded-full object-cover border-2 border-pink-500 overflow-hidden"  />
+
   <div class="flex items-center gap-1">
 <span class="font-semibold text-md">${data.createdBy.userName}</span>
 ${!data.isOwner ? !data.isFollowing
@@ -228,7 +231,7 @@ ${!data.isOwner ? !data.isFollowing
         data.comments.forEach(comment => {
             postComment.innerHTML += `
    <div class="flex items-start space-x-3 space-y-2">
-  <img src="${comment.userProfile}" alt="${comment.userName}'s profile picture"
+  <img src="data:image/jpeg;base64,${comment.userProfile}" alt="${comment.userName}'s profile picture"
        class="w-8 h-8 rounded-full object-cover overflow-hidden" />
 
   <div class="flex-1 text-sm text-white">
@@ -643,8 +646,6 @@ function openFollow(element, id) {
 
 async function uploadStory(element) {
     document.getElementById('storyModal').classList.remove('hidden');
-
-
 }
 
 document.addEventListener('DOMContentLoaded', () => {

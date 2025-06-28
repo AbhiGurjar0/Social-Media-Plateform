@@ -204,15 +204,15 @@ router.post("/post/postDetails/:postId", isLoggedIn, async (req, res) => {
         following: post.userId._id
     });
 
-    const likes = await likeModel
-        .find({ postId: req.params.postId });
+    const likes = await likeModel.find({ postId: req.params.postId });
     const isLiked = likes.some((like) => like.userId.equals(req.user._id));
     const isSaved = await saveModel.findOne({ userId: req.user._id, postId: req.params.postId });
     const commentDetails = post.comments.map((comment) => ({
         userName: comment.userId.userName,
-        userProfile: comment.userId.profilePic,
+        userProfile: comment.userId.profilePic.toString('base64'),
         content: comment.content
     }));
+
 
 
 
@@ -225,7 +225,7 @@ router.post("/post/postDetails/:postId", isLoggedIn, async (req, res) => {
             ? {
                 userId: post.userId._id,
                 userName: post.userId.userName,
-                userProfile: post.userId.profilePic
+                userProfile: post.userId.profilePic.toString('base64')
             }
             : {
                 userId: null,

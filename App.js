@@ -3,8 +3,10 @@ const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
+const expressLayouts = require('express-ejs-layouts');
+app.use(expressLayouts);
 const path = require('path');
-const passport = require('passport');
+const passport = require('passport'); 
 const index = require('./routes/user')
 const db = require("./config/mongoose-connection");
 const { registerUser, loginUser, logoutUser } = require('./controllers/controller')
@@ -14,7 +16,7 @@ const crypto = require('crypto');
 const session = require('express-session');
 const messageModel = require("./models/message-model");
 require('./config/passport');
-
+app.set('layout', 'layout');
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.static(path.join(__dirname, "public")));

@@ -9,6 +9,10 @@
       display: none;
     }
   </style>
+ 
+
+
+
   <div class="main-content relative">
     <!-- NavBar Div -->
     <div class="w-full fixed h-[8vh] z-999 bg-pink-800 top-0 left-0"><%- include("./partials/homeHeader") %></div>
@@ -26,7 +30,7 @@
           <div id="stories-scroll"
             class="flex gap-6 px-8 py-4 overflow-x-auto no-scrollbar scroll-smooth w-full items-center box-border">
             <% if (stories && stories.length> 0) { %>
-              <% stories.forEach((story)=> { %>
+              <% stories.reverse().forEach((story)=> { %>
                 <a href="/user/story/<%= story._id %>">
                   <div class="flex flex-col items-center cursor-pointer">
                     <div
@@ -59,7 +63,7 @@
 
 
       <!-- Posts -->
-      <% posts.forEach((post)=> { %>
+      <% posts.reverse().forEach((post)=> { %>
         <div class="post-container bg-white mx-auto mt-6 rounded-lg shadow-md border border-gray-200 w-[460px] mb-6">
           <!-- Header -->
           <div class="flex items-center justify-between px-4 pt-4 w-[460px]">
@@ -193,6 +197,7 @@
               </div>
         </div>
         <% }) %>
+       
     </div>
 
     <div id="likedUser" class="absolute w-[20vw] h-[50vh] bg-black top-[20vh] left-[40vw] hidden">
@@ -207,3 +212,4 @@
       <%- include("./partials/uploadStory") %>
         <%- include("./partials/Likes") %>
           <%- include("./partials/footer") %>
+          
