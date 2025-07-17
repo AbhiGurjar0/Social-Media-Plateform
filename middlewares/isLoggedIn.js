@@ -23,7 +23,7 @@ module.exports = async (req, res, next) => {
         console.error("Auth error:", err.message);
 
         if (err.name === "TokenExpiredError") {
-            return res.status(401).send("Session expired. Please login again.");
+            return res.redirect("/signin");
         } else if (err.name === "JsonWebTokenError") {
             return res.status(401).send("Invalid token.");
         }
