@@ -2,88 +2,98 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>
+  <meta charset="UTF-8">
+  <title>
 
-    </title>
-    <style>
-       /* --- Modern Global Loader --- */
-.loader-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(5px);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.3s ease;
-}
+  </title>
+  <style>
+    /* --- Modern Global Loader --- */
+    .loader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(5px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease;
+    }
 
-.loader-overlay.hidden {
-  display: none;
-}
+    .loader-overlay.hidden {
+      display: none;
+    }
 
-/* Spinner */
-.spinner-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+    /* Spinner */
+    .spinner-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-.spinner {
-  width: 60px;
-  height: 60px;
-  border: 6px solid rgba(255, 255, 255, 0.2);
-  border-top: 6px solid #00bfff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 15px;
-}
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid rgba(255, 255, 255, 0.2);
+      border-top: 6px solid #00bfff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
 
-/* Loading Text */
-.loading-text {
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 1.2rem;
-  color: #ffffff;
-  letter-spacing: 1px;
-  animation: pulse 1.2s ease-in-out infinite;
-}
+    /* Loading Text */
+    .loading-text {
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 1.2rem;
+      color: #ffffff;
+      letter-spacing: 1px;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
 
-@keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
+    @keyframes pulse {
 
-    </style>
+      0%,
+      100% {
+        opacity: 0.5;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+  </style>
 </head>
 
 
 <body>
 
-    <!-- Global Loader -->
-<div id="global-loader" class="loader-overlay hidden">
-  <div class="spinner-wrapper">
-    <div class="spinner"></div>
-    <div class="loading-text">Loading...</div>
+  <!-- Global Loader -->
+  <div id="global-loader" class="loader-overlay hidden">
+    <div class="spinner-wrapper">
+      <div class="spinner"></div>
+      <div class="loading-text">Loading...</div>
+    </div>
   </div>
-</div>
 
-    <!-- Page Content will render here -->
-    <%- body %>
-
+  <!-- Page Content will render here -->
+  <%- body %>
 
 
 
-        <script src="../javascripts/loader.js">
+
+    <script src="../javascripts/loader.js">
 
 
-        </script>
+    </script>
 </body>
 
 </html>

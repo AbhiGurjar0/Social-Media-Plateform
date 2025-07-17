@@ -1,15 +1,13 @@
 const loader = document.getElementById('global-loader');
 
-// loader.js
-
 let loaderTimeout;
 
 function showLoader() {
-    document.getElementById('global-loader')?.classList.remove('hidden');
+    loader?.classList.remove('hidden');
 }
 
 function hideLoader() {
-    document.getElementById('global-loader')?.classList.add('hidden');
+    loader?.classList.add('hidden');
 }
 
 function startDelayedLoader(delay = 2000) {
@@ -35,11 +33,12 @@ window.fetch = async function (...args) {
     }
 };
 
-window.addEventListener('beforeunload', () => {
-  startDelayedLoader(); // Starts 2s delayed loader
+// Fired even on back-forward cache navigation
+window.addEventListener('pageshow', (event) => {
+    stopDelayedLoader();
 });
 
-
-window.addEventListener('load', () => {
-  stopDelayedLoader();
+// Use pagehide instead of beforeunload for better reliability
+window.addEventListener('pagehide', () => {
+    startDelayedLoader();
 });
