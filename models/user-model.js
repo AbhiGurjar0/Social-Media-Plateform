@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema(
     {
-        profilePic: Buffer,
+        profilePic: {
+            type: Buffer,
+            default: null,
+        },
+
         userName: {
             type: String,
             required: true,
@@ -73,5 +77,6 @@ const userSchema = new mongoose.Schema(
         ]
     }
 );
+
 
 module.exports = mongoose.model("User", userSchema);

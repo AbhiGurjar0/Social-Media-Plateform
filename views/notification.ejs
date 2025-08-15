@@ -19,10 +19,10 @@
                     <!--for icon and profile-->
                     <div class="flex space-x-4">
 
-                        <div class="w-[3vw] h-[3vw] "><!-- for profile-->
-                            <a href=""><img
-                                    class=" h-[100%] w-[100%] overflow-hidden rounded-full  object-cover object-center"
-                                    src="data:image/jpg;base64,<%= notification?.userId2?.profilePic.toString('base64')%>"
+                        <div class="w-[3vw] h-[3vw] shadow-2xl  "><!-- for profile-->
+                            <a class="shadow-2xl" href=""><img
+                                    class=" h-[100%] w-[100%] overflow-hidden rounded-full border  object-cover object-center shadow-2xl"
+                                    src="data:image/jpg;base64,<%= notification?.userId2?.profilePic?.toString('base64')%>"
                                     alt="<%= notification?.userId2?.userName %>"></a>
                         </div>
                         <div> <!--message + likes-->

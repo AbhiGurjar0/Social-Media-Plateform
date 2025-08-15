@@ -209,7 +209,7 @@ router.post("/post/postDetails/:postId", isLoggedIn, async (req, res) => {
     const isSaved = await saveModel.findOne({ userId: req.user._id, postId: req.params.postId });
     const commentDetails = post.comments.map((comment) => ({
         userName: comment.userId.userName,
-        userProfile: comment.userId.profilePic.toString('base64'),
+        userProfile: comment.userId.profilePic?.toString('base64'),
         content: comment.content
     }));
 
@@ -225,7 +225,7 @@ router.post("/post/postDetails/:postId", isLoggedIn, async (req, res) => {
             ? {
                 userId: post.userId._id,
                 userName: post.userId.userName,
-                userProfile: post.userId.profilePic.toString('base64')
+                userProfile: post.userId.profilePic?.toString('base64')
             }
             : {
                 userId: null,
@@ -590,7 +590,7 @@ router.post("/post/likes", isLoggedIn, async (req, res) => {
                 userId: {
                     ...user._doc,
                     profilePic: user.profilePic
-                        ? user.profilePic.toString("base64") // ✅ Convert Buffer to base64 string
+                        ? user.profilePic?.toString("base64") // ✅ Convert Buffer to base64 string
                         : null,
                 },
             };

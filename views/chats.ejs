@@ -62,19 +62,23 @@
                                 class="group border-b border-gray-200 cursor-pointer hover:bg-orange-50 transition-colors">
                                 <a href="#" class="flex items-center px-5 py-4">
                                     <img class="w-10 h-10 rounded-full object-cover mr-4 shadow-sm border border-gray-300  overflow-hidden"
-                                        src="data:image/jpeg;base64,<%= user?.profilePic?.toString('base64') %>"
-                                        alt="<%= user.userName %>" />
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex justify-between items-center">
-                                            <p class="font-semibold text-gray-900 truncate">
-                                                <%= user.fullName %>
-                                            </p>
+                                        <%if(user.profilePic && user.profilePic.length> 0){%>
+                                    src="data:image/jpeg;base64,<%=user.profilePic?.toString('base64') %>"
+                                        <% } else{%>
+                                            src="./images/Untitled.png"
+                                            <%}%>
+                                                alt="<%= user.userName %>" />
+                                                    <div class="flex-1 min-w-0">
+                                                        <div class="flex justify-between items-center">
+                                                            <p class="font-semibold text-gray-900 truncate">
+                                                                <%= user.fullName %>
+                                                            </p>
 
-                                        </div>
+                                                        </div>
 
-                                        <p class="text-sm text-gray-400 truncate">@<%=user.userName%>
-                                        </p>
-                                    </div>
+                                                        <p class="text-sm text-gray-400 truncate">@<%=user.userName%>
+                                                        </p>
+                                                    </div>
                                 </a>
                             </li>
                             <% }) %>
@@ -93,14 +97,19 @@
                 <!-- Chat header -->
                 <header class="flex items-center justify-between border-b border-gray-200 p-6 shadow-sm">
                     <div class="flex items-center space-x-3">
-                        <img src="data:image/jpeg;base64,<%=selectedUser?.profilePic?.toString('base64')%>"
-                            alt="<%=selectedUser?.userName%>" class="w-12 h-12 rounded-full shadow overflow-hidden" />
-                        <div>
-                            <h3 id="message" class="font-bold text-lg text-gray-900">
-                                <%=selectedUser?.fullName%>
-                            </h3>
+                        <img <%if(selectedUser.profilePic && selectedUser.profilePic.length> 0){%>
+                        src="data:image/jpeg;base64,<%=selectedUser.profilePic?.toString('base64') %>"
+                            <% } else{%>
+                                src="./images/Untitled.png"
+                                <%}%>
+                                    alt="<%=selectedUser?.userName%>" class="w-12 h-12 rounded-full shadow
+                                        overflow-hidden" />
+                                        <div>
+                                            <h3 id="message" class="font-bold text-lg text-gray-900">
+                                                <%=selectedUser?.fullName%>
+                                            </h3>
 
-                        </div>
+                                        </div>
                     </div>
                     <div class="flex space-x-6 text-gray-400">
                         <button aria-label="Voice Call" class="hover:text-orange-400 transition-colors">

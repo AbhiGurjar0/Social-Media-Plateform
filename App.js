@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
 
         const roomId = generateRoomId(userId, otherUserId);
         socket.join(roomId);
-        console.log(`User ${userId} joined room: ${roomId}`);
+        // console.log(`User ${userId} joined room: ${roomId}`);
     });
 
     socket.on('sendMessage', async (data) => {

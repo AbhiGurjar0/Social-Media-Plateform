@@ -22,12 +22,12 @@ module.exports = async (req, res, next) => {
     } catch (err) {
         console.error("Auth error:", err.message);
 
-        if (err.name === "TokenExpiredError") {
-            return res.redirect("/signin");
-        } else if (err.name === "JsonWebTokenError") {
-            return res.status(401).send("Invalid token.");
-        }
+        //    / if (err.name === "TokenExpiredError") {
+        return res.redirect("/signin");
+        // } else if (err.name === "JsonWebTokenError") {
+        //     return res.status(401).send("Invalid token.");
+        // }
 
-        return res.status(500).send("Error in login");
+        // return res.status(500).send("Error in login");
     }
 }

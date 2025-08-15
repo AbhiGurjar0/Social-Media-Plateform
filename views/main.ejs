@@ -6,12 +6,18 @@
             <div class="main-content flex ">
                 <div class="pic-div p-8">
                     <form action="/uploadPic" method="POST" enctype="multipart/form-data">
-                        <div id="photo" class="relative w-32 h-32">
-                            <label for="photoInput" class="cursor-pointer w-full h-full block">
+                        <div id="photo" class="relative w-32 h-32 overflow-hidden">
+                            <label for="photoInput" class="cursor-pointer w-full h-full block overflow-hidden">
                                 <!-- Image preview will be here -->
                                 <img id="profilePreview"
-                                    src="data:image/jpeg;base64,<%=user.profilePic?.toString('base64') %>" alt="Profile"
-                                    class="h-32 w-32 rounded-full object-cover object-top border-2 border-gray-400 hover:opacity-80 transition">
+                                <%if(user.profilePic && user.profilePic.length > 0){%>
+                                     src="data:image/jpeg;base64,<%=user.profilePic?.toString('base64') %>" 
+                               <% }
+                                else{%>
+                                 src="./images/Untitled.png"
+                                <%}%>
+                                   alt="Profile"
+                                    class="h-32 w-32 rounded-full object-cover object-top border-2 border-gray-400 hover:opacity-80 transition overflow-hidden">
                             </label>
                             <input type="file" id="photoInput" name="media" accept="image/*" class="hidden"
                                 onchange="previewImage(event)">
