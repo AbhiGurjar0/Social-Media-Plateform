@@ -1,21 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include("./partials/header") %>
+    <!-- <body class="bg-gray-50 h-screen antialiased flex items-center justify-center box-border"> -->
+    <div class="w-full fixed h-[8vh] z-999 bg-pink-800 top-0 left-0"><%- include("./partials/headerOptions") %></div>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Modern Tailwind Chat UI</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="../javascripts/main.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-
-<body class="bg-gray-50 h-screen antialiased flex items-center justify-center p-2 box-border">
-    <div class="flex h-full  w-full bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200 box-border">
+    <div
+        class="flex h-[92vh] w-full bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200 box-border mt-[8vh]">
         <!-- Sidebar -->
         <aside class="grid [grid-template-columns:50px_auto]  w-80 border-r border-gray-200 bg-white">
             <div class="col-span-1 box-border border-r">
@@ -91,8 +79,6 @@
 
         <!-- Chat Content Panel -->
         <%if(selectedUser){%>
-
-
             <main class="flex-1 flex flex-col box-border">
                 <!-- Chat header -->
                 <header class="flex items-center justify-between border-b border-gray-200 p-6 shadow-sm">
@@ -245,7 +231,4 @@
         });
     </script>
 
-
-</body>
-
-</html>
+    <%- include("./partials/footer") %>
