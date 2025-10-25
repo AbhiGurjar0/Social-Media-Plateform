@@ -14,10 +14,8 @@ router.get('/google/callback',
         failureRedirect: '/signin',
     }),
     (req, res) => {
-        const token = generateToken(req.user); // your JWT logic
-        res.cookie("token", token); // Set JWT cookie
-
-        // Redirect to dashboard/home
+        const token = generateToken(req.user);
+        res.cookie("token", token);
         res.redirect('/');
     }
 );
