@@ -3,21 +3,28 @@
     <div id="main-content" class="w-full min-h-screen grid grid-cols-[20vw_1fr] absolute top-[9vh]  mb-5">
         <div class="w-[20vw] h-full fixed z-50"> <%- include("./partials/sidebar") %></div>
         <div id="profile" class="tabs w-[80vw] min-h-screen  box-border px-5 col-start-2 mb-2">
-            <div class="main-content flex ">
-                <div class="pic-div p-8">
-                    <form action="/uploadPic" method="POST" enctype="multipart/form-data">
-                        <div id="photo" class="relative w-32 h-32 overflow-hidden">
-                            <label for="photoInput" class="cursor-pointer w-full h-full block overflow-hidden">
-                                <!-- Image preview will be here -->
-                                <img id="profilePreview"
-                                <%if(user.profilePic && user.profilePic.length > 0){%>
-                                     src="data:image/jpeg;base64,<%=user.profilePic?.toString('base64') %>" 
-                               <% }
-                                else{%>
-                                 src="./images/Untitled.png"
-                                <%}%>
-                                   alt="Profile"
-                                    class="h-32 w-32 rounded-full object-cover object-top border-2 border-gray-400 hover:opacity-80 transition overflow-hidden">
+            <div
+                class="main-content flex flex-wrap items-center justify-between px-12 py-8 bg-white shadow-sm rounded-lg border border-gray-200">
+
+                <!-- Profile Picture Section -->
+                <div class="pic-div flex flex-col items-center">
+                    <form action="/uploadPic" method="POST" enctype="multipart/form-data" class="relative ">
+                        <div id="photo" class="relative w-36 h-36">
+                            <label for="photoInput" class="cursor-pointer w-full h-full block relative group ">
+                                <img id="profilePreview" <% if(user.profilePic && user.profilePic.length> 0) { %>
+                                src="data:image/jpeg;base64,<%= user.profilePic?.toString('base64') %>"
+                                    <% } else { %>
+                                        src="./images/Untitled.png"
+                                        <% } %>
+                                            alt="Profile"
+                                            class="h-36 w-36 rounded-full object-cover border-2 border-gray-300
+                                            transition-all duration-300 group-hover:opacity-80 group-hover:scale-105
+                                            shadow-md"
+                                            >
+                                            <div
+                                                class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-full transition">
+                                                <i class="fa-solid fa-camera text-white text-lg"></i>
+                                            </div>
                             </label>
                             <input type="file" id="photoInput" name="media" accept="image/*" class="hidden"
                                 onchange="previewImage(event)">
@@ -25,57 +32,62 @@
                     </form>
                 </div>
 
-                <div class="username-div mt-9 ml-1">
-                    <h1 class="text-[20px] font-bold mb-2">
-                        <%=user.userName%>
+                <!-- Username + Stats -->
+                <div class="username-div flex flex-col justify-center items-start w-[40%]">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <h1 class="text-[22px] font-bold text-gray-800">
+                            <%= user.userName %>
+                        </h1>
 
-                    </h1>
-
-                    <div class="follower-post-div flex space-x-4 text-[14px] mt-4.5">
-                        <span>
-                            <%=posts?posts.length:'0'%> <span class="text-gray-300">Posts</span>
-                        </span>
-                        <a class="cursor-pointer text-shadow-black" href="/user/followers/<%=user?._id%>"><span>
-                                <%=user.followers.length%> <span class="text-gray-300">Followers</span>
-                            </span></a>
-                        </span>
-                        <a class="cursor-pointer text-shadow-black" href="/user/followers/<%=user?._id%>"><span>
-                                <%=user.following.length%> <span class="text-gray-300">Following</span>
-                            </span></a>
                     </div>
-                    <div class="text-sm mt-2 leading-snug">
-                        <span class="block text-[14px] font-semibold text-black">
+
+                    <div class="follower-post-div flex space-x-8 text-[15px] font-medium text-gray-700">
+                        <span>
+                            <%= posts ? posts.length : '0' %>
+                                <span class="text-gray-400 font-normal">posts</span>
+                        </span>
+                        <a href="/user/followers/<%= user?._id %>" class="hover:underline">
+                            <%= user.followers.length %> <span class="text-gray-400 font-normal">followers</span>
+                        </a>
+                        <a href="/user/following/<%= user?._id %>" class="hover:underline">
+                            <%= user.following.length %> <span class="text-gray-400 font-normal">following</span>
+                        </a>
+                    </div>
+
+                    <div class="mt-4 text-sm">
+                        <span class="block font-semibold text-gray-900 text-[15px]">
                             <%= user.fullName %>
                         </span>
-                        <span class="block text-gray-600 text-[13px]">
+                        <span class="block text-gray-600 text-[13px] leading-snug max-w-sm">
                             <%= user.bio %>
                         </span>
                     </div>
                 </div>
-                <div class="edit-profile-div flex justify-center items-center text-[20px] w-[20vw] pt-15 h-[20vh] ">
-                    <a href="/editProfile" class="">
-                        <button
-                            class="box-border h-[28px] border-2 border-gray-200 p-4 flex justify-center items-center rounded-md  bg-white text-gray-700 hover:bg-b cursor-pointer ml-65 mb-10">
-                            <i class="fa-solid fa-plus mr-2"></i>Edit Profile
-                        </button>
-                    </a>
+
+                <!-- Edit / Follow Button Section -->
+                <div class="edit-profile-div flex flex-col justify-center items-center w-[20vw]">
+                    <%if(loggedInUser._id.toString()===user._id.toString()){%>
+                        <a href="/editProfile" class="w-full flex justify-center">
+                            <button
+                                class="w-[70%] border border-gray-300 px-4 py-2 rounded-md bg-white text-gray-700 font-medium hover:bg-gray-100 transition">
+                                <i class="fa-solid fa-user-pen mr-2"></i>Edit Profile
+                            </button>
+                        </a>
+                        <%}else{%>
+                        
+                            <button onclick="followUser(this,'<%=user._id%>')"
+                                class="bg-blue-600 mt-6 px-6 py-[6px] rounded-md text-white font-semibold shadow-md hover:bg-blue-700 transition disabled:bg-gray-400">
+                                <%=isFollowed?"Unfollow":"Follow"%>
+                            </button>
+                        <%}%>
                 </div>
 
             </div>
 
-            <div class="highlight-section flex items-center h-[120px] w-full space-x-4  ml-10 ">
-
-                <div class="h-20 w-20 rounded-full border  p-1 flex justify-center items-center">
-                    <div class="h-full w-full bg-white rounded-full flex justify-center items-center">
-                        <img src="../images/add.png" class="w-[30px] h-[30px] rounded-full" alt="">
-                    </div>
-                </div>
 
 
-            </div>
 
-
-            <div class="flex justify-around items-center h-[30px] gap-2 font-bold text-blue-500 rounded-lg ">
+            <div class="flex justify-around items-center h-[30px] gap-2 font-bold text-blue-500 rounded-lg mt-5 ">
                 <h2 class="tab-btn bg-amber-100 w-[33%] h-[100%] text-center rounded-lg"
                     onclick="sectionToggle(this, 'posts')">Post</h2>
                 <h2 class="tab-btn bg-amber-700 w-[33%] h-[100%] text-center rounded-lg"
@@ -84,29 +96,37 @@
                     onclick="sectionToggle(this, 'saved')">Saved</h2>
             </div>
 
-            <!-- ✅ Posts Section -->
+            <!-- ✅Posts Section -->
             <div id="posts-section" class="section mt-4 flex flex-wrap gap-2">
-                <% posts.reverse().forEach((post)=> {
-                    if (post.video) { %>
-                    <div onclick="openPost(this,'<%=post._id%>')"
-                        class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
-                        <video class="w-full h-full object-cover">
-                            <source src="data:video/mp4;base64,<%= post.video?.toString('base64') %>" type="video/mp4">
-                        </video>
-                        <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
-                    </div>
-                    <% } else { %>
+                <% if(posts.length>0){%>
+                    <% posts.reverse().forEach((post)=> {
+                        if (post.video) { %>
                         <div onclick="openPost(this,'<%=post._id%>')"
                             class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
-                            <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>"
-                                class="w-full h-full object-cover" />
+                            <video class="w-full h-full object-cover">
+                                <source src="data:video/mp4;base64,<%= post.video?.toString('base64') %>"
+                                    type="video/mp4">
+                            </video>
+                            <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
                         </div>
-                        <% } }); %>
+                        <% } else { %>
+                            <div onclick="openPost(this,'<%=post._id%>')"
+                                class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
+                                <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>"
+                                    class="w-full h-full object-cover" />
+                            </div>
+                            <% } }); %>
+                                <%}else{%>
+                                    <div class="w-full h-[20vh] flex justify-center items-center opacity-50">No Post
+                                        Available..</div>
+                                    <%}%>
             </div>
 
-            <!-- ✅ Reels Section -->
+            <!--  Reels Section -->
             <div id="reels-section" class="section mt-4 flex flex-wrap gap-2 hidden">
-                <% posts.reverse().forEach((post)=> { if (post.video) { %>
+
+                <% posts.reverse().forEach((post)=> {
+                    if (post.video) { %>
                     <div onclick="openPost(this,'<%=post._id%>')"
                         class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
                         <video class="w-full h-full object-cover">
@@ -120,24 +140,29 @@
             <!-- ✅ Saved Section -->
             <div id="saved-section" class="section mt-4 flex flex-wrap gap-2 hidden">
                 <% if(user._id.toString()===loggedInUser._id.toString()) { %>
-
-                    <% savedPosts?.reverse().forEach(p=> { %>
-                        <div onclick="openPost(this,'<%=p._id%>')"
-                            class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
-                            <% if (p.video) { %>
-                                <video class="w-full h-full object-cover">
-                                    <source src="data:video/mp4;base64,<%= p.video?.toString('base64') %>"
-                                        type="video/mp4">
-                                </video>
-                                <% } else { %>
-                                    <img src="data:image/jpeg;base64,<%= p.image?.toString('base64') %>"
-                                        class="w-full h-full object-cover" />
-                                    <% } %>
-                        </div>
-                        <% } ); %>
-                            <% } else { %>
-                                <h2 class="text-gray-500 text-center w-full">This user has no saved posts.</h2>
-                                <% } %>
+                    <% if(savedPosts.length>0){%>
+                        <% savedPosts?.reverse().forEach(p=> { %>
+                            <div onclick="openPost(this,'<%=p._id%>')"
+                                class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
+                                <% if (p.video) { %>
+                                    <video class="w-full h-full object-cover">
+                                        <source src="data:video/mp4;base64,<%= p.video?.toString('base64') %>"
+                                            type="video/mp4">
+                                    </video>
+                                    <% } else { %>
+                                        <img src="data:image/jpeg;base64,<%= p.image?.toString('base64') %>"
+                                            class="w-full h-full object-cover" />
+                                        <% } %>
+                            </div>
+                            <% } ); %>
+                                <%}else{%>
+                                    <div class="w-full h-[20vh] flex justify-center items-center opacity-50">No Post
+                                        Available..</div>
+                                    <%}%>
+                                        <% } else { %>
+                                            <h2 class="text-gray-500 text-center w-full">This user has no saved posts.
+                                            </h2>
+                                            <% } %>
             </div>
 
         </div>

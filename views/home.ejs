@@ -9,7 +9,7 @@
       display: none;
     }
   </style>
- 
+
 
 
 
@@ -75,15 +75,20 @@
                   alt="profilePic" />
               </a>
               <div>
-                <div class="flex items-center gap-1">
+                <div class="flex items-center gap-2">
                   <a href="/user/<%= post.userId._id %>">
                     <span class="font-semibold text-sm">
                       <%= post.userId.userName %>
                     </span>
                   </a>
                   <img src="../images/Instagrame-Blue-tick.png" class="w-4 h-4" alt="verified">
+                  <button onclick="followUser(this , '<%=post.userId._id%>')"
+                    class="text-md font-sans rounded-xl text-blue-600">
+                    <%=user._id.toString()===post.userId._id.toString() ?"" :following.some(f=>
+                      f.following._id.toString()==post.userId._id.toString())?"Unfollow":"Follow"%>
+                  </button>
                 </div>
-                <span class="text-xs text-gray-500">WNRS Circle Training Facility • 18h</span>
+                <!-- <span class="text-xs text-gray-500">WNRS Circle Training Facility • 18h</span> -->
               </div>
             </div>
             <button onclick="postOptionsForHome(this,'<%=post.userId._id%>','<%= post._id %>')"
@@ -128,7 +133,9 @@
               <button onclick="openPost(this,'<%= post._id %>')" class="hover:text-gray-500">
                 <i class="fa-regular fa-comment text-2xl"></i>
               </button>
-              <button class="hover:text-gray-500">
+              <button
+                onclick="sharePost('http://localhost:3000/postDetails?postId=<%=post._id%>', 'Check out this awesome post!')"
+                class="hover:text-gray-500">
                 <i class="fa-regular fa-paper-plane text-2xl"></i>
               </button>
             </div>
@@ -183,21 +190,25 @@
 
                     <div class="px-4 pt-1 pb-2">
                       <div class="flex items-center mt-2">
-                        <input type="text" placeholder="Add a comment..."
+                        <input oninput="updateComment(this)" type="text" placeholder="Add a comment..."
                           class="flex-1 border-none outline-none text-sm bg-transparent comment-input" />
-                        <p onclick="addComment(this,'<%=post._id%>')"
-                          class="text-blue-500 text-xs font-semibold cursor-pointer">
+
+
+                        <p id="postBtn" onclick="addComment(this,'<%=post._id%>')"
+                          class="text-blue-500 text-xs hidden font-semibold cursor-pointer">
                           Post</p>
-                        <!--By Default hide this button, unhide it when user click om the input field// -->
-                        <p class="text-blue-500 text-xs font-semibold ml-2"><i
-                            class="fa-regular fa-face-smile text-black hover:text-gray-600"></i></button>
+
+
+
+                        <!-- <p class="text-blue-500 text-xs font-semibold ml-2"><i
+                            class="fa-regular fa-face-smile text-black hover:text-gray-600"></i></button> -->
                       </div>
                     </div>
                     <%}%>
               </div>
         </div>
         <% }) %>
-       
+
     </div>
 
     <div id="likedUser" class="absolute w-[20vw] h-[50vh] bg-black top-[20vh] left-[40vw] hidden">
@@ -212,4 +223,3 @@
       <%- include("./partials/uploadStory") %>
         <%- include("./partials/Likes") %>
           <%- include("./partials/footer") %>
-          

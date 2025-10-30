@@ -1,0 +1,74 @@
+<%- include("./partials/header") %>
+    <div class="w-full fixed h-[8vh] z-999 bg-pink-800 top-0 left-0"><%- include("./partials/headerOptions") %></div>
+
+    <div class="w-full min-h-screen grid grid-cols-[20vw_1fr] absolute top-[9vh]  mb-5">
+        <div class="w-[20vw] h-full fixed z-50"> <%- include("./partials/sidebar") %></div>
+        <div id="Search" class="tabs w-[80vw]  box-border px-5 col-start-2 mb-2">
+            <div class="w-full h-[5vh] flex justify-center items-center gap-5">
+                <input class="w-[50vw] py-3 px-4 bg-zinc-200 outline-none rounded-xl " type="text"
+                    placeholder="Search Profile...">
+                <button onclick="Search()" class="px-5 py-3  bg-blue-500 rounded-xl">Search </button>
+            </div>
+        </div>
+        <div class="w-[80vw] ml-[20vw] min-h-[80vh]  ">
+            <div id="users" class="w-[70%]  flex  flex-col gap-2">
+
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                Search();
+
+            })
+            async function Search() {
+                let input = document.querySelector('input').value.trim();
+                if (!input) return;
+                let users = document.getElementById('users');
+                users.innerHTML = '';
+                await fetch('/search', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ input })
+                }).then(res => res.json())
+                    .then(data => {
+                        console.log(data)
+                        data.data.forEach(element => {
+                            const imageSrc = element?.profilePic
+                                ? `data:image/jpeg;base64,${element?.profilePic}`
+                                : "https://example.com/default-avatar.jpg";
+                            users.innerHTML += `
+                             <li
+                    class="flex items-center justify-between px-5 py-4 hover:bg-gray-700 transition-colors duration-300 bg-zinc-600 rounded-2xl">
+                       <a href="/user/${element._id}"><div class="flex items-center space-x-4 ">
+                        <img src="${imageSrc}" alt="Profile photo" class="w-12 h-12 rounded-full object-cover overflow-hidden shadow-2xl border"
+                            loading="lazy" />
+                        <div class="">
+                            <p class="text-white font-semibold leading-tight select-text">
+                               ${element.fullName}
+                                <span class="text-gray-100 text-sm">(@${element.userName})</span>
+                            </p>
+                            <p class="text-gray-100 text-sm select-text">
+                                ${element.bio}
+                            </p>
+                        </div>
+                    </div></a>
+                    
+
+
+
+                </li>`
+
+                        });
+                        console.log(data)
+                    })
+                    .catch((err) => {
+                        console.log("Error in search ", err);
+                    })
+            }
+        </script>
+
+        <%- include("./partials/openPost")%>
+            <%- include("./partials/footer") %>

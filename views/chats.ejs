@@ -31,10 +31,13 @@
                             class="p-2 rounded-lg hover:bg-orange-100 transition-colors">
                             <i class="fa-solid fa-bell"></i>
                         </button></a>
-                    <a href="/chats"><button type="button" aria-label="chats"
-                            class="p-2 rounded-lg hover:bg-orange-100 transition-colors">
-                            <i class="fa-solid fa-comments"></i>
-                        </button></a>
+                    <a href="/search"
+                        class="text-gray-500 hover:text-white hover:bg-[#948979] p-2 px-6 text-[15px] rounded ">
+                        <i class="fa-solid fa-magnifying-glass text-gray-600 text-lg"></i>
+                        <a href="/chats"><button type="button" aria-label="chats"
+                                class="p-2 rounded-lg hover:bg-orange-100 transition-colors">
+                                <i class="fa-solid fa-comments"></i>
+                            </button></a>
                 </div>
             </div>
 
@@ -113,7 +116,7 @@
 
 
                 <section id="chatContainer"
-                    class="flex-1 px-8 py-6 min-h-[75vh] overflow-y-auto box-border space-y-8 bg-gray-50">
+                    class="flex-1 px-8 py-6 max-h-[70vh] overflow-y-auto box-border space-y-8 bg-gray-50">
 
                     <% messages.forEach(message=> {
                         const isSender = message.sender._id.equals(selectedUser?._id); // current user is sender

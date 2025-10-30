@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Post</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 flex justify-center items-center min-h-[90vh]">
+
+    <div class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-lg">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-800">Edit Post</h2>
+
+        <!-- Image Preview -->
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-600 mb-2">Post Image</label>
+            <div
+                class="w-full h-56 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center overflow-hidden relative">
+                <img id="imagePreview" src="https://via.placeholder.com/400x250?text=Post+Image" alt="Preview"
+                    class="w-full h-full object-cover hidden">
+                <p id="imagePlaceholder" class="text-gray-400 text-sm">Click below to upload an image</p>
+            </div>
+            <input type="file" id="imageInput" accept="image/*" class="mt-3 block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4
+                    file:rounded-full file:border-0 file:text-sm file:font-semibold
+                    file:bg-blue-50 file:text-blue-600 hover:file:bg-blue-100" />
+        </div>
+
+        <!-- Title -->
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-600 mb-2">Caption</label>
+            <input type="text" id="Caption" placeholder="Enter post title" value="<%=post.caption%>" name="caption"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <!-- Hashtags -->
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-600 mb-2">Hashtags</label>
+            <input type="text" id="hashtags" placeholder="#travel #life #photography" value="<%=post.tags%>" name="tags"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <!-- Description -->
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-600 mb-2">Location</label>
+            <input id="Location" placeholder="location..." value="<%=post.location%>" name="location"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"></input>
+        </div>
+
+        <!-- Options -->
+        <div class="mb-5">
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Options</h3>
+            <div class="flex flex-col gap-2">
+                <label class="inline-flex items-center">
+                    <input type="checkbox" id="hideLikes"  <%= post.hideLikeViewCounts ? "checked" : "" %> 
+                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                    <span class="ml-2 text-gray-700 text-sm">Hide like count</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="checkbox" id="disableComments"  <%= post.disableComments ? "checked" : "" %> 
+                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                    <span class="ml-2 text-gray-700 text-sm">Disable comments</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-end gap-3">
+            <button onclick="cancelEdit()" class="px-5 py-2 bg-gray-200 rounded-lg text-gray-700 hover:bg-gray-300">
+                Cancel
+            </button>
+            <button onclick="saveChanges('<%=post._id%>')"
+                class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                Save Changes
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Handle Image Preview
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const imagePlaceholder = document.getElementById('imagePlaceholder');
+
+        imageInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.classList.remove('hidden');
+                    imagePlaceholder.classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Cancel Button
+        function cancelEdit() {
+            if (confirm("Discard changes?")) {
+                window.history.back();
+            }
+        }
+
+        // Save Button (sample)
+        async function saveChanges(postId) {
+            const postData = {
+                caption: document.getElementById('Caption').value.trim(),
+                tags: document.getElementById('hashtags').value.trim(),
+                location: document.getElementById('Location').value.trim(),
+                hideLikes: document.getElementById('hideLikes').checked,
+                disableComments: document.getElementById('disableComments').checked,
+            };
+
+            await fetch("/post/edit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ postId, postData }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    window.location.href = "/main";
+                })
+                .catch((err) => {
+                    console.log(" Post deletion failed");
+                });
+
+            console.log("Updated Post:", postData);
+
+            alert("Changes saved successfully!");
+            // TODO: send data to backend via fetch('/api/updatePost', { method:'PUT', body: JSON.stringify(postData) })
+        }
+    </script>
+
+</body>
+
+</html>

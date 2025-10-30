@@ -46,11 +46,13 @@
     <div id="likesModel"
         class="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50 hidden">
         <!-- Modal container -->
+
         <div
             class="bg-gray-800 rounded-xl w-full max-w-md max-h-[80vh] flex flex-col animate-fade-slide-in shadow-xl overflow-hidden">
             <!-- Header -->
             <header class="flex items-center justify-between px-5 py-4 border-b border-gray-700">
                 <h2 class="text-white text-lg font-semibold tracking-wide select-none">Likes</h2>
+
                 <button aria-label="Close"
                     class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
                     id="closeBtn">
@@ -65,32 +67,38 @@
             </div>
         </div>
     </div>
+    <% const followings=following.map(f=> f.following._id.toString());
+        %>
 
-    <script>
-        // Show likes modal and fetch like details
-        function showLikes(element, postId) {
-            document.getElementById("likesModel").classList.remove("hidden");
-            document.body.style.overflow = "hidden"
-            const details = document.getElementById("likeDetails");
-         
+        <script>
 
-            fetch("/post/likes", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ postId }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    const likes = data.likes;
-                    details.innerHTML = ""; // Clear previous likes
+            function showLikes(element, postId) {
+                document.getElementById("likesModel").classList.remove("hidden");
+                document.body.style.overflow = "hidden"
+                const details = document.getElementById("likeDetails");
+                let userId = "<%= user._id %>";
 
-                    likes.forEach(like => {
-                        const imageSrc = like.userId.profilePic
-                            ? `data:image/jpeg;base64,${like.userId.profilePic}`
-                            : "https://example.com/default-avatar.jpg";
-                        details.innerHTML += `
+                fetch("/post/likes", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ postId }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const likes = data.likes;
+                        details.innerHTML = ""; // Clear previous likes
+
+                        likes.forEach(like => {
+                            const imageSrc = like.userId.profilePic
+                                ? `data:image/jpeg;base64,${like.userId.profilePic}`
+                                : "https://example.com/default-avatar.jpg";
+
+
+
+
+                            details.innerHTML += `
               <li class="flex items-center justify-between px-5 py-4 hover:bg-gray-700 transition-colors duration-300">
                 <div class="flex items-center space-x-4">
                   <img src='${imageSrc}'
@@ -106,30 +114,27 @@
                     </p>
                   </div>
                 </div>
-                <button onclick="followUser('${like.userId._id}')"
-                  class="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-white px-4 py-1 rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  type="button">Follow</button>
+               
+               
+                            
               </li>
             `;
+                        });
+                    })
+                    .catch(err => {
+                        console.error("Error fetching likes:", err);
                     });
-                })
-                .catch(err => {
-                    console.error("Error fetching likes:", err);
-                });
-        }
+            }
 
-        // Close modal functionality
-        document.getElementById('closeBtn').addEventListener('click', () => {
+            // Close modal functionality
+            document.getElementById('closeBtn').addEventListener('click', () => {
 
-            document.getElementById("likesModel").classList.add("hidden");
-            document.body.style.overflow = "auto";
-        });
+                document.getElementById("likesModel").classList.add("hidden");
+                document.body.style.overflow = "auto";
+            });
 
-        // // Dummy follow function (optional to avoid error in console)
-        // function followUser(userId) {
-        //     console.log("Follow user:", userId);
-        // }
-    </script>
+
+        </script>
 </body>
 
 </html>
