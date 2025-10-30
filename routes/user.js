@@ -338,8 +338,7 @@ router.post("/post/postDetails/:postId", isLoggedIn, async (req, res) => {
   }));
 
   res.json({
-    video: post.video ? post.video.toString("base64") : "",
-    image: post.image ? post.image.toString("base64") : "",
+    url:post.url,
     comments: commentDetails,
     likeCount: likes.length,
     createdBy: post.userId

@@ -177,18 +177,18 @@ async function openPost(element, postId) {
     saveIcon.classList.add("fa-solid", "text-blue-500");
   }
   postContent.innerHTML = "";
-  if (data.video) {
+  if (data.type=="video") {
     postContent.innerHTML = `
         <div class="w-full h-full object-cover relative">
             <video id="openPostVideo"   autoplay class="w-full h-full object-cover">
-                <source src="data:video/mp4;base64,${data.video}"
+                <source src="${data.url}"
                     type="video/mp4">
                     Your browser does not support the video tag.
             </video>
             <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
         </div>`;
   } else {
-    postContent.innerHTML = `<img src="data:image/jpeg;base64,${data.image}" alt="Post Image"
+    postContent.innerHTML = `<img src="${data.url}" alt="Post Image"
             class="w-full h-full object-cover" />`;
   }
 
