@@ -34,6 +34,7 @@ router.get("/", isLoggedIn, async (req, res) => {
         },
       });
     let stories = await storyModel.find().populate("user");
+  
     let user = await userModel.findOne({ _id: req.user._id }).populate({
       path: "following",
       populate: { path: "following", model: "User" },
@@ -41,9 +42,9 @@ router.get("/", isLoggedIn, async (req, res) => {
     const following = await followerModel
       .find({ follower: user._id })
       .populate("following");
-
+ 
     // Get all the followed user IDs
-    const followingIds = user.following.map((f) => f._id.toString());
+    const followingIds = following.map((f) => f.following._id.toString());
     followingIds.push(req.user._id.toString());
 
     //saved reel
@@ -544,7 +545,7 @@ router.post("/user/addFollower", isLoggedIn, async (req, res) => {
         { session }
       );
       await session.commitTransaction();
-      return res.json({ message: "Unfollowed successfully" });
+      return res.json({success:false, message: "Unfollowed successfully" });
     } else {
       // Follow logic
       await followerModel.create(
@@ -584,7 +585,7 @@ router.post("/user/addFollower", isLoggedIn, async (req, res) => {
         { session }
       );
       await session.commitTransaction();
-      return res.json({ message: "Followed successfully" });
+      return res.json({success:true , message: "Followed successfully" });
     }
   } catch (error) {
     await session.abortTransaction();

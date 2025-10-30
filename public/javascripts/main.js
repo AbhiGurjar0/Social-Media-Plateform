@@ -575,22 +575,22 @@ function previewSelectedImage(event) {
 }
 
 //follow user
+async function followUser(ele, userId) {
+  console.log("called", userId);
+  ele.innerHTML = ele.innerHTML.trim() === "Follow" ? "Unfollow" : "Follow";
 
-async function followUser(ele = "", userId) {
-  console.log("callled");
-  console.log(userId);
   let response = await fetch("/user/addFollower", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ userId }),
-  });
-  let data = await response.json();
-
-  ele.innerHTML = ele.innerHTML == "Follow" ? "Unfollow" : "Follow";
-
-  console.log(data);
+  })
+    .then((res) => res.json())
+    .then((data) => {})
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 // toggle button followers and following
