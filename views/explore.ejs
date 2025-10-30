@@ -12,17 +12,17 @@
                         class="post-card w-[270px] h-[300px] bg-gray-900  rounded-2xl overflow-hidden "
                         content-type="<%= post.video ? 'reels' : 'posts' %>">
                         <div class=" ..."></div>
-                        <% if (post.video) { %>
+                        <% if (post.type=="video") { %>
                             <div class="w-full h-full object-cover relative rounded-2xl">
                                 <video paused class="w-full h-full object-cover">
-                                    <source src="data:video/mp4;base64,<%= post.video?.toString('base64') %>"
+                                    <source src="<%=post.url%>"
                                         type="video/mp4">
                                     Your browser does not support the video tag.
                                 </video>
                                 <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
                             </div>
                             <% } else { %>
-                                <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>" alt="Post Image"
+                                <img src="<%=post.url%>" alt="Post Image"
                                     class="w-full h-full object-cover object-top" />
                                 <% } %>
                     </div>
