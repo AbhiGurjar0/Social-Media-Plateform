@@ -104,7 +104,7 @@
                         <div onclick="openPost(this,'<%=post._id%>')"
                             class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
                             <video class="w-full h-full object-cover">
-                                <source src="data:video/mp4;base64,<%= post.video?.toString('base64') %>"
+                                <source src="<%=post.url%>""
                                     type="video/mp4">
                             </video>
                             <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
@@ -112,7 +112,7 @@
                         <% } else { %>
                             <div onclick="openPost(this,'<%=post._id%>')"
                                 class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
-                                <img src="data:image/jpeg;base64,<%= post.image?.toString('base64') %>"
+                                <img src="<%=post.url%>"
                                     class="w-full h-full object-cover" />
                             </div>
                             <% } }); %>
@@ -130,7 +130,7 @@
                     <div onclick="openPost(this,'<%=post._id%>')"
                         class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
                         <video class="w-full h-full object-cover">
-                            <source src="data:video/mp4;base64,<%= post.video?.toString('base64') %>" type="video/mp4">
+                            <source src="<%=post.url%>" type="video/mp4">
                         </video>
                         <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
                     </div>
@@ -146,11 +146,11 @@
                                 class="post-card w-[270px] h-[300px] bg-gray-900 rounded-lg">
                                 <% if (p.video) { %>
                                     <video class="w-full h-full object-cover">
-                                        <source src="data:video/mp4;base64,<%= p.video?.toString('base64') %>"
+                                        <source src="<%=p.url%>"
                                             type="video/mp4">
                                     </video>
                                     <% } else { %>
-                                        <img src="data:image/jpeg;base64,<%= p.image?.toString('base64') %>"
+                                        <img src="<%=p.url%>"
                                             class="w-full h-full object-cover" />
                                         <% } %>
                             </div>

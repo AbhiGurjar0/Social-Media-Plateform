@@ -100,20 +100,20 @@
 
           <!-- Post Image/Video -->
           <div ondblclick="like(this, '<%= post._id %>', true)" class="container mt-3 relative group w-[460px]">
-            <% if (post.video) { %>
+            <% if (post.type==="video") { %>
               <div class="w-full h-[60vh] object-cover object-top relative" aria-label="Play"
                 onclick="pauseVideo(this)">
                 <video class="w-full h-full object-cover">
-                  <source src="data:video/mp4;base64,<%= post.video.toString('base64') %>" type="video/mp4">
+                  <source src="<%=post.url%>" type="video/mp4">
                   Your browser does not support the video tag.
                 </video>
                 <i class="fa-solid fa-play absolute top-2 right-2 text-white z-10"></i>
               </div>
-              <% } else if (post.image) { %>
-                <img src="data:image/jpeg;base64,<%= post.image.toString('base64') %>" alt="Post Image"
+              <% } else if (post.type==="image") { %>
+                <img src="<%=post.url%>" alt="Post Image"
                   class="w-full max-h-[450px] object-cover rounded-md" />
                 <% } else { %>
-                  <img src="../images/post.jpg" alt="Default Post"
+                  <img src="<%=post.url%>" alt="Default Post"
                     class="w-full max-h-[450px] object-cover rounded-md" />
                   <% } %>
                     <i

@@ -13,6 +13,10 @@ const followModel = require("../models/follow-model");
 const storyModel = require("../models/story-model");
 const notificationModel = require("../models/notification-model");
 const messageModel = require("../models/message-model");
+const cloudinary = require("cloudinary").v2;
+// const multer = require('multer')
+// const storage = multer.memoryStorage();
+// const upload = multer({ storage });
 
 //profile page
 
@@ -34,7 +38,7 @@ router.get("/", isLoggedIn, async (req, res) => {
         },
       });
     let stories = await storyModel.find().populate("user");
-  
+
     let user = await userModel.findOne({ _id: req.user._id }).populate({
       path: "following",
       populate: { path: "following", model: "User" },
@@ -42,7 +46,7 @@ router.get("/", isLoggedIn, async (req, res) => {
     const following = await followerModel
       .find({ follower: user._id })
       .populate("following");
- 
+
     // Get all the followed user IDs
     const followingIds = following.map((f) => f.following._id.toString());
     followingIds.push(req.user._id.toString());
@@ -130,7 +134,7 @@ router.get("/main", isLoggedIn, async (req, res) => {
       savedReels,
       savedPosts,
       loggedInUser,
-      isFollowed:null,
+      isFollowed: null,
     });
   } catch (err) {
     console.error("Error fetching user or posts:", err);
@@ -161,11 +165,20 @@ router.post(
         disableComments,
       } = req.body;
       // console.log(req.file);
+      const base64File = `data:${file.mimetype};base64,${file.buffer.toString(
+        "base64"
+      )}`;
+      let result = await cloudinary.uploader.upload(base64File, {
+        resource_type: "auto",
+        overwrite: true,
+      });
+      console.log(result);
 
       let post = await postModel.create({
         userId: req.user._id,
-        image: file?.mimetype.startsWith("image/") ? file.buffer : undefined,
-        video: file?.mimetype.startsWith("video/") ? file.buffer : undefined,
+        
+        url: result.secure_url,
+        type:result.resource_type,
         caption,
         tags,
         visibility,
@@ -402,9 +415,9 @@ router.get("/user/:userId", isLoggedIn, async (req, res, next) => {
     const savedReels = await saveModel.find({ userId: req.user._id });
 
     const savedPostIds = savedReels.map((r) => r.postId);
-   
+
     const isFollowed = await followModel.findOne({ following: userId });
-    
+
     // Fetch all posts (even by others) whose IDs are saved by the user
     const savedPosts = await postModel
       .find({ _id: { $in: savedPostIds } })
@@ -545,7 +558,7 @@ router.post("/user/addFollower", isLoggedIn, async (req, res) => {
         { session }
       );
       await session.commitTransaction();
-      return res.json({success:false, message: "Unfollowed successfully" });
+      return res.json({ success: false, message: "Unfollowed successfully" });
     } else {
       // Follow logic
       await followerModel.create(
@@ -585,7 +598,7 @@ router.post("/user/addFollower", isLoggedIn, async (req, res) => {
         { session }
       );
       await session.commitTransaction();
-      return res.json({success:true , message: "Followed successfully" });
+      return res.json({ success: true, message: "Followed successfully" });
     }
   } catch (error) {
     await session.abortTransaction();
